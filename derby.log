@@ -1,13 +1,16 @@
 ----------------------------------------------------------------
-Sat Mar 18 19:02:36 CET 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0186-f5e3-3db5-000001bf8f28 
-on database directory memory:C:\Users\ikerg\Desktop\Mantenimiento\Practicas\taw23\039d0bbe-31ef-433e-9497-e6d488b0f641 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa 
-Loaded from file:/C:/Users/ikerg/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+Sat Mar 18 19:20:28 CET 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0186-f5f3-9818-000001e26210 
+on database directory memory:C:\Users\Nombre\Desktop\Alvaro\UNI\Tercero\Cuatri2\TAW\grupo15\Grupo15\73b3a9b7-a2b9-4619-91c8-79c036efc246 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Users/Nombre/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=17.0.6+9-LTS-190
-user.dir=C:\Users\ikerg\Desktop\Mantenimiento\Practicas\taw23
+user.dir=C:\Users\Nombre\Desktop\Alvaro\UNI\Tercero\Cuatri2\TAW\grupo15\Grupo15
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Sat Mar 18 19:23:20 CET 2023:
+Shutting down instance a816c00e-0186-f5f3-9818-000001e26210 on database directory memory:C:\Users\Nombre\Desktop\Alvaro\UNI\Tercero\Cuatri2\TAW\grupo15\Grupo15\73b3a9b7-a2b9-4619-91c8-79c036efc246 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa 
