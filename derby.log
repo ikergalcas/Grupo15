@@ -11,6 +11,3 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sat Mar 18 19:13:36 CET 2023:
-Shutting down instance a816c00e-0186-f5e3-3db5-000001bf8f28 on database directory memory:C:\Users\ikerg\Desktop\Mantenimiento\Practicas\taw23\039d0bbe-31ef-433e-9497-e6d488b0f641 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa 
