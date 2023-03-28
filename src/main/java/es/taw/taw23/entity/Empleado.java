@@ -7,10 +7,10 @@ import java.util.Collection;
 public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = true, length = 45)
     private String nombre;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
     private Collection<Chat> chatsById;
@@ -20,11 +20,11 @@ public class Empleado {
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
     private Collection<Solicitud> solicitudsById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -43,7 +43,7 @@ public class Empleado {
 
         Empleado empleado = (Empleado) o;
 
-        if (id != empleado.id) return false;
+        if (id != null ? !id.equals(empleado.id) : empleado.id != null) return false;
         if (nombre != null ? !nombre.equals(empleado.nombre) : empleado.nombre != null) return false;
 
         return true;
@@ -51,7 +51,7 @@ public class Empleado {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         return result;
     }

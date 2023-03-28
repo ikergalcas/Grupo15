@@ -6,32 +6,32 @@ import javax.persistence.*;
 public class Movimientos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "timeStamp")
+    @Column(name = "timestamp", nullable = false, length = 45)
     private String timeStamp;
     @Basic
-    @Column(name = "monedaOrigen")
+    @Column(name = "monedaorigen", nullable = false, length = 45)
     private String monedaOrigen;
     @Basic
-    @Column(name = "importeOrigen")
-    private int importeOrigen;
+    @Column(name = "importeorigen", nullable = false)
+    private Integer importeOrigen;
     @Basic
-    @Column(name = "importeDestino")
-    private int importeDestino;
+    @Column(name = "importedestino", nullable = false)
+    private Integer importeDestino;
     @ManyToOne
     @JoinColumn(name = "cuenta_idCuenta", referencedColumnName = "idCuenta", nullable = false)
     private Cuenta cuentaByCuentaIdCuenta;
     @ManyToOne
-    @JoinColumn(name = "tipoMovimiento_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "tipomovimiento_id", referencedColumnName = "id", nullable = false)
     private Tipomovimiento tipomovimientoByTipoMovimientoId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -51,19 +51,19 @@ public class Movimientos {
         this.monedaOrigen = monedaOrigen;
     }
 
-    public int getImporteOrigen() {
+    public Integer getImporteOrigen() {
         return importeOrigen;
     }
 
-    public void setImporteOrigen(int importeOrigen) {
+    public void setImporteOrigen(Integer importeOrigen) {
         this.importeOrigen = importeOrigen;
     }
 
-    public int getImporteDestino() {
+    public Integer getImporteDestino() {
         return importeDestino;
     }
 
-    public void setImporteDestino(int importeDestino) {
+    public void setImporteDestino(Integer importeDestino) {
         this.importeDestino = importeDestino;
     }
 
@@ -74,22 +74,24 @@ public class Movimientos {
 
         Movimientos that = (Movimientos) o;
 
-        if (id != that.id) return false;
-        if (importeOrigen != that.importeOrigen) return false;
-        if (importeDestino != that.importeDestino) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (timeStamp != null ? !timeStamp.equals(that.timeStamp) : that.timeStamp != null) return false;
         if (monedaOrigen != null ? !monedaOrigen.equals(that.monedaOrigen) : that.monedaOrigen != null) return false;
+        if (importeOrigen != null ? !importeOrigen.equals(that.importeOrigen) : that.importeOrigen != null)
+            return false;
+        if (importeDestino != null ? !importeDestino.equals(that.importeDestino) : that.importeDestino != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (timeStamp != null ? timeStamp.hashCode() : 0);
         result = 31 * result + (monedaOrigen != null ? monedaOrigen.hashCode() : 0);
-        result = 31 * result + importeOrigen;
-        result = 31 * result + importeDestino;
+        result = 31 * result + (importeOrigen != null ? importeOrigen.hashCode() : 0);
+        result = 31 * result + (importeDestino != null ? importeDestino.hashCode() : 0);
         return result;
     }
 

@@ -7,19 +7,19 @@ import java.util.Collection;
 public class Estadocuenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "estadocuenta")
+    @Column(name = "estadocuenta", nullable = true)
     private String estadoCuenta;
     @OneToMany(mappedBy = "estadocuentaByEstadoCuentaId")
     private Collection<Cuenta> cuentasById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,7 +38,7 @@ public class Estadocuenta {
 
         Estadocuenta that = (Estadocuenta) o;
 
-        if (id != that.id) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (estadoCuenta != null ? !estadoCuenta.equals(that.estadoCuenta) : that.estadoCuenta != null) return false;
 
         return true;
@@ -46,7 +46,7 @@ public class Estadocuenta {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (estadoCuenta != null ? estadoCuenta.hashCode() : 0);
         return result;
     }
