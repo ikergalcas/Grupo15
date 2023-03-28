@@ -156,7 +156,6 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `grupo15`.`tipoCuenta` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `tipo` ENUM('empresa', 'individual') NULL,
-  `tipoCuentacol` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `idtipoCuenta_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB;
