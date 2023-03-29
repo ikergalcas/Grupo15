@@ -24,7 +24,7 @@ public class Movimientos {
     @JoinColumn(name = "cuenta_idCuenta", referencedColumnName = "idCuenta", nullable = false)
     private Cuenta cuentaByCuentaIdCuenta;
     @ManyToOne
-    @JoinColumn(name = "tipomovimiento_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "tipoMovimiento_id", referencedColumnName = "id", nullable = false)
     private Tipomovimiento tipomovimientoByTipoMovimientoId;
 
     public Integer getId() {

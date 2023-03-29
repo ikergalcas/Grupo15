@@ -1,6 +1,7 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Tipocuenta {
@@ -11,6 +12,8 @@ public class Tipocuenta {
     @Basic
     @Column(name = "tipo", nullable = true)
     private String tipo;
+    @OneToMany(mappedBy = "tipocuentaByTipoCuentaId")
+    private List<Cuenta> cuentasById;
 
     public Integer getId() {
         return id;
@@ -46,5 +49,13 @@ public class Tipocuenta {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
+    }
+
+    public List<Cuenta> getCuentasById() {
+        return cuentasById;
+    }
+
+    public void setCuentasById(List<Cuenta> cuentasById) {
+        this.cuentasById = cuentasById;
     }
 }

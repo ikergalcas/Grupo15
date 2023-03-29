@@ -1,7 +1,7 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Empleado {
@@ -13,12 +13,12 @@ public class Empleado {
     @Column(name = "nombre", nullable = true, length = 45)
     private String nombre;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
-    private Collection<Chat> chatsById;
+    private List<Chat> chatsById;
     @ManyToOne
     @JoinColumn(name = "rolEmpleado_id", referencedColumnName = "id", nullable = false)
     private Rolempleado rolempleadoByRolEmpleadoId;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
-    private Collection<Solicitud> solicitudsById;
+    private List<Solicitud> solicitudsById;
 
     public Integer getId() {
         return id;
@@ -56,11 +56,11 @@ public class Empleado {
         return result;
     }
 
-    public Collection<Chat> getChatsById() {
+    public List<Chat> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(Collection<Chat> chatsById) {
+    public void setChatsById(List<Chat> chatsById) {
         this.chatsById = chatsById;
     }
 
@@ -72,11 +72,11 @@ public class Empleado {
         this.rolempleadoByRolEmpleadoId = rolempleadoByRolEmpleadoId;
     }
 
-    public Collection<Solicitud> getSolicitudsById() {
+    public List<Solicitud> getSolicitudsById() {
         return solicitudsById;
     }
 
-    public void setSolicitudsById(Collection<Solicitud> solicitudsById) {
+    public void setSolicitudsById(List<Solicitud> solicitudsById) {
         this.solicitudsById = solicitudsById;
     }
 }

@@ -18,6 +18,20 @@ CREATE SCHEMA IF NOT EXISTS `grupo15` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8
 USE `grupo15` ;
 
 -- -----------------------------------------------------
+-- Table `grupo15`.`empresa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `grupo15`.`empresa` (
+  `idEmpresa` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idEmpresa`),
+  UNIQUE INDEX `idEmpresa_UNIQUE` (`idEmpresa` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
 -- Table `grupo15`.`rolcliente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `grupo15`.`rolcliente` (
@@ -29,17 +43,6 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `grupo15`.`Empresa`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`Empresa` (
-  `idEmpresa` INT NOT NULL AUTO_INCREMENT,
-  `Nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idEmpresa`),
-  UNIQUE INDEX `idEmpresa_UNIQUE` (`idEmpresa` ASC) VISIBLE)
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -62,22 +65,20 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`cliente` (
   `CP` VARCHAR(45) NOT NULL,
   `contrasena` VARCHAR(45) NOT NULL,
   `rolcliente_id` INT NOT NULL,
-  `Empresa_idEmpresa` INT NOT NULL,
+  `Empresa_idEmpresa` INT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `NIF_UNIQUE` (`NIF` ASC) VISIBLE,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `fk_cliente_rolcliente1_idx` (`rolcliente_id` ASC) VISIBLE,
   INDEX `fk_cliente_Empresa1_idx` (`Empresa_idEmpresa` ASC) VISIBLE,
-  CONSTRAINT `fk_cliente_rolcliente1`
-    FOREIGN KEY (`rolcliente_id`)
-    REFERENCES `grupo15`.`rolcliente` (`id`),
   CONSTRAINT `fk_cliente_Empresa1`
     FOREIGN KEY (`Empresa_idEmpresa`)
-    REFERENCES `grupo15`.`Empresa` (`idEmpresa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `grupo15`.`empresa` (`idEmpresa`),
+  CONSTRAINT `fk_cliente_rolcliente1`
+    FOREIGN KEY (`rolcliente_id`)
+    REFERENCES `grupo15`.`rolcliente` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -139,26 +140,17 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `grupo15`.`estadocuenta`
+-- Table `grupo15`.`tipocuenta`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`estadocuenta` (
-  `id` INT NOT NULL,
-  `estadoCuenta` ENUM('activa', 'bloqueada', 'cerrada') NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `grupo15`.`tipoCuenta`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`tipoCuenta` (
+CREATE TABLE IF NOT EXISTS `grupo15`.`tipocuenta` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` ENUM('empresa', 'individual') NULL,
+  `tipo` ENUM('empresa', 'individual') NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `idtipoCuenta_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -170,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`cuenta` (
   `fechaApertura` DATETIME NOT NULL,
   `fechaCierre` DATETIME NULL DEFAULT NULL,
   `cliente_id` INT NOT NULL,
-  `estadoCuenta_id` INT NOT NULL,
+  `estadoCuenta_id` INT NOT NULL DEFAULT '1',
   `tipoCuenta_id` INT NOT NULL,
   PRIMARY KEY (`idCuenta`),
   UNIQUE INDEX `numeroCuenta_UNIQUE` (`numeroCuenta` ASC) VISIBLE,
@@ -181,14 +173,22 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`cuenta` (
   CONSTRAINT `fk_cuenta_cliente`
     FOREIGN KEY (`cliente_id`)
     REFERENCES `grupo15`.`cliente` (`id`),
-  CONSTRAINT `fk_cuenta_estadoCuenta1`
-    FOREIGN KEY (`estadoCuenta_id`)
-    REFERENCES `grupo15`.`estadocuenta` (`id`),
   CONSTRAINT `fk_cuenta_tipoCuenta1`
     FOREIGN KEY (`tipoCuenta_id`)
-    REFERENCES `grupo15`.`tipoCuenta` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `grupo15`.`tipocuenta` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `grupo15`.`estadocuenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `grupo15`.`estadocuenta` (
+  `id` INT NOT NULL,
+  `estadoCuenta` ENUM('activa', 'bloqueada', 'cerrada') NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -223,6 +223,7 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`tipomovimiento` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -280,14 +281,3 @@ COLLATE = utf8mb4_0900_ai_ci;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-INSERT INTO grupo15.rolcliente (id, tipo) VALUES (1, 'individual');
-INSERT INTO grupo15.rolcliente (id, tipo) VALUES (2, 'autorizado');
-INSERT INTO grupo15.rolcliente (id, tipo) VALUES (3, 'empresa');
-INSERT INTO grupo15.rolempleado (id, tipo) VALUES (1, 'gestor');
-INSERT INTO grupo15.rolempleado (id, tipo) VALUES (2, 'asistente');
-INSERT INTO grupo15.empleado (id, nombre, rolEmpleado_id) VALUES (1, 'Iker', 2);
-INSERT INTO grupo15.empleado (id, nombre, rolEmpleado_id) VALUES (2, 'Carla', 1);
-INSERT INTO grupo15.cliente (id, NIF, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, calle, numero, puerta, ciudad, pais, region, CP, contrasena, rolcliente_id) VALUES (1, '777777777', 'Rocio', '<null>', 'Gomez', 'Mancebo', '2018-01-01 14:12:20', 'le falta', '69', '666', 'Ronda', 'España', 'Andalucia', '29400', 'pony', 1);
-INSERT INTO grupo15.cliente (id, NIF, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, calle, numero, puerta, ciudad, pais, region, CP, contrasena, rolcliente_id) VALUES (2, '123456789', 'Álvaro', null, 'Yuste', 'Musk', '2016-03-20 14:13:40', 'casimiro mirando', '21', null, 'Vaticano', 'España', 'Extremadura', '12345', 'sen2kvron', 3);
-INSERT INTO grupo15.cliente (id, NIF, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, calle, numero, puerta, ciudad, pais, region, CP, contrasena, rolcliente_id) VALUES (3, '019239485', 'David', null, 'Yuste', 'Musk', '2023-03-20 14:16:52', 'casimiro mirando', '21', null, 'Vaticano', 'España', 'Extremadura', '12345', '3mendokvron', 2);

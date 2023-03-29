@@ -1,6 +1,7 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Empresa {
@@ -9,8 +10,10 @@ public class Empresa {
     @Column(name = "idempresa", nullable = false)
     private Integer idEmpresa;
     @Basic
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "Nombre", nullable = false, length = 45)
     private String nombre;
+    @OneToMany(mappedBy = "empresaByEmpresaIdEmpresa")
+    private List<Cliente> clientesByIdEmpresa;
 
     public Integer getIdEmpresa() {
         return idEmpresa;
@@ -46,5 +49,13 @@ public class Empresa {
         int result = idEmpresa != null ? idEmpresa.hashCode() : 0;
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         return result;
+    }
+
+    public List<Cliente> getClientesByIdEmpresa() {
+        return clientesByIdEmpresa;
+    }
+
+    public void setClientesByIdEmpresa(List<Cliente> clientesByIdEmpresa) {
+        this.clientesByIdEmpresa = clientesByIdEmpresa;
     }
 }

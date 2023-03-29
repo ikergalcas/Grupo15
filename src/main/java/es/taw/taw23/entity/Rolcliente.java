@@ -1,7 +1,7 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Rolcliente {
@@ -13,7 +13,7 @@ public class Rolcliente {
     @Column(name = "tipo", nullable = false)
     private String tipo;
     @OneToMany(mappedBy = "rolclienteByRolclienteId")
-    private Collection<Cliente> clientesById;
+    private List<Cliente> clientesById;
 
     public Integer getId() {
         return id;
@@ -51,11 +51,11 @@ public class Rolcliente {
         return result;
     }
 
-    public Collection<Cliente> getClientesById() {
+    public List<Cliente> getClientesById() {
         return clientesById;
     }
 
-    public void setClientesById(Collection<Cliente> clientesById) {
+    public void setClientesById(List<Cliente> clientesById) {
         this.clientesById = clientesById;
     }
 }

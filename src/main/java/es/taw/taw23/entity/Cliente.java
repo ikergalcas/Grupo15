@@ -2,7 +2,7 @@ package es.taw.taw23.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Cliente {
@@ -26,7 +26,7 @@ public class Cliente {
     @Column(name = "segundoapellido", nullable = true, length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fechanacimiento", nullable = true)
+    @Column(name = "fechanacimiento", nullable = false)
     private Timestamp fechaNacimiento;
     @Basic
     @Column(name = "calle", nullable = false, length = 45)
@@ -53,14 +53,17 @@ public class Cliente {
     @Column(name = "contrasena", nullable = false, length = 45)
     private String contrasena;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private Collection<Chat> chatsById;
+    private List<Chat> chatsById;
     @ManyToOne
     @JoinColumn(name = "rolcliente_id", referencedColumnName = "id", nullable = false)
     private Rolcliente rolclienteByRolclienteId;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "empresa_idempresa", referencedColumnName = "idempresa")
+    private Empresa empresaByEmpresaIdEmpresa;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private Collection<Cuenta> cuentasById;
+    private List<Cuenta> cuentasById;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private Collection<Solicitud> solicitudsById;
+    private List<Solicitud> solicitudsById;
 
     public Integer getId() {
         return id;
@@ -233,11 +236,11 @@ public class Cliente {
         return result;
     }
 
-    public Collection<Chat> getChatsById() {
+    public List<Chat> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(Collection<Chat> chatsById) {
+    public void setChatsById(List<Chat> chatsById) {
         this.chatsById = chatsById;
     }
 
@@ -249,19 +252,27 @@ public class Cliente {
         this.rolclienteByRolclienteId = rolclienteByRolclienteId;
     }
 
-    public Collection<Cuenta> getCuentasById() {
+    public Empresa getEmpresaByEmpresaIdEmpresa() {
+        return empresaByEmpresaIdEmpresa;
+    }
+
+    public void setEmpresaByEmpresaIdEmpresa(Empresa empresaByEmpresaIdEmpresa) {
+        this.empresaByEmpresaIdEmpresa = empresaByEmpresaIdEmpresa;
+    }
+
+    public List<Cuenta> getCuentasById() {
         return cuentasById;
     }
 
-    public void setCuentasById(Collection<Cuenta> cuentasById) {
+    public void setCuentasById(List<Cuenta> cuentasById) {
         this.cuentasById = cuentasById;
     }
 
-    public Collection<Solicitud> getSolicitudsById() {
+    public List<Solicitud> getSolicitudsById() {
         return solicitudsById;
     }
 
-    public void setSolicitudsById(Collection<Solicitud> solicitudsById) {
+    public void setSolicitudsById(List<Solicitud> solicitudsById) {
         this.solicitudsById = solicitudsById;
     }
 }

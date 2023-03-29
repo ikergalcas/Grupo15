@@ -2,13 +2,13 @@ package es.taw.taw23.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Cuenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "idCuenta", nullable = false)
+    @Column(name = "idcuenta", nullable = false)
     private Integer idCuenta;
     @Basic
     @Column(name = "numerocuenta", nullable = false, length = 24)
@@ -23,10 +23,13 @@ public class Cuenta {
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
     private Cliente clienteByClienteId;
     @ManyToOne
-    @JoinColumn(name = "estadoCuenta_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "estadocuenta_id", referencedColumnName = "id", nullable = false)
     private Estadocuenta estadocuentaByEstadoCuentaId;
+    @ManyToOne
+    @JoinColumn(name = "tipocuenta_id", referencedColumnName = "id", nullable = false)
+    private Tipocuenta tipocuentaByTipoCuentaId;
     @OneToMany(mappedBy = "cuentaByCuentaIdCuenta")
-    private Collection<Movimientos> movimientosByIdCuenta;
+    private List<Movimientos> movimientosByIdCuenta;
 
     public Integer getIdCuenta() {
         return idCuenta;
@@ -102,11 +105,19 @@ public class Cuenta {
         this.estadocuentaByEstadoCuentaId = estadocuentaByEstadoCuentaId;
     }
 
-    public Collection<Movimientos> getMovimientosByIdCuenta() {
+    public Tipocuenta getTipocuentaByTipoCuentaId() {
+        return tipocuentaByTipoCuentaId;
+    }
+
+    public void setTipocuentaByTipoCuentaId(Tipocuenta tipocuentaByTipoCuentaId) {
+        this.tipocuentaByTipoCuentaId = tipocuentaByTipoCuentaId;
+    }
+
+    public List<Movimientos> getMovimientosByIdCuenta() {
         return movimientosByIdCuenta;
     }
 
-    public void setMovimientosByIdCuenta(Collection<Movimientos> movimientosByIdCuenta) {
+    public void setMovimientosByIdCuenta(List<Movimientos> movimientosByIdCuenta) {
         this.movimientosByIdCuenta = movimientosByIdCuenta;
     }
 }

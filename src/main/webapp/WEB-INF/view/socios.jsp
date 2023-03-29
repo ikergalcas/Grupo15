@@ -10,18 +10,28 @@
     <title>Title</title>
 </head>
 
-<h1>Listado de socios</h1>
+<h1>Listado de todos los socios y autorizados</h1>
 
 <body>
-<table>
+<table border="2">
     <tr>
         <th>Nombre</th>
+        <th>Empresa</th>
+        <th></th>
     </tr>
 <%
     for (Cliente socio : listaSocios) {
 %>
     <tr>
         <td><%= socio.getPrimerNombre() %></td>
+        <td><%= socio.getEmpresaByEmpresaIdEmpresa().getNombre() %></td>
+        <%
+            if(socio.getRolclienteByRolclienteId().getTipo().equals("socio")) {
+        %>
+        <td><a href="/empresa/miEmpresa?id=<%= socio.getId() %>" >Ver socios/autorizados de mi empresa</a></td>
+        <%
+            }
+        %>
     </tr>
 <%
     }
