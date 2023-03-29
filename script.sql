@@ -280,3 +280,14 @@ COLLATE = utf8mb4_0900_ai_ci;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO grupo15.rolcliente (id, tipo) VALUES (1, 'individual');
+INSERT INTO grupo15.rolcliente (id, tipo) VALUES (2, 'autorizado');
+INSERT INTO grupo15.rolcliente (id, tipo) VALUES (3, 'empresa');
+INSERT INTO grupo15.rolempleado (id, tipo) VALUES (1, 'gestor');
+INSERT INTO grupo15.rolempleado (id, tipo) VALUES (2, 'asistente');
+INSERT INTO grupo15.empleado (id, nombre, rolEmpleado_id) VALUES (1, 'Iker', 2);
+INSERT INTO grupo15.empleado (id, nombre, rolEmpleado_id) VALUES (2, 'Carla', 1);
+INSERT INTO grupo15.cliente (id, NIF, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, calle, numero, puerta, ciudad, pais, region, CP, contrasena, rolcliente_id) VALUES (1, '777777777', 'Rocio', '<null>', 'Gomez', 'Mancebo', '2018-01-01 14:12:20', 'le falta', '69', '666', 'Ronda', 'España', 'Andalucia', '29400', 'pony', 1);
+INSERT INTO grupo15.cliente (id, NIF, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, calle, numero, puerta, ciudad, pais, region, CP, contrasena, rolcliente_id) VALUES (2, '123456789', 'Álvaro', null, 'Yuste', 'Musk', '2016-03-20 14:13:40', 'casimiro mirando', '21', null, 'Vaticano', 'España', 'Extremadura', '12345', 'sen2kvron', 3);
+INSERT INTO grupo15.cliente (id, NIF, primerNombre, segundoNombre, primerApellido, segundoApellido, fechaNacimiento, calle, numero, puerta, ciudad, pais, region, CP, contrasena, rolcliente_id) VALUES (3, '019239485', 'David', null, 'Yuste', 'Musk', '2023-03-20 14:16:52', 'casimiro mirando', '21', null, 'Vaticano', 'España', 'Extremadura', '12345', '3mendokvron', 2);

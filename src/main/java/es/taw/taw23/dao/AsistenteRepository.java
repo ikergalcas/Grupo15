@@ -1,2 +1,4 @@
-package es.taw.taw23.dao;public interface AsistenteRepository {
+package es.taw.taw23.dao;
+
+public interface AsistenteRepository {
 }

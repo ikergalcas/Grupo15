@@ -1,2 +1,5 @@
-package es.taw.taw23.controller;public class AsistenteController {
+package es.taw.taw23.controller;
+
+public class AsistenteController {
+
 }
