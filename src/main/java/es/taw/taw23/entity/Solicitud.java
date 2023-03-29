@@ -6,13 +6,13 @@ import javax.persistence.*;
 public class Solicitud {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "tipo")
+    @Column(name = "tipo", nullable = false, length = 45)
     private String tipo;
     @Basic
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false, length = 45)
     private String estado;
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
@@ -21,11 +21,11 @@ public class Solicitud {
     @JoinColumn(name = "empleado_id", referencedColumnName = "id")
     private Empleado empleadoByEmpleadoId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,7 +52,7 @@ public class Solicitud {
 
         Solicitud solicitud = (Solicitud) o;
 
-        if (id != solicitud.id) return false;
+        if (id != null ? !id.equals(solicitud.id) : solicitud.id != null) return false;
         if (tipo != null ? !tipo.equals(solicitud.tipo) : solicitud.tipo != null) return false;
         if (estado != null ? !estado.equals(solicitud.estado) : solicitud.estado != null) return false;
 
@@ -61,7 +61,7 @@ public class Solicitud {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         result = 31 * result + (estado != null ? estado.hashCode() : 0);
         return result;

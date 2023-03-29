@@ -7,26 +7,26 @@ import java.sql.Timestamp;
 public class Mensaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "texto")
+    @Column(name = "texto", nullable = false, length = 500)
     private String texto;
     @Basic
-    @Column(name = "fechaEnvio")
+    @Column(name = "fechaenvio", nullable = false)
     private Timestamp fechaEnvio;
     @Basic
-    @Column(name = "remitente")
+    @Column(name = "remitente", nullable = false, length = 45)
     private String remitente;
     @ManyToOne
     @JoinColumn(name = "chat_id", referencedColumnName = "id", nullable = false)
     private Chat chatByChatId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -61,7 +61,7 @@ public class Mensaje {
 
         Mensaje mensaje = (Mensaje) o;
 
-        if (id != mensaje.id) return false;
+        if (id != null ? !id.equals(mensaje.id) : mensaje.id != null) return false;
         if (texto != null ? !texto.equals(mensaje.texto) : mensaje.texto != null) return false;
         if (fechaEnvio != null ? !fechaEnvio.equals(mensaje.fechaEnvio) : mensaje.fechaEnvio != null) return false;
         if (remitente != null ? !remitente.equals(mensaje.remitente) : mensaje.remitente != null) return false;
@@ -71,7 +71,7 @@ public class Mensaje {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (texto != null ? texto.hashCode() : 0);
         result = 31 * result + (fechaEnvio != null ? fechaEnvio.hashCode() : 0);
         result = 31 * result + (remitente != null ? remitente.hashCode() : 0);

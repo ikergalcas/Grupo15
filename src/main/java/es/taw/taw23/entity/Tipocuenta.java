@@ -1,19 +1,16 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
-public class Rolcliente {
+public class Tipocuenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "tipo", nullable = false)
+    @Column(name = "tipo", nullable = true)
     private String tipo;
-    @OneToMany(mappedBy = "rolclienteByRolclienteId")
-    private Collection<Cliente> clientesById;
 
     public Integer getId() {
         return id;
@@ -36,7 +33,7 @@ public class Rolcliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Rolcliente that = (Rolcliente) o;
+        Tipocuenta that = (Tipocuenta) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
@@ -49,13 +46,5 @@ public class Rolcliente {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
-    }
-
-    public Collection<Cliente> getClientesById() {
-        return clientesById;
-    }
-
-    public void setClientesById(Collection<Cliente> clientesById) {
-        this.clientesById = clientesById;
     }
 }

@@ -10,4 +10,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query("select c from Cliente c where c.rolclienteByRolclienteId.tipo = 'autorizado' or c.rolclienteByRolclienteId.tipo = 'empresa'")
     public List<Cliente> buscarPorTipoEmpresa ();
+
 }

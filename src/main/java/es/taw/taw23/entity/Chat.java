@@ -7,11 +7,11 @@ import java.util.Collection;
 public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "cerrado")
-    private int cerrado;
+    @Column(name = "cerrado", nullable = false)
+    private Integer cerrado;
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
     private Cliente clienteByClienteId;
@@ -21,19 +21,19 @@ public class Chat {
     @OneToMany(mappedBy = "chatByChatId")
     private Collection<Mensaje> mensajesById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getCerrado() {
+    public Integer getCerrado() {
         return cerrado;
     }
 
-    public void setCerrado(int cerrado) {
+    public void setCerrado(Integer cerrado) {
         this.cerrado = cerrado;
     }
 
@@ -44,16 +44,16 @@ public class Chat {
 
         Chat chat = (Chat) o;
 
-        if (id != chat.id) return false;
-        if (cerrado != chat.cerrado) return false;
+        if (id != null ? !id.equals(chat.id) : chat.id != null) return false;
+        if (cerrado != null ? !cerrado.equals(chat.cerrado) : chat.cerrado != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + cerrado;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (cerrado != null ? cerrado.hashCode() : 0);
         return result;
     }
 
