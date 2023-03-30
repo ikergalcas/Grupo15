@@ -4,6 +4,7 @@
 
 <%
     List<Cliente> listaSocios = (List<Cliente>) request.getAttribute("socios");
+    Cliente cliente = (Cliente) request.getAttribute("cliente");
 %>
 <html>
 <head>
@@ -38,5 +39,8 @@
 %>
 
 </table>
+
+<a href="/miPerfil?id="<%= cliente.getId()%>>Modificar mis datos</a>
+
 </body>
 </html>
