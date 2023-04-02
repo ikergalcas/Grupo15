@@ -27,7 +27,7 @@
         <td><%= socio.getPrimerNombre() %></td>
         <td><%= socio.getEmpresaByEmpresaIdEmpresa().getNombre() %></td>
         <%
-            if(socio.getRolclienteByRolclienteId().getTipo().equals("socio")) {
+            if(socio.getRolclienteByRolclienteId().getTipo().equals("socio") && socio.getEmpresaByEmpresaIdEmpresa().getIdEmpresa() == cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa()) {
         %>
         <td><a href="/empresa/miEmpresa?id=<%= socio.getId() %>" >Ver socios/autorizados de mi empresa</a></td>
         <%
@@ -40,7 +40,7 @@
 
 </table>
 
-<a href="/miPerfil?id="<%= cliente.getId()%>>Modificar mis datos</a>
-
+<a href="/empresa/miPerfil?id=<%= cliente.getId() %>" >Modificar mis datos</a> <br/>
+<a href="/empresa/editarEmpresa?id=<%= cliente.getId()%>">Modificar datos de la empresa</a>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Cliente {
     private String segundoApellido;
     @Basic
     @Column(name = "fechanacimiento", nullable = false)
-    private Timestamp fechaNacimiento;
+    private Date fechaNacimiento;
     @Basic
     @Column(name = "calle", nullable = false, length = 45)
     private String calle;
@@ -113,11 +114,11 @@ public class Cliente {
         this.segundoApellido = segundoApellido;
     }
 
-    public Timestamp getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Timestamp fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

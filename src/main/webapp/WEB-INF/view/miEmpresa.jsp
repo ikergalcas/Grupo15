@@ -38,7 +38,13 @@
             %>
             <%= estado%>
         </td>
-        <td><a href="/bloquear?idBloq=<%= asociado.getId() %>id=<%= cliente.getId() %>">Bloquear</a></td>
+        <td>
+            <form action="/empresa/bloquear" method="post">
+                <input type="hidden" name="idBloq" value="<%= asociado.getId() %>" />
+                <input type="hidden" name="id" value="<%= cliente.getId() %>" />
+                <button type="submit">Bloquear</button>
+            </form>
+        </td>
     </tr>
     <%
         }
