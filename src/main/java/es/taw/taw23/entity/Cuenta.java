@@ -19,6 +19,9 @@ public class Cuenta {
     @Basic
     @Column(name = "fechacierre", nullable = true)
     private Timestamp fechaCierre;
+    @Basic
+    @Column(name = "dinero", nullable = true)
+    private Integer dinero;
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
     private Cliente clienteByClienteId;
@@ -63,6 +66,9 @@ public class Cuenta {
         this.fechaCierre = fechaCierre;
     }
 
+    public Integer getDinero() { return dinero; }
+
+    public void setDinero(Integer dinero) { this.dinero = dinero; }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,7 +82,7 @@ public class Cuenta {
         if (fechaApertura != null ? !fechaApertura.equals(cuenta.fechaApertura) : cuenta.fechaApertura != null)
             return false;
         if (fechaCierre != null ? !fechaCierre.equals(cuenta.fechaCierre) : cuenta.fechaCierre != null) return false;
-
+        if (dinero != null ? !dinero.equals(cuenta.dinero) : cuenta.dinero != null) return false;
         return true;
     }
 
@@ -86,6 +92,7 @@ public class Cuenta {
         result = 31 * result + (numeroCuenta != null ? numeroCuenta.hashCode() : 0);
         result = 31 * result + (fechaApertura != null ? fechaApertura.hashCode() : 0);
         result = 31 * result + (fechaCierre != null ? fechaCierre.hashCode() : 0);
+        result = 31 * result + (dinero != null ? dinero.hashCode() : 0);
         return result;
     }
 

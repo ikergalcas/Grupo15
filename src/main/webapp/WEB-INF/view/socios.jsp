@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.taw.taw23.entity.Cliente" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,6 +15,7 @@
 <h1>Listado de todos los socios y autorizados</h1>
 
 <body>
+
 <table border="2">
     <tr>
         <th>Nombre</th>

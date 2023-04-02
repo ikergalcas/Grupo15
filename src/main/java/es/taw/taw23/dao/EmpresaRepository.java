@@ -14,5 +14,8 @@ public interface EmpresaRepository extends JpaRepository<Cliente, Integer> {
 
     @Query("select c from Cliente c where c.empresaByEmpresaIdEmpresa.idEmpresa = :idempresa")
     public List<Cliente> buscarSociosAutorizadosDeMiEmpresa(@Param("idempresa") Integer idEmpresa);
+
+    @Query("select c from Cliente c where c.empresaByEmpresaIdEmpresa.idEmpresa = :idempresa and c.primerNombre like CONCAT('%', :filtro, '%')")
+    public List<Cliente> buscarPorPrimerNombre(@Param("filtro") String filter);
 }
 

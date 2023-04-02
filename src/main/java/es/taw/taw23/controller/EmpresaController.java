@@ -1,5 +1,6 @@
 package es.taw.taw23.controller;
 
+import es.taw.taw23.ui.FiltroEmpresa;
 import es.taw.taw23.dao.CuentaRepository;
 import es.taw.taw23.dao.EmpresaRepository;
 import es.taw.taw23.dao.EstadoCuentaRepository;
@@ -38,12 +39,30 @@ public class EmpresaController {
 
     @GetMapping("/miEmpresa")
     public String doListarMiEmpresa(@RequestParam("id") Integer idCliente, Model model) {
-        Cliente cliente = this.empresaRepository.findById(idCliente).orElse(null);
-        List<Cliente> lista = empresaRepository.buscarSociosAutorizadosDeMiEmpresa(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa());
+        return this.procesarFiltrado(null, model, idCliente);
+    }
+
+    //NO FURULA
+    @PostMapping("/filtrar")
+    public String doFiltrar(@RequestParam("idCliente") Integer idCliente, @ModelAttribute("filtro") FiltroEmpresa filtro, Model model) {
+        return this.procesarFiltrado(filtro, model, idCliente);
+    }
+
+    protected String procesarFiltrado(FiltroEmpresa filtro, Model model, Integer id) {
+        List<Cliente> listaAsociado;
+        Cliente cliente = this.empresaRepository.findById(id).orElse(null);
         model.addAttribute("cliente", cliente);
-        model.addAttribute("asociados", lista);
+        if(filtro == null) {
+            listaAsociado = this.empresaRepository.buscarSociosAutorizadosDeMiEmpresa(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa());
+            //Busco por el primer nombre
+        } else {
+            listaAsociado = this.empresaRepository.buscarPorPrimerNombre(filtro.getPrimerNombre());
+        }
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("asociados", listaAsociado);
         return "miEmpresa";
     }
+
 
     @GetMapping("/miPerfil")
     public String doEditarPerfil(@RequestParam("id") Integer idCliente, Model model) {
