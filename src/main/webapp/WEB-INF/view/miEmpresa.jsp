@@ -6,7 +6,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    FiltroEmpresa filtro = (FiltroEmpresa) request.getAttribute("filtro");
     Cliente cliente = (Cliente) request.getAttribute("cliente");
     List<Cliente> listaAsociados = (List<Cliente>) request.getAttribute("asociados");
 %>
@@ -21,9 +20,8 @@
 
 <form:form action="/empresa/filtrar" modelAttribute="filtro" method="post"><br/>
     Buscar por: <br/>
-    <form:hidden path="idCliente" value="<%= cliente.getId() %>"/><br/>
     Nombre: <form:input path="primerNombre" /><br/>
-    <form:button>Guardar cambios</form:button>
+    <form:button>Buscar</form:button>
 </form:form>
 
 <table border="1">

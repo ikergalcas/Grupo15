@@ -1,8 +1,9 @@
 package es.taw.taw23.controller;
 
+import es.taw.taw23.dao.EmpresaRepository;
 import es.taw.taw23.ui.FiltroEmpresa;
 import es.taw.taw23.dao.CuentaRepository;
-import es.taw.taw23.dao.EmpresaRepository;
+import es.taw.taw23.dao.AsociadoRepository;
 import es.taw.taw23.dao.EstadoCuentaRepository;
 import es.taw.taw23.entity.Cliente;
 import es.taw.taw23.entity.Cuenta;
@@ -20,18 +21,21 @@ import java.util.List;
 public class EmpresaController {
 
     @Autowired
+    protected EmpresaRepository empresaRepository;
+    @Autowired
     protected EstadoCuentaRepository estadoCuentaRepository;
     @Autowired
-    protected EmpresaRepository empresaRepository;
+    protected AsociadoRepository asociadoRepository;
 
     @Autowired
     protected CuentaRepository cuentaRepository;
 
+    private Integer idClient;
 
     @GetMapping("/")
-    public String doListarClientesEmpresa(@RequestParam("id") Integer id, Model model) {
-        List<Cliente> lista = this.empresaRepository.buscarPorTipoEmpresa();
-        Cliente cliente = this.empresaRepository.findById(id).orElse(null);
+    public String doListarClientesEmpresa(@RequestParam(value = "id", required = true) Integer id, Model model) {
+        List<Cliente> lista = this.asociadoRepository.buscarPorTipoEmpresa();
+        Cliente cliente = this.asociadoRepository.findById(id).orElse(null);
         model.addAttribute("cliente", cliente);
         model.addAttribute("socios", lista);
         return "socios";
@@ -39,26 +43,30 @@ public class EmpresaController {
 
     @GetMapping("/miEmpresa")
     public String doListarMiEmpresa(@RequestParam("id") Integer idCliente, Model model) {
-        return this.procesarFiltrado(null, model, idCliente);
+        idClient = idCliente;
+        FiltroEmpresa filtro = new FiltroEmpresa();
+        model.addAttribute("filtro", filtro);
+        return this.procesarFiltrado(filtro, model, idCliente);
     }
 
-    //NO FURULA
+    //ESTA HECHO REGULAR. DEBERIA DE HACERSE SIN idClient
+    //NO ME DEJA PASAR EL idClient como parametro. Porque el formulario no es del Cliente??
     @PostMapping("/filtrar")
-    public String doFiltrar(@RequestParam("idCliente") Integer idCliente, @ModelAttribute("filtro") FiltroEmpresa filtro, Model model) {
-        return this.procesarFiltrado(filtro, model, idCliente);
+    public String doFiltrar(@ModelAttribute("filtro") FiltroEmpresa filtro, Model model) {
+        model.addAttribute("filtro", filtro);
+        return this.procesarFiltrado(filtro, model, idClient);
     }
 
     protected String procesarFiltrado(FiltroEmpresa filtro, Model model, Integer id) {
         List<Cliente> listaAsociado;
-        Cliente cliente = this.empresaRepository.findById(id).orElse(null);
+        Cliente cliente = this.asociadoRepository.findById(id).orElse(null);
         model.addAttribute("cliente", cliente);
-        if(filtro == null) {
-            listaAsociado = this.empresaRepository.buscarSociosAutorizadosDeMiEmpresa(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa());
+        if(filtro.getPrimerNombre().isEmpty()) {
+            listaAsociado = this.asociadoRepository.buscarSociosAutorizadosDeMiEmpresa(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa());
             //Busco por el primer nombre
         } else {
-            listaAsociado = this.empresaRepository.buscarPorPrimerNombre(filtro.getPrimerNombre());
+            listaAsociado = this.asociadoRepository.buscarPorPrimerNombre(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getPrimerNombre());
         }
-        model.addAttribute("filtro", filtro);
         model.addAttribute("asociados", listaAsociado);
         return "miEmpresa";
     }
@@ -66,42 +74,48 @@ public class EmpresaController {
 
     @GetMapping("/miPerfil")
     public String doEditarPerfil(@RequestParam("id") Integer idCliente, Model model) {
-        Cliente asociado = this.empresaRepository.findById(idCliente).orElse(null);
+        Cliente asociado = this.asociadoRepository.findById(idCliente).orElse(null);
         model.addAttribute("asociadoEditado", asociado);
+        idClient = idCliente;
         return "perfil";
     }
 
     @PostMapping("/guardarPerfil")
     public String doGuardarPerfil(@RequestParam("id") Integer idCliente, @ModelAttribute("asociadoEditado") Cliente asociado) {
-        Cliente editado = this.empresaRepository.findById(idCliente).orElse(null);
+        Cliente editado = this.asociadoRepository.findById(idCliente).orElse(null);
         asociado.setRolclienteByRolclienteId(editado.getRolclienteByRolclienteId());
         asociado.setEmpresaByEmpresaIdEmpresa(editado.getEmpresaByEmpresaIdEmpresa());
         asociado.setCuentasById(editado.getCuentasById());
         asociado.setChatsById(editado.getChatsById());
         asociado.setSolicitudsById(editado.getSolicitudsById());
-        this.empresaRepository.save(asociado);
+        this.asociadoRepository.save(asociado);
+        idClient = idCliente;
         return "redirect:/empresa/?id=" + idCliente;
     }
 
     @GetMapping("/editarEmpresa")
     public String doEditarEmpresa(@RequestParam("id") Integer idAsociado, Model model) {
-        Cliente asociado = this.empresaRepository.findById(idAsociado).orElse(null);
+        Cliente asociado = this.asociadoRepository.findById(idAsociado).orElse(null);
         Empresa empresa = asociado.getEmpresaByEmpresaIdEmpresa();
         model.addAttribute("asociado", asociado);
         model.addAttribute("empresaEditada", empresa);
+        idClient = idAsociado;
         return "editarEmpresa";
     }
 
+    //ESTA HECHO REGULAR. DEBERIA DE HACERSE SIN idClient
     @PostMapping("/guardarEmpresa")
-    public String doGuardarEmpresa(@RequestParam("id") Integer idCliente, @ModelAttribute("empresaEditada") Empresa empresa) {
-        Cliente asociado = this.empresaRepository.findById(idCliente).orElse(null);
-        return "redirect:/empresa/?id=" + asociado.getId();
+    public String doGuardarEmpresa(@RequestParam("idEmpresa") Integer idEmpresa, @ModelAttribute("empresaEditada") Empresa empresa) {
+        Empresa emp = this.empresaRepository.findById(idEmpresa).orElse(null);
+        empresa.setClientesByIdEmpresa(emp.getClientesByIdEmpresa());
+        this.empresaRepository.save(empresa);
+        return "redirect:/empresa/?id=" + idClient;
     }
 
 
     @PostMapping("/bloquear")
     public String doBloquear(@RequestParam("idBloq") Integer idBloqueado,@RequestParam("id") Integer id, Model model) {
-        Cliente bloqueado = this.empresaRepository.findById(idBloqueado).orElse(null);
+        Cliente bloqueado = this.asociadoRepository.findById(idBloqueado).orElse(null);
         List<Cuenta> cuentas = bloqueado.getCuentasById();
         Estadocuenta estadoBloqueado = this.estadoCuentaRepository.findById(2).orElse(null);
         //Como el cliente puede tener 2 cuentas, busco cuál es la de la empresa y cambio el estado a bloqueada
@@ -115,7 +129,7 @@ public class EmpresaController {
 
         //Actualizo la lista de cuentas del cliente bloqueado
         bloqueado.setCuentasById(cuentas);
-        empresaRepository.save(bloqueado);
+        asociadoRepository.save(bloqueado);
 
         return "redirect:/empresa/?id=" + id;
     }

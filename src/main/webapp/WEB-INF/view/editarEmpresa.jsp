@@ -14,8 +14,8 @@
 <body>
     <h1>Editar Datos Empresa del cliente <%= asociado.getPrimerNombre()%></h1>
 
-<form:form action="/empresa/guardarEmpresa?id=<%= asociado.getId() %>" modelAttribute="empresaEditada" method="post"><br/>
-    <form:hidden path="idEmpresa"/><br/>
+<form:form action="/empresa/guardarEmpresa?idEmpresa=<%= empresa.getIdEmpresa()%>" modelAttribute="empresaEditada" method="post"><br/>
+    <form:hidden path="idEmpresa" value="<%= empresa.getIdEmpresa()%>"/><br/>
     <form:input path="nombre"/><br/>
     <form:button>Guardar cambios</form:button>
 </form:form>

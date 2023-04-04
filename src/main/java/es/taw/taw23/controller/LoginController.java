@@ -1,17 +1,14 @@
 package es.taw.taw23.controller;
 
 import es.taw.taw23.dao.ClienteRepository;
-import es.taw.taw23.dao.EmpresaRepository;
+import es.taw.taw23.dao.AsociadoRepository;
 import es.taw.taw23.entity.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 public class LoginController {
@@ -19,7 +16,7 @@ public class LoginController {
     protected ClienteRepository clienteRepository;
 
     @Autowired
-    protected EmpresaRepository empresaRepository;
+    protected AsociadoRepository empresaRepository;
 
     @RequestMapping("/")
     public String doLogin() {
