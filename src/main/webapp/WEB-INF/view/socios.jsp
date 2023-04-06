@@ -43,6 +43,7 @@
 </table>
 
 <a href="/empresa/miPerfil?id=<%= cliente.getId() %>" >Modificar mis datos</a> <br/>
-<a href="/empresa/editarEmpresa?id=<%= cliente.getId()%>">Modificar datos de la empresa</a>
+<a href="/empresa/editarEmpresa?id=<%= cliente.getId()%>">Modificar datos de la empresa</a> <br/>
+<a href="/empresa/transferencia?id=<%= cliente.getId() %>">Realizar transferencia</a>
 </body>
 </html>

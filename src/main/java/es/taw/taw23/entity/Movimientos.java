@@ -21,10 +21,10 @@ public class Movimientos {
     @Column(name = "importedestino", nullable = false)
     private Integer importeDestino;
     @ManyToOne
-    @JoinColumn(name = "cuenta_idCuenta", referencedColumnName = "idCuenta", nullable = false)
+    @JoinColumn(name = "cuenta_idcuenta", referencedColumnName = "idCuenta", nullable = false)
     private Cuenta cuentaByCuentaIdCuenta;
     @ManyToOne
-    @JoinColumn(name = "tipoMovimiento_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "tipomovimiento_id", referencedColumnName = "id", nullable = false)
     private Tipomovimiento tipomovimientoByTipoMovimientoId;
 
     public Integer getId() {

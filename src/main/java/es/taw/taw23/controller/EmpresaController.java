@@ -15,6 +15,8 @@ import java.util.List;
 public class EmpresaController {
 
     @Autowired
+    protected TipoMovimientoRepository tipoMovimientoRepository;
+    @Autowired
     protected MovimientoRepository movimientoRepository;
     @Autowired
     protected EmpresaRepository empresaRepository;
@@ -152,20 +154,43 @@ public class EmpresaController {
         return "redirect:/empresa/?id=" + id;
     }
 
-    //LA PARTE DE TRANSFERENCIA ESTA A MEDIO HACER
     @GetMapping("/transferencia")
     public String doTransferencia(@RequestParam("id") Integer idAsociado, Model model) {
         Cliente asociado = this.asociadoRepository.findById(idAsociado).orElse(null);
         Movimientos mov = new Movimientos();
+        idClient = idAsociado;
+        Tipomovimiento tipoMov = this.tipoMovimientoRepository.findById(1).orElse(null);
+        mov.setTipomovimientoByTipoMovimientoId(tipoMov);
         model.addAttribute("movimiento", mov);
         model.addAttribute("asociado", asociado);
         return "transferencia";
     }
 
     @PostMapping("/guardarTransferencia")
-    public String doGuardarTransferencia(@ModelAttribute("movimiento") Movimientos movimiento, Model model) {
-        this.movimientoRepository.save(movimiento);
-
+    public String doGuardarTransferencia(@ModelAttribute("movimiento") Movimientos movimiento, @RequestParam("numeroCuenta") String numeroCuentaDest, Model model) {
+        String urlto;
+        String error;
+        Cuenta cuentaDest = this.cuentaRepository.buscarCuentaPorNumeroCuenta(numeroCuentaDest);
+        Cuenta cuentaOrig = movimiento.getCuentaByCuentaIdCuenta();
+        if(cuentaDest == null) {
+            error = "numeroCuenta";
+            urlto = "errorTransferencia";
+            model.addAttribute("error", error);
+            model.addAttribute("idAsociado", idClient);
+        } else if(cuentaOrig.getDinero() < movimiento.getImporteOrigen()) {
+            error = "dineroInsuficiente";
+            urlto = "errorTransferencia";
+            model.addAttribute("error", error);
+            model.addAttribute("idAsociado", idClient);
+        } else {    //No hay errores en la transferencia
+            cuentaOrig.setDinero(cuentaOrig.getDinero() - movimiento.getImporteOrigen());
+            cuentaDest.setDinero(cuentaDest.getDinero() + movimiento.getImporteOrigen());
+            this.movimientoRepository.save(movimiento);
+            this.cuentaRepository.save(cuentaOrig);
+            this.cuentaRepository.save(cuentaDest);
+            urlto = "redirect:/empresa/?id=" + idClient;
+        }
+        return urlto;
     }
 
 
