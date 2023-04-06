@@ -1,14 +1,8 @@
 package es.taw.taw23.controller;
 
-import es.taw.taw23.dao.EmpresaRepository;
+import es.taw.taw23.dao.*;
+import es.taw.taw23.entity.*;
 import es.taw.taw23.ui.FiltroEmpresa;
-import es.taw.taw23.dao.CuentaRepository;
-import es.taw.taw23.dao.AsociadoRepository;
-import es.taw.taw23.dao.EstadoCuentaRepository;
-import es.taw.taw23.entity.Cliente;
-import es.taw.taw23.entity.Cuenta;
-import es.taw.taw23.entity.Empresa;
-import es.taw.taw23.entity.Estadocuenta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +14,8 @@ import java.util.List;
 @RequestMapping("/empresa")
 public class EmpresaController {
 
+    @Autowired
+    protected MovimientoRepository movimientoRepository;
     @Autowired
     protected EmpresaRepository empresaRepository;
     @Autowired
@@ -58,14 +54,36 @@ public class EmpresaController {
     }
 
     protected String procesarFiltrado(FiltroEmpresa filtro, Model model, Integer id) {
-        List<Cliente> listaAsociado;
+        List<Cliente> listaAsociado = null;
         Cliente cliente = this.asociadoRepository.findById(id).orElse(null);
         model.addAttribute("cliente", cliente);
-        if(filtro.getPrimerNombre().isEmpty()) {
+        //Filtro vacio, busco todos
+        if(filtro.getPrimerNombre().isEmpty() && filtro.getPrimerApellido().isEmpty() && filtro.getNif().isEmpty()) {
             listaAsociado = this.asociadoRepository.buscarSociosAutorizadosDeMiEmpresa(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa());
+
+            //Busco por primer apellido
+        } else if(filtro.getPrimerNombre().isEmpty() && filtro.getNif().isEmpty()) {
+            listaAsociado = this.asociadoRepository.buscarPorPrimerApellido(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getPrimerApellido());
+
             //Busco por el primer nombre
-        } else {
+        } else if(filtro.getNif().isEmpty() && filtro.getPrimerApellido().isEmpty()){
             listaAsociado = this.asociadoRepository.buscarPorPrimerNombre(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getPrimerNombre());
+
+            //Busco por el nif
+        } else if(filtro.getPrimerApellido().isEmpty() && filtro.getPrimerNombre().isEmpty()) {
+            listaAsociado = this.asociadoRepository.buscarPorNif(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getNif());
+
+            //Busco por el primero nombre y primer apellido
+        } else if(filtro.getNif().isEmpty()) {
+            listaAsociado = this.asociadoRepository.buscarPorPrimerNombreyPrimerApellido(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getPrimerNombre(), filtro.getPrimerApellido());
+
+            //Busco por el primer nombre y el nif
+        }   else if(filtro.getPrimerApellido().isEmpty()) {
+            listaAsociado = this.asociadoRepository.buscarPorNifyPrimerNombre(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getNif(), filtro.getPrimerNombre());
+
+            //Busco por el primer apellido y el nif
+        } else {
+            listaAsociado = this.asociadoRepository.buscarPorNifyPrimerApellido(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getNif(), filtro.getPrimerApellido());
         }
         model.addAttribute("asociados", listaAsociado);
         return "miEmpresa";
@@ -132,6 +150,22 @@ public class EmpresaController {
         asociadoRepository.save(bloqueado);
 
         return "redirect:/empresa/?id=" + id;
+    }
+
+    //LA PARTE DE TRANSFERENCIA ESTA A MEDIO HACER
+    @GetMapping("/transferencia")
+    public String doTransferencia(@RequestParam("id") Integer idAsociado, Model model) {
+        Cliente asociado = this.asociadoRepository.findById(idAsociado).orElse(null);
+        Movimientos mov = new Movimientos();
+        model.addAttribute("movimiento", mov);
+        model.addAttribute("asociado", asociado);
+        return "transferencia";
+    }
+
+    @PostMapping("/guardarTransferencia")
+    public String doGuardarTransferencia(@ModelAttribute("movimiento") Movimientos movimiento, Model model) {
+        this.movimientoRepository.save(movimiento);
+
     }
 
 
