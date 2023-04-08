@@ -4,16 +4,16 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Tipomovimiento {
+public class Tipocuenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "tipo", nullable = false)
+    @Column(name = "tipo", nullable = true)
     private String tipo;
-    @OneToMany(mappedBy = "tipomovimientoByTipoMovimientoId")
-    private List<Movimientos> movimientosById;
+    @OneToMany(mappedBy = "tipocuentaByTipoCuentaId")
+    private List<Cuenta> cuentasById;
 
     public Integer getId() {
         return id;
@@ -36,7 +36,7 @@ public class Tipomovimiento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tipomovimiento that = (Tipomovimiento) o;
+        Tipocuenta that = (Tipocuenta) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
@@ -51,11 +51,11 @@ public class Tipomovimiento {
         return result;
     }
 
-    public List<Movimientos> getMovimientosById() {
-        return movimientosById;
+    public List<Cuenta> getCuentasById() {
+        return cuentasById;
     }
 
-    public void setMovimientosById(List<Movimientos> movimientosById) {
-        this.movimientosById = movimientosById;
+    public void setCuentasById(List<Cuenta> cuentasById) {
+        this.cuentasById = cuentasById;
     }
 }

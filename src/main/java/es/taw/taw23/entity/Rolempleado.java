@@ -1,25 +1,25 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Rolempleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "tipo")
+    @Column(name = "tipo", nullable = false)
     private String tipo;
     @OneToMany(mappedBy = "rolempleadoByRolEmpleadoId")
-    private Collection<Empleado> empleadosById;
+    private List<Empleado> empleadosById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,7 +38,7 @@ public class Rolempleado {
 
         Rolempleado that = (Rolempleado) o;
 
-        if (id != that.id) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
 
         return true;
@@ -46,16 +46,16 @@ public class Rolempleado {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
     }
 
-    public Collection<Empleado> getEmpleadosById() {
+    public List<Empleado> getEmpleadosById() {
         return empleadosById;
     }
 
-    public void setEmpleadosById(Collection<Empleado> empleadosById) {
+    public void setEmpleadosById(List<Empleado> empleadosById) {
         this.empleadosById = empleadosById;
     }
 }

@@ -1,73 +1,76 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "NIF")
+    @Column(name = "NIF", nullable = false, length = 45)
     private String nif;
     @Basic
-    @Column(name = "primernombre")
+    @Column(name = "primernombre", nullable = false, length = 45)
     private String primerNombre;
     @Basic
-    @Column(name = "segundonombre")
+    @Column(name = "segundonombre", nullable = true, length = 45)
     private String segundoNombre;
     @Basic
-    @Column(name = "primerapellido")
+    @Column(name = "primerapellido", nullable = false, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundoapellido")
+    @Column(name = "segundoapellido", nullable = true, length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fechanacimiento")
+    @Column(name = "fechanacimiento", nullable = false)
     private Date fechaNacimiento;
     @Basic
-    @Column(name = "calle")
+    @Column(name = "calle", nullable = false, length = 45)
     private String calle;
     @Basic
-    @Column(name = "numero")
+    @Column(name = "numero", nullable = false, length = 45)
     private String numero;
     @Basic
-    @Column(name = "puerta")
+    @Column(name = "puerta", nullable = true, length = 45)
     private String puerta;
     @Basic
-    @Column(name = "ciudad")
+    @Column(name = "ciudad", nullable = false, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "pais")
+    @Column(name = "pais", nullable = false, length = 45)
     private String pais;
     @Basic
-    @Column(name = "region")
+    @Column(name = "region", nullable = true, length = 45)
     private String region;
     @Basic
-    @Column(name = "CP")
+    @Column(name = "CP", nullable = false, length = 45)
     private String cp;
     @Basic
-    @Column(name = "contrasena")
+    @Column(name = "contrasena", nullable = false, length = 45)
     private String contrasena;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private Collection<Chat> chatsById;
+    private List<Chat> chatsById;
     @ManyToOne
     @JoinColumn(name = "rolcliente_id", referencedColumnName = "id", nullable = false)
     private Rolcliente rolclienteByRolclienteId;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "empresa_idempresa", referencedColumnName = "idempresa")
+    private Empresa empresaByEmpresaIdEmpresa;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private Collection<Cuenta> cuentasById;
+    private List<Cuenta> cuentasById;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private Collection<Solicitud> solicitudsById;
+    private List<Solicitud> solicitudsById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -190,7 +193,7 @@ public class Cliente {
 
         Cliente cliente = (Cliente) o;
 
-        if (id != cliente.id) return false;
+        if (id != null ? !id.equals(cliente.id) : cliente.id != null) return false;
         if (nif != null ? !nif.equals(cliente.nif) : cliente.nif != null) return false;
         if (primerNombre != null ? !primerNombre.equals(cliente.primerNombre) : cliente.primerNombre != null)
             return false;
@@ -216,7 +219,7 @@ public class Cliente {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (nif != null ? nif.hashCode() : 0);
         result = 31 * result + (primerNombre != null ? primerNombre.hashCode() : 0);
         result = 31 * result + (segundoNombre != null ? segundoNombre.hashCode() : 0);
@@ -234,11 +237,11 @@ public class Cliente {
         return result;
     }
 
-    public Collection<Chat> getChatsById() {
+    public List<Chat> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(Collection<Chat> chatsById) {
+    public void setChatsById(List<Chat> chatsById) {
         this.chatsById = chatsById;
     }
 
@@ -250,19 +253,27 @@ public class Cliente {
         this.rolclienteByRolclienteId = rolclienteByRolclienteId;
     }
 
-    public Collection<Cuenta> getCuentasById() {
+    public Empresa getEmpresaByEmpresaIdEmpresa() {
+        return empresaByEmpresaIdEmpresa;
+    }
+
+    public void setEmpresaByEmpresaIdEmpresa(Empresa empresaByEmpresaIdEmpresa) {
+        this.empresaByEmpresaIdEmpresa = empresaByEmpresaIdEmpresa;
+    }
+
+    public List<Cuenta> getCuentasById() {
         return cuentasById;
     }
 
-    public void setCuentasById(Collection<Cuenta> cuentasById) {
+    public void setCuentasById(List<Cuenta> cuentasById) {
         this.cuentasById = cuentasById;
     }
 
-    public Collection<Solicitud> getSolicitudsById() {
+    public List<Solicitud> getSolicitudsById() {
         return solicitudsById;
     }
 
-    public void setSolicitudsById(Collection<Solicitud> solicitudsById) {
+    public void setSolicitudsById(List<Solicitud> solicitudsById) {
         this.solicitudsById = solicitudsById;
     }
 }

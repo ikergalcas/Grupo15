@@ -1,25 +1,25 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Rolcliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "tipo")
+    @Column(name = "tipo", nullable = false)
     private String tipo;
     @OneToMany(mappedBy = "rolclienteByRolclienteId")
-    private Collection<Cliente> clientesById;
+    private List<Cliente> clientesById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,7 +38,7 @@ public class Rolcliente {
 
         Rolcliente that = (Rolcliente) o;
 
-        if (id != that.id) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
 
         return true;
@@ -46,16 +46,16 @@ public class Rolcliente {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
     }
 
-    public Collection<Cliente> getClientesById() {
+    public List<Cliente> getClientesById() {
         return clientesById;
     }
 
-    public void setClientesById(Collection<Cliente> clientesById) {
+    public void setClientesById(List<Cliente> clientesById) {
         this.clientesById = clientesById;
     }
 }

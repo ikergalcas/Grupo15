@@ -1,30 +1,30 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = true, length = 45)
     private String nombre;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
-    private Collection<Chat> chatsById;
+    private List<Chat> chatsById;
     @ManyToOne
     @JoinColumn(name = "rolEmpleado_id", referencedColumnName = "id", nullable = false)
     private Rolempleado rolempleadoByRolEmpleadoId;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
-    private Collection<Solicitud> solicitudsById;
+    private List<Solicitud> solicitudsById;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -43,7 +43,7 @@ public class Empleado {
 
         Empleado empleado = (Empleado) o;
 
-        if (id != empleado.id) return false;
+        if (id != null ? !id.equals(empleado.id) : empleado.id != null) return false;
         if (nombre != null ? !nombre.equals(empleado.nombre) : empleado.nombre != null) return false;
 
         return true;
@@ -51,16 +51,16 @@ public class Empleado {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         return result;
     }
 
-    public Collection<Chat> getChatsById() {
+    public List<Chat> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(Collection<Chat> chatsById) {
+    public void setChatsById(List<Chat> chatsById) {
         this.chatsById = chatsById;
     }
 
@@ -72,11 +72,11 @@ public class Empleado {
         this.rolempleadoByRolEmpleadoId = rolempleadoByRolEmpleadoId;
     }
 
-    public Collection<Solicitud> getSolicitudsById() {
+    public List<Solicitud> getSolicitudsById() {
         return solicitudsById;
     }
 
-    public void setSolicitudsById(Collection<Solicitud> solicitudsById) {
+    public void setSolicitudsById(List<Solicitud> solicitudsById) {
         this.solicitudsById = solicitudsById;
     }
 }
