@@ -27,14 +27,10 @@
 %>
 
 
-<form:form action="/empresa/guardarTransferencia" method="post" modelAttribute="movimiento">
-    <form:hidden path="timeStamp" value="<%= timeS %>" /><br/>
-    <form:hidden path="monedaOrigen" value="Euro" /><br/>
-    Importe: <form:input path="importeOrigen" /><br/>
-    <form:hidden path="importeDestino" value="<%= 1 %>" />
-    <form:hidden path="tipomovimientoByTipoMovimientoId" />
+<form:form action="/empresa/guardarTransferencia" method="post" modelAttribute="transferencia">
+    Importe: <form:input path="importe" /><br/>
     Selecciona la cuenta con la que quieres realizar la transferencia:
-    <form:select path="cuentaByCuentaIdCuenta" >
+    <form:select path="cuenta" >
         <form:option value="" label="------" />
         <form:options items="<%= cuentas %>" itemLabel="numeroCuenta" /><br/>
     </form:select>

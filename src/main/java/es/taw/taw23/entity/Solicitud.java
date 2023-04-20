@@ -15,10 +15,10 @@ public class Solicitud {
     @Column(name = "estado", nullable = false, length = 45)
     private String estado;
     @ManyToOne
-    @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente clienteByClienteId;
     @ManyToOne
-    @JoinColumn(name = "empleado_id", referencedColumnName = "id")
+    @JoinColumn(name = "empleado_id", referencedColumnName = "id", nullable = false)
     private Empleado empleadoByEmpleadoId;
 
     public Integer getId() {

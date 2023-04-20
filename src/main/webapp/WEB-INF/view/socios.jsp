@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    List<Cliente> listaSocios = (List<Cliente>) request.getAttribute("socios");
+    List<Cliente> listaSocios = (List<Cliente>) request.getAttribute("asociados");
     Cliente cliente = (Cliente) request.getAttribute("cliente");
 %>
 <html>
@@ -15,6 +15,14 @@
 <h1>Listado de todos los socios y autorizados</h1>
 
 <body>
+
+<form:form action="/empresa/filtrar" method="post" modelAttribute="filtro">
+    <form:hidden path="nif" />
+    <form:hidden path="primerNombre" />
+    <form:hidden path="primerApellido" />
+    Buscar por nombre: <form:input path="nombreEmpresa" /> <br/>
+    <form:button>Buscar</form:button> <br/>
+</form:form>
 
 <table border="2">
     <tr>

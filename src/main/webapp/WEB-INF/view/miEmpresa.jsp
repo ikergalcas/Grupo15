@@ -18,7 +18,7 @@
 
 <body>
 
-<form:form action="/empresa/filtrar" modelAttribute="filtro" method="post"><br/>
+<form:form action="/empresa/filtrarMiEmpresa" modelAttribute="filtro" method="post"><br/>
     Buscar por: <br/>
     NIF: <form:input path="nif" /><br/>
     Primer Nombre: <form:input path="primerNombre" /><br/>
