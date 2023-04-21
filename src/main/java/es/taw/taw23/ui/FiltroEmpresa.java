@@ -4,11 +4,13 @@ public class FiltroEmpresa {
     private String nif;
     private String primerNombre;
     private String primerApellido;
+    private String nombreEmpresa;
 
     public FiltroEmpresa() {
         nif = "";
         primerApellido = "";
         primerNombre = "";
+        nombreEmpresa = "";
     }
 
     public String getPrimerNombre() {
@@ -26,4 +28,12 @@ public class FiltroEmpresa {
     public String getNif() { return nif; }
 
     public void setNif(String nif) { this.nif = nif; }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
+    }
 }

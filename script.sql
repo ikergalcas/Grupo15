@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`cliente` (
     FOREIGN KEY (`rolcliente_id`)
     REFERENCES `grupo15`.`rolcliente` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -164,6 +164,7 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`cuenta` (
   `cliente_id` INT NOT NULL,
   `estadoCuenta_id` INT NOT NULL DEFAULT '1',
   `tipoCuenta_id` INT NOT NULL,
+  `dinero` INT NULL DEFAULT '0',
   PRIMARY KEY (`idCuenta`),
   UNIQUE INDEX `numeroCuenta_UNIQUE` (`numeroCuenta` ASC) VISIBLE,
   UNIQUE INDEX `idCuenta_UNIQUE` (`idCuenta` ASC) VISIBLE,
@@ -177,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`cuenta` (
     FOREIGN KEY (`tipoCuenta_id`)
     REFERENCES `grupo15`.`tipocuenta` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -250,6 +251,7 @@ CREATE TABLE IF NOT EXISTS `grupo15`.`movimientos` (
     FOREIGN KEY (`tipoMovimiento_id`)
     REFERENCES `grupo15`.`tipomovimiento` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

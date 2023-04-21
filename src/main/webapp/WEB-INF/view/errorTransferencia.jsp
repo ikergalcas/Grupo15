@@ -12,9 +12,13 @@
 <body>
 <h1>Error al hacer la transferencia. </h1>
 <%
-    if(error.equals("numeroCuenta")) {
+    if(error.equals("cuentaDestino")) {
 %>
     <h1>El numero de cuenta introducido no existe</h1>
+<%
+    } else if(error.equals("cuentaOrigen")){
+%>
+    <h1>Por favor, selecciona una cuenta con la que realizar la transferencia</h1>
 <%
     } else {
 %>

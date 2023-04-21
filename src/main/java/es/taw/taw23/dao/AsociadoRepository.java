@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface AsociadoRepository extends JpaRepository<Cliente, Integer> {
 
+    @Query("select c from Cliente c where c.empresaByEmpresaIdEmpresa.nombre = :nombreEmpresa")
+    public List<Cliente> buscarPorEmpresa(@Param("nombreEmpresa") String nombre);
+
     @Query("select c from Cliente c where c.rolclienteByRolclienteId.tipo = 'autorizado' or c.rolclienteByRolclienteId.tipo = 'socio'")
     public List<Cliente> buscarPorTipoEmpresa ();
 

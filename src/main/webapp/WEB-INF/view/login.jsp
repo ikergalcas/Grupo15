@@ -23,5 +23,7 @@
         </tr>
     </table>
 </form>
+
+<a href="/registroEmpresa">Registrar Empresa</a>
 </body>
 </html>

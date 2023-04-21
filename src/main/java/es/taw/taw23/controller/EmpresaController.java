@@ -3,11 +3,15 @@ package es.taw.taw23.controller;
 import es.taw.taw23.dao.*;
 import es.taw.taw23.entity.*;
 import es.taw.taw23.ui.FiltroEmpresa;
+import es.taw.taw23.ui.MovimientoTransferencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -32,10 +36,35 @@ public class EmpresaController {
 
     @GetMapping("/")
     public String doListarClientesEmpresa(@RequestParam(value = "id", required = true) Integer id, Model model) {
-        List<Cliente> lista = this.asociadoRepository.buscarPorTipoEmpresa();
+        FiltroEmpresa filtro = new FiltroEmpresa();
+        model.addAttribute("filtro", filtro);
+        idClient = id;
+        return procesarFiltrado(filtro, model, id);
+    }
+
+    @PostMapping("/filtrar")
+    public String doFiltrar(@ModelAttribute("filtro") FiltroEmpresa filtro, Model model) {
+        model.addAttribute("filtro", filtro);
+        return procesarFiltrado(filtro, model, idClient);
+    }
+
+    protected String procesarFiltrado(FiltroEmpresa filtro, Model model, Integer id) {
+        List<Cliente> lista = new ArrayList<>();
         Cliente cliente = this.asociadoRepository.findById(id).orElse(null);
         model.addAttribute("cliente", cliente);
-        model.addAttribute("socios", lista);
+
+        /**
+         * No compruebo nada más porque sé que este objeto filtro solo tendra relleno el atributo nombre empresa.
+         * Porque en el formulario que rellena este objeto filtro el resto de los campos los pongo como hidden.
+         */
+        if(filtro.getNombreEmpresa().isEmpty()) {
+            lista = this.asociadoRepository.buscarPorTipoEmpresa();
+        } else {
+            lista = this.asociadoRepository.buscarPorEmpresa(filtro.getNombreEmpresa());
+        }
+
+        model.addAttribute("asociados", lista);
+
         return "socios";
     }
 
@@ -44,21 +73,22 @@ public class EmpresaController {
         idClient = idCliente;
         FiltroEmpresa filtro = new FiltroEmpresa();
         model.addAttribute("filtro", filtro);
-        return this.procesarFiltrado(filtro, model, idCliente);
+        return this.procesarFiltradoMiEmpresa(filtro, model, idCliente);
     }
 
     //ESTA HECHO REGULAR. DEBERIA DE HACERSE SIN idClient
     //NO ME DEJA PASAR EL idClient como parametro. Porque el formulario no es del Cliente??
-    @PostMapping("/filtrar")
-    public String doFiltrar(@ModelAttribute("filtro") FiltroEmpresa filtro, Model model) {
+    @PostMapping("/filtrarMiEmpresa")
+    public String doFiltrarMiEmpresa(@ModelAttribute("filtro") FiltroEmpresa filtro, Model model) {
         model.addAttribute("filtro", filtro);
-        return this.procesarFiltrado(filtro, model, idClient);
+        return this.procesarFiltradoMiEmpresa(filtro, model, idClient);
     }
 
-    protected String procesarFiltrado(FiltroEmpresa filtro, Model model, Integer id) {
+    protected String procesarFiltradoMiEmpresa(FiltroEmpresa filtro, Model model, Integer id) {
         List<Cliente> listaAsociado = null;
         Cliente cliente = this.asociadoRepository.findById(id).orElse(null);
         model.addAttribute("cliente", cliente);
+
         //Filtro vacio, busco todos
         if(filtro.getPrimerNombre().isEmpty() && filtro.getPrimerApellido().isEmpty() && filtro.getNif().isEmpty()) {
             listaAsociado = this.asociadoRepository.buscarSociosAutorizadosDeMiEmpresa(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa());
@@ -87,6 +117,7 @@ public class EmpresaController {
         } else {
             listaAsociado = this.asociadoRepository.buscarPorNifyPrimerApellido(cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa(), filtro.getNif(), filtro.getPrimerApellido());
         }
+
         model.addAttribute("asociados", listaAsociado);
         return "miEmpresa";
     }
@@ -157,35 +188,59 @@ public class EmpresaController {
     @GetMapping("/transferencia")
     public String doTransferencia(@RequestParam("id") Integer idAsociado, Model model) {
         Cliente asociado = this.asociadoRepository.findById(idAsociado).orElse(null);
-        Movimientos mov = new Movimientos();
+        MovimientoTransferencia transferencia = new MovimientoTransferencia();
+
         idClient = idAsociado;
-        Tipomovimiento tipoMov = this.tipoMovimientoRepository.findById(1).orElse(null);
-        mov.setTipomovimientoByTipoMovimientoId(tipoMov);
-        model.addAttribute("movimiento", mov);
+
+        model.addAttribute("transferencia", transferencia);
         model.addAttribute("asociado", asociado);
         return "transferencia";
     }
 
     @PostMapping("/guardarTransferencia")
-    public String doGuardarTransferencia(@ModelAttribute("movimiento") Movimientos movimiento, @RequestParam("numeroCuenta") String numeroCuentaDest, Model model) {
+    public String doGuardarTransferencia(@ModelAttribute("transferencia") MovimientoTransferencia transferencia, @RequestParam("numeroCuenta") String numeroCuentaDest, Model model) {
         String urlto;
         String error;
         Cuenta cuentaDest = this.cuentaRepository.buscarCuentaPorNumeroCuenta(numeroCuentaDest);
-        Cuenta cuentaOrig = movimiento.getCuentaByCuentaIdCuenta();
+        Cuenta cuentaOrig = transferencia.getCuenta();
+        Date fecha = new Date();
+
+        Movimientos movimientoOrigen = new Movimientos();
+        movimientoOrigen.setTipomovimientoByTipoMovimientoId(this.tipoMovimientoRepository.findById(1).orElse(null));
+        movimientoOrigen.setCuentaByCuentaIdCuenta(cuentaOrig);
+        movimientoOrigen.setImporteOrigen(-transferencia.getImporte());
+        movimientoOrigen.setImporteDestino(transferencia.getImporte());
+        movimientoOrigen.setTimeStamp(fecha.toString());
+        movimientoOrigen.setMonedaOrigen("Euro");
+
+        Movimientos movimientoDestino = new Movimientos();
+        movimientoDestino.setTipomovimientoByTipoMovimientoId(this.tipoMovimientoRepository.findById(1).orElse(null));
+        movimientoDestino.setCuentaByCuentaIdCuenta(cuentaDest);
+        movimientoDestino.setImporteOrigen(-transferencia.getImporte());
+        movimientoDestino.setImporteDestino(transferencia.getImporte());
+        movimientoDestino.setTimeStamp(fecha.toString());
+        movimientoDestino.setMonedaOrigen("Euro");
+
         if(cuentaDest == null) {
-            error = "numeroCuenta";
+            error = "cuentaDestino";
             urlto = "errorTransferencia";
             model.addAttribute("error", error);
             model.addAttribute("idAsociado", idClient);
-        } else if(cuentaOrig.getDinero() < movimiento.getImporteOrigen()) {
+        } else if(cuentaOrig == null) {
+            error = "cuentaOrigen";
+            urlto = "errorTransferencia";
+            model.addAttribute("error", error);
+            model.addAttribute("idAsociado", idClient);
+        } else if(cuentaOrig.getDinero() < transferencia.getImporte()) {
             error = "dineroInsuficiente";
             urlto = "errorTransferencia";
             model.addAttribute("error", error);
             model.addAttribute("idAsociado", idClient);
         } else {    //No hay errores en la transferencia
-            cuentaOrig.setDinero(cuentaOrig.getDinero() - movimiento.getImporteOrigen());
-            cuentaDest.setDinero(cuentaDest.getDinero() + movimiento.getImporteOrigen());
-            this.movimientoRepository.save(movimiento);
+            cuentaOrig.setDinero(cuentaOrig.getDinero() - transferencia.getImporte());
+            cuentaDest.setDinero(cuentaDest.getDinero() + transferencia.getImporte());
+            this.movimientoRepository.save(movimientoOrigen);
+            this.movimientoRepository.save(movimientoDestino);
             this.cuentaRepository.save(cuentaOrig);
             this.cuentaRepository.save(cuentaDest);
             urlto = "redirect:/empresa/?id=" + idClient;
