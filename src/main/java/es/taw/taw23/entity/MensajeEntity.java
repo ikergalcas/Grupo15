@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-public class Mensaje {
+@Table(name = "mensaje", schema = "grupo15", catalog = "")
+public class MensajeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -13,14 +14,17 @@ public class Mensaje {
     @Column(name = "texto", nullable = false, length = 500)
     private String texto;
     @Basic
-    @Column(name = "fechaenvio", nullable = false)
+    @Column(name = "fecha_envio", nullable = true)
     private Timestamp fechaEnvio;
     @Basic
     @Column(name = "remitente", nullable = false, length = 45)
     private String remitente;
     @ManyToOne
     @JoinColumn(name = "chat_id", referencedColumnName = "id", nullable = false)
-    private Chat chatByChatId;
+    private ChatEntity chatByChatId;
+    @ManyToOne
+    @JoinColumn(name = "remitente_id", referencedColumnName = "id", nullable = false)
+    private RemitenteEntity remitenteByRemitenteId;
 
     public Integer getId() {
         return id;
@@ -59,12 +63,12 @@ public class Mensaje {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Mensaje mensaje = (Mensaje) o;
+        MensajeEntity that = (MensajeEntity) o;
 
-        if (id != null ? !id.equals(mensaje.id) : mensaje.id != null) return false;
-        if (texto != null ? !texto.equals(mensaje.texto) : mensaje.texto != null) return false;
-        if (fechaEnvio != null ? !fechaEnvio.equals(mensaje.fechaEnvio) : mensaje.fechaEnvio != null) return false;
-        if (remitente != null ? !remitente.equals(mensaje.remitente) : mensaje.remitente != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (texto != null ? !texto.equals(that.texto) : that.texto != null) return false;
+        if (fechaEnvio != null ? !fechaEnvio.equals(that.fechaEnvio) : that.fechaEnvio != null) return false;
+        if (remitente != null ? !remitente.equals(that.remitente) : that.remitente != null) return false;
 
         return true;
     }
@@ -78,11 +82,19 @@ public class Mensaje {
         return result;
     }
 
-    public Chat getChatByChatId() {
+    public ChatEntity getChatByChatId() {
         return chatByChatId;
     }
 
-    public void setChatByChatId(Chat chatByChatId) {
+    public void setChatByChatId(ChatEntity chatByChatId) {
         this.chatByChatId = chatByChatId;
+    }
+
+    public RemitenteEntity getRemitenteByRemitenteId() {
+        return remitenteByRemitenteId;
+    }
+
+    public void setRemitenteByRemitenteId(RemitenteEntity remitenteByRemitenteId) {
+        this.remitenteByRemitenteId = remitenteByRemitenteId;
     }
 }

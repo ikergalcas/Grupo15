@@ -1,19 +1,21 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Tipocuenta {
+@Table(name = "rol_cliente", schema = "grupo15", catalog = "")
+public class RolClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "tipo", nullable = true)
+    @Column(name = "tipo", nullable = false)
     private String tipo;
-    @OneToMany(mappedBy = "tipocuentaByTipoCuentaId")
-    private List<Cuenta> cuentasById;
+    @OneToMany(mappedBy = "rolClienteByRolclienteId")
+    private List<ClienteEntity> clientesById;
 
     public Integer getId() {
         return id;
@@ -36,7 +38,7 @@ public class Tipocuenta {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tipocuenta that = (Tipocuenta) o;
+        RolClienteEntity that = (RolClienteEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
@@ -51,11 +53,11 @@ public class Tipocuenta {
         return result;
     }
 
-    public List<Cuenta> getCuentasById() {
-        return cuentasById;
+    public List<ClienteEntity> getClientesById() {
+        return clientesById;
     }
 
-    public void setCuentasById(List<Cuenta> cuentasById) {
-        this.cuentasById = cuentasById;
+    public void setClientesById(List<ClienteEntity> clientesById) {
+        this.clientesById = clientesById;
     }
 }

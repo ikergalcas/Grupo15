@@ -1,17 +1,17 @@
 package es.taw.taw23.ui;
 
-import es.taw.taw23.entity.Cuenta;
-import es.taw.taw23.entity.Tipomovimiento;
+import es.taw.taw23.dto.Cuenta;
+
+import java.sql.Timestamp;
 
 public class MovimientoTransferencia {
     private Integer importe;
 
-    private Cuenta cuenta;
+    private String cuentaOrigen;
 
+    private String cuentaDestino;
 
-    public MovimientoTransferencia() {
-        cuenta = null;
-    }
+    private Timestamp timeStamp;
 
     public Integer getImporte() {
         return importe;
@@ -21,11 +21,27 @@ public class MovimientoTransferencia {
         this.importe = importe;
     }
 
-    public Cuenta getCuenta() {
-        return cuenta;
+    public String getCuentaOrigen() {
+        return cuentaOrigen;
     }
 
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
+    public void setCuentaOrigen(String cuentaOrigen) {
+        this.cuentaOrigen = cuentaOrigen;
+    }
+
+    public String getCuentaDestino() {
+        return cuentaDestino;
+    }
+
+    public void setCuentaDestino(String cuentaDestino) {
+        this.cuentaDestino = cuentaDestino;
+    }
+
+    public Timestamp getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

@@ -1,7 +1,9 @@
 package es.taw.taw23.controller;
 
 import es.taw.taw23.dao.*;
+import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.entity.*;
+import es.taw.taw23.service.LoginService;
 import es.taw.taw23.ui.ClienteAux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,22 +17,7 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    protected SolicitudRepository solicitudRepository;
-
-    @Autowired
-    protected GestorRepository gestorRepository;
-
-    @Autowired
-    protected RolClienteRepository rolClienteRepository;
-
-    @Autowired
-    protected ClienteRepository clienteRepository;
-
-    @Autowired
-    protected AsociadoRepository asociadoRepository;
-
-    @Autowired
-    protected EmpresaRepository empresaRepository;
+    LoginService loginService;
 
     @GetMapping("/")
     public String doLogin() {
@@ -40,13 +27,12 @@ public class LoginController {
     @PostMapping("/")
     public String doInicioSesion (@RequestParam("nif") String nif, @RequestParam("contrasena") String contrasena, Model model) {
         String urlto = "login";
-        Cliente cliente = this.clienteRepository.inicioSesion(nif, contrasena);
-
+        Cliente cliente = this.loginService.buscarCliente(nif, contrasena);
         //Esta registrado
         if(cliente != null) {
             //Lo mandamos a la vista de la Empresa
-            if(cliente.getRolclienteByRolclienteId().getTipo().equals("socio") ||
-                cliente.getRolclienteByRolclienteId().getTipo().equals("autorizado")) {
+            if(cliente.getTipo().equals("socio") ||
+                cliente.getTipo().equals("autorizado")) {
                 urlto = "redirect:/empresa/?id=" + cliente.getId();
             }
         }
@@ -55,7 +41,7 @@ public class LoginController {
 
     @GetMapping("/registroEmpresa")
     public String doRegistroEmpresa(Model model) {
-        Empresa empresa = new Empresa();
+        EmpresaEntity empresa = new EmpresaEntity();
         model.addAttribute(("empresa"), empresa);
 
         Cliente socio = new Cliente();
@@ -66,7 +52,7 @@ public class LoginController {
 
 
     @PostMapping("/registroEmpresa")
-    public String doRegisterEmpresa(@ModelAttribute("empresa")Empresa empresa, @ModelAttribute("socio") Cliente socio, Model model) {
+    public String doRegisterEmpresa(@ModelAttribute("empresa")EmpresaEntity empresa, @ModelAttribute("socio") Cliente socio, Model model) {
         /**
          * Primero tengo que guardar ambos objetos en la bd sin asociarlos ya que si no da error.
          * Me traigo ambos objetos de la base de datos y entonces si que puedo crear las relaciones.
@@ -92,7 +78,7 @@ public class LoginController {
 
         //List<Empleado> gestores = this.gestorRepository.findAllGestores();
         //Empleado gestorMenosOcupado = this.gestorRepository.findById(3).orElse(null);
-        Empleado gestorMenosOcupado = null;
+        //Empleado gestorMenosOcupado = null;
         /*
         Empleado gestorMenosOcupado = null;
         int minimo = Integer.MAX_VALUE;
@@ -103,6 +89,7 @@ public class LoginController {
             }
         }
         */
+        /*
         Rolcliente rol = this.rolClienteRepository.buscarRol("socio");
         socio.setRolclienteByRolclienteId(rol);
         this.clienteRepository.save(socio);
@@ -112,7 +99,7 @@ public class LoginController {
         solicitud.setClienteByClienteId(socio);
         solicitud.setEmpleadoByEmpleadoId(gestorMenosOcupado);
         solicitud.setTipo("registroEmpresa");
-
+*/
         return "login";
     }
 }

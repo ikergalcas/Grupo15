@@ -4,22 +4,23 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Chat {
+@Table(name = "chat", schema = "grupo15", catalog = "")
+public class ChatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
     @Column(name = "cerrado", nullable = false)
-    private Integer cerrado;
+    private Byte cerrado;
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
-    private Cliente clienteByClienteId;
+    private ClienteEntity clienteByClienteId;
     @ManyToOne
     @JoinColumn(name = "empleado_id", referencedColumnName = "id", nullable = false)
-    private Empleado empleadoByEmpleadoId;
+    private EmpleadoEntity empleadoByEmpleadoId;
     @OneToMany(mappedBy = "chatByChatId")
-    private List<Mensaje> mensajesById;
+    private List<MensajeEntity> mensajesById;
 
     public Integer getId() {
         return id;
@@ -29,11 +30,11 @@ public class Chat {
         this.id = id;
     }
 
-    public Integer getCerrado() {
+    public Byte getCerrado() {
         return cerrado;
     }
 
-    public void setCerrado(Integer cerrado) {
+    public void setCerrado(Byte cerrado) {
         this.cerrado = cerrado;
     }
 
@@ -42,10 +43,10 @@ public class Chat {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Chat chat = (Chat) o;
+        ChatEntity that = (ChatEntity) o;
 
-        if (id != null ? !id.equals(chat.id) : chat.id != null) return false;
-        if (cerrado != null ? !cerrado.equals(chat.cerrado) : chat.cerrado != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (cerrado != null ? !cerrado.equals(that.cerrado) : that.cerrado != null) return false;
 
         return true;
     }
@@ -57,27 +58,27 @@ public class Chat {
         return result;
     }
 
-    public Cliente getClienteByClienteId() {
+    public ClienteEntity getClienteByClienteId() {
         return clienteByClienteId;
     }
 
-    public void setClienteByClienteId(Cliente clienteByClienteId) {
+    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
         this.clienteByClienteId = clienteByClienteId;
     }
 
-    public Empleado getEmpleadoByEmpleadoId() {
+    public EmpleadoEntity getEmpleadoByEmpleadoId() {
         return empleadoByEmpleadoId;
     }
 
-    public void setEmpleadoByEmpleadoId(Empleado empleadoByEmpleadoId) {
+    public void setEmpleadoByEmpleadoId(EmpleadoEntity empleadoByEmpleadoId) {
         this.empleadoByEmpleadoId = empleadoByEmpleadoId;
     }
 
-    public List<Mensaje> getMensajesById() {
+    public List<MensajeEntity> getMensajesById() {
         return mensajesById;
     }
 
-    public void setMensajesById(List<Mensaje> mensajesById) {
+    public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
     }
 }

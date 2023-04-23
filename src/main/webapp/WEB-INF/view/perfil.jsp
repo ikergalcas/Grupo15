@@ -1,4 +1,4 @@
-<%@ page import="es.taw.taw23.entity.Cliente" %>
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -16,6 +16,9 @@
 <h1>Mis datos</h1>
 <form:form action="/empresa/guardarPerfil?id=<%= cliente.getId() %>" modelAttribute="asociadoEditado" method="post">
     <form:hidden path="id"/>
+    <form:hidden path="idEmpresa"/>
+    <form:hidden path="empresa" />
+    <form:hidden path="tipo" />
     NIF: <form:input path="nif" size="9" maxlength="10" value="<%= cliente.getNif()%>"/><br/>
     Primer nombre: <form:input path="primerNombre" size="30" maxlength="30" value="<%= cliente.getPrimerNombre()%>" /><br/>
     Segundo nombre: <form:input path="segundoNombre" size="30" maxlength="30" value="<%= cliente.getSegundoNombre()%>"/><br/>
