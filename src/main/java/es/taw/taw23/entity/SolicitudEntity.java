@@ -1,5 +1,9 @@
 package es.taw.taw23.entity;
 
+import ch.qos.logback.core.net.server.Client;
+import es.taw.taw23.dto.Cliente;
+import es.taw.taw23.dto.Solicitud;
+
 import javax.persistence.*;
 
 @Entity
@@ -92,4 +96,18 @@ public class SolicitudEntity {
     public void setEstadoSolicitudByEstadoSolicitudId(EstadoSolicitudEntity estadoSolicitudByEstadoSolicitudId) {
         this.estadoSolicitudByEstadoSolicitudId = estadoSolicitudByEstadoSolicitudId;
     }
+
+    public Solicitud toDTO() {
+        Solicitud dto = new Solicitud();
+        dto.setId(this.id);
+        dto.setCliente_id(this.clienteByClienteId.getId());
+        dto.setEmpleado_id(this.empleadoByEmpleadoId.getId());
+        dto.setEstado(this.estado);
+        dto.setEstado_solicitud_id(this.estadoSolicitudByEstadoSolicitudId.getId());
+        dto.setTipo_solicitud_id(this.tipoSolicitudByTipoSolicitudId.getId());
+        dto.setCliente(this.clienteByClienteId.toDTO());
+        return dto;
+    }
+
+
 }
