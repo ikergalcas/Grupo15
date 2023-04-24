@@ -1,12 +1,18 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Cliente;
+import es.taw.taw23.dto.Cuenta;
+import es.taw.taw23.dto.DTO;
+import es.taw.taw23.dto.Movimiento;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "cuenta", schema = "grupo15", catalog = "")
-public class CuentaEntity {
+public class CuentaEntity implements DTO<Cuenta> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -21,8 +27,8 @@ public class CuentaEntity {
     @Column(name = "fecha_cierre", nullable = true)
     private Timestamp fechaCierre;
     @Basic
-    @Column(name = "dinero", nullable = true)
-    private Integer dinero;
+    @Column(name = "dinero", nullable = true, precision = 0)
+    private Double dinero;
     @ManyToOne
     @JoinColumn(name = "estado_cuenta_id", referencedColumnName = "id", nullable = false)
     private EstadoCuentaEntity estadoCuentaByEstadoCuentaId;
@@ -73,11 +79,11 @@ public class CuentaEntity {
         this.fechaCierre = fechaCierre;
     }
 
-    public Integer getDinero() {
+    public Double getDinero() {
         return dinero;
     }
 
-    public void setDinero(Integer dinero) {
+    public void setDinero(Double dinero) {
         this.dinero = dinero;
     }
 
@@ -162,5 +168,35 @@ public class CuentaEntity {
 
     public void setMovimientosById_0(List<MovimientosEntity> movimientosById_0) {
         this.movimientosById_0 = movimientosById_0;
+    }
+
+    @Override
+    public Cuenta toDTO() {
+        Cuenta dto = new Cuenta();
+
+        dto.setId(this.id);
+        dto.setNumeroCuenta(this.numeroCuenta);
+        dto.setFechaApertura(this.fechaApertura);
+        dto.setFechaCierre(this.fechaCierre);
+        dto.setEstadoCuenta(this.estadoCuentaByEstadoCuentaId.getEstadoCuenta());
+        dto.setTipoCuenta(this.tipoCuentaByTipoCuentaId.getTipo());
+        dto.setMoneda(this.divisaByDivisaId.getMoneda());
+        dto.setDinero(this.dinero);
+
+        dto.setCuentaCliente(this.cuentaClientesById);
+
+        List<Movimiento> movimientosOrigenDTO = new ArrayList<>();
+        for (MovimientosEntity movimiento : this.movimientosById) {
+            movimientosOrigenDTO.add(movimiento.toDTO());
+        }
+        dto.setMovimientosOrigen(movimientosOrigenDTO);
+
+        List<Movimiento> movimientosDestinoDTO = new ArrayList<>();
+        for (MovimientosEntity movimiento : this.movimientosById_0) {
+            movimientosDestinoDTO.add(movimiento.toDTO());
+        }
+        dto.setMovimientosDestino(movimientosDestinoDTO);
+
+        return dto;
     }
 }

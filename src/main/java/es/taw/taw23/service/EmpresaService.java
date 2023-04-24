@@ -2,7 +2,10 @@ package es.taw.taw23.service;
 
 import es.taw.taw23.dao.*;
 import es.taw.taw23.dto.Cliente;
+import es.taw.taw23.dto.Cuenta;
+import es.taw.taw23.dto.Divisa;
 import es.taw.taw23.entity.*;
+import es.taw.taw23.ui.MovimientoCambioDivisa;
 import es.taw.taw23.ui.MovimientoTransferencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,12 @@ import java.util.List;
 
 @Service
 public class EmpresaService {
+    @Autowired
+    protected DivisaRepository divisaRepository;
+    @Autowired
+    protected CuentaClienteRepository cuentaClienteRepository;
+    @Autowired
+    protected CambioDivisaRepository cambioDivisaRepository;
     @Autowired
     protected AsociadoRepository asociadoRepository;
     @Autowired
@@ -47,6 +56,28 @@ public class EmpresaService {
         } else {
             return null;
         }
+    }
+
+    public List<Cuenta> buscarCuentasAsociado(Integer id) {
+        //Hago este cambio de CuentaClienteEntity -> CuentaEntity porque en CuentaRepository no me deja hacer un query
+        //Buscando cuentas por el id del cliente. Supongo que sera por la tabla intermedia (CuentaClienteEntity)
+        List<CuentaClienteEntity> cuentaClienteList = this.cuentaClienteRepository.buscarCuentaClientePorIdCliente(id);
+        List<CuentaEntity> cuentaList = new ArrayList<>();
+
+        //Paso la lista al tipo CuentaEntity
+        for(CuentaClienteEntity cuentaCliente : cuentaClienteList) {
+            cuentaList.add(cuentaCliente.getCuentaByCuentaId());
+        }
+
+        return listaCuentasADTO(cuentaList);
+    }
+
+    protected List<Cuenta> listaCuentasADTO(List<CuentaEntity> listaEntity) {
+        List<Cuenta> cuentasDTO = new ArrayList<>();
+        for(CuentaEntity entity : listaEntity) {
+            cuentasDTO.add(entity.toDTO());
+        }
+        return cuentasDTO;
     }
 
     public List<Cliente> listarAsociados() {
@@ -106,7 +137,7 @@ public class EmpresaService {
         cliente.setSegundoNombre(editado.getSegundoNombre());
         cliente.setPrimerApellido(editado.getPrimerApellido());
         cliente.setSegundoApellido(editado.getSegundoApellido());
-        cliente.setFechaNacimiento(editado.getFechaNacimiento());
+        cliente.setFechaNacimiento((java.sql.Date) editado.getFechaNacimiento());
         cliente.setCalle(editado.getCalle());
         cliente.setNumero(editado.getNumero());
         cliente.setPuerta(editado.getPuerta());
@@ -126,6 +157,13 @@ public class EmpresaService {
     public void guardarEmpresa(EmpresaEntity empresaForm, EmpresaEntity empresaBD) {
         empresaForm.setClientesById(empresaBD.getClientesById());
         this.empresaRepository.save(empresaForm);
+    }
+
+    public void bloquearCuenta(Integer idCuenta) {
+        CuentaEntity cuenta = this.cuentaRepository.findById(idCuenta).orElse(null);
+        EstadoCuentaEntity estadoBloq = this.estadoCuentaRepository.buscarBloqueada();
+        cuenta.setEstadoCuentaByEstadoCuentaId(estadoBloq);
+        this.cuentaRepository.save(cuenta);
     }
 
     public String transferencia(MovimientoTransferencia transferencia) {
@@ -150,18 +188,58 @@ public class EmpresaService {
             Timestamp timestamp = new Timestamp(fecha.getTime());
             movimiento.setTimeStamp(timestamp);
 
-            movimiento.setImporteDestino(transferencia.getImporte());
-            movimiento.setImporteOrigen(transferencia.getImporte());
             movimiento.setCuentaByCuentaDestinoId(cuentaDestino);
             movimiento.setCuentaByCuentaOrigenId(cuentaOrigen);
 
-            cuentaOrigen.setDinero(cuentaOrigen.getDinero() - transferencia.getImporte());
-            cuentaDestino.setDinero(cuentaDestino.getDinero() + transferencia.getImporte());
+            //La transferencia es sin cambio de divisa
+            if(cuentaOrigen.getDivisaByDivisaId().getMoneda().equals(cuentaDestino.getDivisaByDivisaId().getMoneda())) {
+                movimiento.setImporteDestino(transferencia.getImporte());
+                movimiento.setImporteOrigen(transferencia.getImporte());
+                cuentaOrigen.setDinero(cuentaOrigen.getDinero() - transferencia.getImporte());
+                cuentaDestino.setDinero(cuentaDestino.getDinero() + transferencia.getImporte());
+            } else {    //La transferencia es con cambio de divisa
+                movimiento.setImporteOrigen(transferencia.getImporte());
+                CambioDivisaEntity cambio = this.cambioDivisaRepository.buscarCambioDivisa(cuentaOrigen.getDivisaByDivisaId().getMoneda(), cuentaDestino.getDivisaByDivisaId().getMoneda());
+                Double dineroMonedaDestino = transferencia.getImporte() * cambio.getCambio();
+                movimiento.setImporteDestino(dineroMonedaDestino);
+                cuentaOrigen.setDinero(cuentaOrigen.getDinero() - transferencia.getImporte());
+                cuentaDestino.setDinero(cuentaDestino.getDinero() + dineroMonedaDestino);
+            }
 
             this.cuentaRepository.save(cuentaOrigen);
             this.cuentaRepository.save(cuentaDestino);
             this.movimientoRepository.save(movimiento);
         }
         return error;
+    }
+
+
+
+    public List<Divisa> buscarDivisas() {
+        List<DivisaEntity> divisaEntities = this.divisaRepository.findAll();
+
+        return divisasADTO(divisaEntities);
+    }
+
+    private List<Divisa> divisasADTO(List<DivisaEntity> divisaEntities) {
+        List<Divisa> divisas = new ArrayList<>();
+
+        for(DivisaEntity entity : divisaEntities) {
+            divisas.add(entity.toDTO());
+        }
+
+        return divisas;
+    }
+
+    public void cambioDivisa(MovimientoCambioDivisa divisa) {
+        CuentaEntity cuenta = this.cuentaRepository.buscarCuentaPorNumeroCuenta(divisa.getCuenta());
+        DivisaEntity divisaNueva = this.divisaRepository.buscarDivisaPorNombre(divisa.getDivisa());
+        CambioDivisaEntity cambio = this.cambioDivisaRepository.buscarCambioDivisa(cuenta.getDivisaByDivisaId().getMoneda(), divisa.getDivisa());
+
+        Double dineroMonedaNueva = cuenta.getDinero() * cambio.getCambio();
+        cuenta.setDivisaByDivisaId(divisaNueva);
+        cuenta.setDinero(dineroMonedaNueva);
+
+        this.cuentaRepository.save(cuenta);
     }
 }

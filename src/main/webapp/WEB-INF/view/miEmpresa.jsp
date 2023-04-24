@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.ui.FiltroEmpresa" %>
+<%@ page import="es.taw.taw23.entity.CuentaClienteEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -28,50 +29,70 @@
 
 <table border="1">
     <tr>
-        <th>Nombre</th>
-        <th>Estado Cuenta</th>
-        <th>Dinero</th>
-        <th></th>
+        <th>NIF</th>
+        <th>Primer Nombre</th>
+        <th>Primer Apellido</th>
+        <th>Puesto</th>
+        <th>Cuentas</th>
     </tr>
     <%
-        Boolean primero;
+        String nombre, apellido;
         for (Cliente asociado : listaAsociados) {
-            primero = false;
     %>
     <tr>
-        <td><%= asociado.getPrimerNombre() %></td>
+        <td><%= asociado.getNif() %></td>
         <td>
             <%
-                String estado;
-                if(asociado.getCuentasById().get(0).getTipocuentaByTipoCuentaId().getTipo().equals("empresa")) {
-                    estado = asociado.getCuentasById().get(0).getEstadocuentaByEstadoCuentaId().getEstadoCuenta();
-                    primero = true;
-                } else {
-                    estado = asociado.getCuentasById().get(1).getEstadocuentaByEstadoCuentaId().getEstadoCuenta();
+                if(asociado.getPrimerNombre() == null) {
+                    nombre = "----";
+                } else{
+                    nombre = asociado.getPrimerNombre();
                 }
             %>
-            <%= estado%>
+            <%= nombre %>
         </td>
         <td>
-            <% if(primero == true) { %>
-            <%= asociado.getCuentasById().get(0).getDinero()%>
-            <% } else { %>
-            <%= asociado.getCuentasById().get(1).getDinero()%>
-            <% } %>
+            <%
+                if(asociado.getPrimerApellido() == null) {
+                    apellido = "----";
+                } else {
+                    apellido = asociado.getPrimerApellido();
+                }
+            %>
+            <%= apellido %>
         </td>
+        <td><%= asociado.getTipo() %></td>
         <td>
-            <form action="/empresa/bloquear" method="post">
-                <input type="hidden" name="idBloq" value="<%= asociado.getId() %>" />
-                <input type="hidden" name="id" value="<%= cliente.getId() %>" />
-                <button type="submit">Bloquear</button>
-            </form>
+            <%
+                for(CuentaClienteEntity cuentaCliente : asociado.getCuentas()) {
+            %>
+                <%= cuentaCliente.getCuentaByCuentaId().getNumeroCuenta() %> (<%= cuentaCliente.getCuentaByCuentaId().getTipoCuentaByTipoCuentaId().getTipo() %>,
+                <%= cuentaCliente.getCuentaByCuentaId().getEstadoCuentaByEstadoCuentaId().getEstadoCuenta() %>)
+                | Divisa: <%= cuentaCliente.getCuentaByCuentaId().getDivisaByDivisaId().getMoneda() %>
+                <%
+                    if(cuentaCliente.getCuentaByCuentaId().getTipoCuentaByTipoCuentaId().getTipo().equals("individual") && cuentaCliente.getCuentaByCuentaId().getEstadoCuentaByEstadoCuentaId().getEstadoCuenta().equals("activa")) {
+                %>
+                    <form method="post" action="/empresa/bloquear" style="display:inline">
+                        <input type="hidden" value="<%= cliente.getId() %>" name="id">
+                        <input type="hidden" value="<%= cuentaCliente.getCuentaByCuentaId().getId() %>" name="idCuenta">
+                        <button>Bloquear</button>
+                    </form>
+                <%
+                    }
+                %>
+                <br/>
+            <%
+                }
+            %>
         </td>
     </tr>
     <%
         }
     %>
 
+
 </table>
 
+<a href="/empresa/?id=<%= cliente.getId() %>">Volver al listado de empresas</a>
 </body>
 </html>

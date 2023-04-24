@@ -1,15 +1,15 @@
 package es.taw.taw23.entity;
 
 import es.taw.taw23.dto.Cliente;
+import es.taw.taw23.dto.DTO;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "cliente", schema = "grupo15", catalog = "")
-public class ClienteEntity {
+public class ClienteEntity implements DTO<Cliente> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -31,7 +31,7 @@ public class ClienteEntity {
     private String segundoApellido;
     @Basic
     @Column(name = "fecha_nacimiento", nullable = true)
-    private Timestamp fechaNacimiento;
+    private Date fechaNacimiento;
     @Basic
     @Column(name = "calle", nullable = true, length = 45)
     private String calle;
@@ -56,6 +56,9 @@ public class ClienteEntity {
     @Basic
     @Column(name = "contrasena", nullable = false, length = 45)
     private String contrasena;
+    @Basic
+    @Column(name = "acceso", nullable = true)
+    private Integer acceso;
     @OneToMany(mappedBy = "clienteByClienteId")
     private List<ChatEntity> chatsById;
     @ManyToOne
@@ -117,11 +120,11 @@ public class ClienteEntity {
         this.segundoApellido = segundoApellido;
     }
 
-    public Timestamp getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Timestamp fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -189,6 +192,14 @@ public class ClienteEntity {
         this.contrasena = contrasena;
     }
 
+    public Integer getAcceso() {
+        return acceso;
+    }
+
+    public void setAcceso(Integer acceso) {
+        this.acceso = acceso;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -215,6 +226,7 @@ public class ClienteEntity {
         if (region != null ? !region.equals(that.region) : that.region != null) return false;
         if (cp != null ? !cp.equals(that.cp) : that.cp != null) return false;
         if (contrasena != null ? !contrasena.equals(that.contrasena) : that.contrasena != null) return false;
+        if (acceso != null ? !acceso.equals(that.acceso) : that.acceso != null) return false;
 
         return true;
     }
@@ -236,6 +248,7 @@ public class ClienteEntity {
         result = 31 * result + (region != null ? region.hashCode() : 0);
         result = 31 * result + (cp != null ? cp.hashCode() : 0);
         result = 31 * result + (contrasena != null ? contrasena.hashCode() : 0);
+        result = 31 * result + (acceso != null ? acceso.hashCode() : 0);
         return result;
     }
 
@@ -279,6 +292,7 @@ public class ClienteEntity {
         this.solicitudsById = solicitudsById;
     }
 
+    @Override
     public Cliente toDTO() {
         Cliente dto = new Cliente();
 
@@ -300,6 +314,8 @@ public class ClienteEntity {
         dto.setTipo(this.getRolClienteByRolclienteId().getTipo());
         dto.setEmpresa(this.empresaByEmpresaId.getNombre());
         dto.setIdEmpresa(this.empresaByEmpresaId.getId());
+
+        dto.setCuentas(this.cuentaClientesById);
 
         return dto;
     }

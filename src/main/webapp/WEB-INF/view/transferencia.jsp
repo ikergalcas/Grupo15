@@ -14,12 +14,12 @@
 
 <form:form action="/empresa/guardarTransferencia" method="post" modelAttribute="transferencia">
     Importe: <form:input path="importe" /> <br/>
-    Selecciona la cuenta con la que quieres realizar la transferencia:
-    Numero de Cuenta Origen: <form:input path="cuentaOrigen" /> <br/>
+    Numero de Cuenta Origen:
+    <form:select path="cuentaOrigen">
+        <form:options items="${cuentas}" itemValue="numeroCuenta" itemLabel="numeroCuenta" />
+    </form:select> <br/>
     Numero de Cuenta Destino: <form:input path="cuentaDestino" /> <br/>
     <form:button>Hacer transferencia</form:button>
-
-
 </form:form>
 
 </body>

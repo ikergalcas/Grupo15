@@ -5,7 +5,7 @@ import es.taw.taw23.dto.Cuenta;
 import java.sql.Timestamp;
 
 public class MovimientoTransferencia {
-    private Integer importe;
+    private Double importe;
 
     private String cuentaOrigen;
 
@@ -13,11 +13,11 @@ public class MovimientoTransferencia {
 
     private Timestamp timeStamp;
 
-    public Integer getImporte() {
+    public Double getImporte() {
         return importe;
     }
 
-    public void setImporte(Integer importe) {
+    public void setImporte(Double importe) {
         this.importe = importe;
     }
 

@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `cambio_divisa`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cambio_divisa` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `cambio` int NOT NULL,
+  `cambio` double NOT NULL,
   `origen_id` int NOT NULL,
   `destino_id` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -32,7 +32,7 @@ CREATE TABLE `cambio_divisa` (
   KEY `fk_cambio_divisa_divisa2_idx` (`destino_id`),
   CONSTRAINT `fk_cambio_divisa_divisa1` FOREIGN KEY (`origen_id`) REFERENCES `divisa` (`id`),
   CONSTRAINT `fk_cambio_divisa_divisa2` FOREIGN KEY (`destino_id`) REFERENCES `divisa` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +41,7 @@ CREATE TABLE `cambio_divisa` (
 
 LOCK TABLES `cambio_divisa` WRITE;
 /*!40000 ALTER TABLE `cambio_divisa` DISABLE KEYS */;
+INSERT INTO `cambio_divisa` VALUES (1,1.1,1,2),(2,0.91,2,1),(3,0.89,1,3),(4,1.13,3,1),(5,0.8,2,3),(6,1.24,3,2);
 /*!40000 ALTER TABLE `cambio_divisa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +89,7 @@ CREATE TABLE `cliente` (
   `segundo_nombre` varchar(45) DEFAULT NULL,
   `primer_apellido` varchar(45) DEFAULT NULL,
   `segundo_apellido` varchar(45) DEFAULT NULL,
-  `fecha_nacimiento` datetime DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
   `calle` varchar(45) DEFAULT NULL,
   `numero` varchar(45) DEFAULT NULL,
   `puerta` varchar(45) DEFAULT NULL,
@@ -99,6 +100,7 @@ CREATE TABLE `cliente` (
   `contrasena` varchar(45) NOT NULL,
   `rolcliente_id` int NOT NULL,
   `empresa_id` int DEFAULT NULL,
+  `acceso` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `NIF_UNIQUE` (`nif`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -115,7 +117,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1),(2,'987654321','Pedro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,1),(3,'123123123','Lucia',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,2);
+INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1,NULL),(2,'987654321','Pedro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,1,NULL),(3,'123123123','Lucia',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,2,NULL);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +136,7 @@ CREATE TABLE `cuenta` (
   `estado_cuenta_id` int NOT NULL,
   `tipo_cuenta_id` int NOT NULL,
   `divisa_id` int NOT NULL,
-  `dinero` int DEFAULT NULL,
+  `dinero` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `numeroCuenta_UNIQUE` (`numero_cuenta`),
   UNIQUE KEY `idCuenta_UNIQUE` (`id`),
@@ -379,8 +381,8 @@ DROP TABLE IF EXISTS `movimientos`;
 CREATE TABLE `movimientos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `time_stamp` datetime DEFAULT NULL,
-  `importe_origen` int NOT NULL,
-  `importe_destino` int NOT NULL,
+  `importe_origen` double NOT NULL,
+  `importe_destino` double NOT NULL,
   `cuenta_origen_id` int NOT NULL,
   `tipo_movimiento_id` int NOT NULL,
   `cuenta_destino_id` int NOT NULL,
@@ -598,4 +600,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-23  4:01:37
+-- Dump completed on 2023-04-24 13:23:33

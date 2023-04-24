@@ -1,7 +1,10 @@
 package es.taw.taw23.dto;
 
+import es.taw.taw23.entity.CuentaClienteEntity;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Cuenta implements Serializable {
     private Integer id;
@@ -11,6 +14,10 @@ public class Cuenta implements Serializable {
     private String estadoCuenta;
     private String tipoCuenta;
     private String moneda;
+    private Double dinero;
+    private List<CuentaClienteEntity> cuentaCliente;
+    private List<Movimiento> movimientosOrigen;     //Lista de movimientos en los que esta es la cuenta origen
+    private List<Movimiento> movimientosDestino;    //Lista de movimientos en los que esta es la cuenta destino
 
     public Integer getId() {
         return id;
@@ -66,5 +73,37 @@ public class Cuenta implements Serializable {
 
     public void setMoneda(String moneda) {
         this.moneda = moneda;
+    }
+
+    public Double getDinero() {
+        return dinero;
+    }
+
+    public void setDinero(Double dinero) {
+        this.dinero = dinero;
+    }
+
+    public List<CuentaClienteEntity> getCuentaCliente() {
+        return cuentaCliente;
+    }
+
+    public void setCuentaCliente(List<CuentaClienteEntity> cuentaCliente) {
+        this.cuentaCliente = cuentaCliente;
+    }
+
+    public List<Movimiento> getMovimientosOrigen() {
+        return movimientosOrigen;
+    }
+
+    public void setMovimientosOrigen(List<Movimiento> movimientosOrigen) {
+        this.movimientosOrigen = movimientosOrigen;
+    }
+
+    public List<Movimiento> getMovimientosDestino() {
+        return movimientosDestino;
+    }
+
+    public void setMovimientosDestino(List<Movimiento> movimientosDestino) {
+        this.movimientosDestino = movimientosDestino;
     }
 }

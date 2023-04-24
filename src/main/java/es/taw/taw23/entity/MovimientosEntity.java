@@ -1,11 +1,14 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.DTO;
+import es.taw.taw23.dto.Movimiento;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "movimientos", schema = "grupo15", catalog = "")
-public class MovimientosEntity {
+public class MovimientosEntity implements DTO<Movimiento> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -15,10 +18,10 @@ public class MovimientosEntity {
     private Timestamp timeStamp;
     @Basic
     @Column(name = "importe_origen", nullable = false)
-    private Integer importeOrigen;
+    private Double importeOrigen;
     @Basic
     @Column(name = "importe_destino", nullable = false)
-    private Integer importeDestino;
+    private Double importeDestino;
     @ManyToOne
     @JoinColumn(name = "cuenta_origen_id", referencedColumnName = "id", nullable = false)
     private CuentaEntity cuentaByCuentaOrigenId;
@@ -45,19 +48,19 @@ public class MovimientosEntity {
         this.timeStamp = timeStamp;
     }
 
-    public Integer getImporteOrigen() {
+    public Double getImporteOrigen() {
         return importeOrigen;
     }
 
-    public void setImporteOrigen(Integer importeOrigen) {
+    public void setImporteOrigen(Double importeOrigen) {
         this.importeOrigen = importeOrigen;
     }
 
-    public Integer getImporteDestino() {
+    public Double getImporteDestino() {
         return importeDestino;
     }
 
-    public void setImporteDestino(Integer importeDestino) {
+    public void setImporteDestino(Double importeDestino) {
         this.importeDestino = importeDestino;
     }
 
@@ -110,4 +113,20 @@ public class MovimientosEntity {
     public void setCuentaByCuentaDestinoId(CuentaEntity cuentaByCuentaDestinoId) {
         this.cuentaByCuentaDestinoId = cuentaByCuentaDestinoId;
     }
+
+    @Override
+    public Movimiento toDTO() {
+        Movimiento dto = new Movimiento();
+
+        dto.setId(this.id);
+        dto.setTimeStamp(this.timeStamp);
+        dto.setImporteOrigen(this.importeOrigen);
+        dto.setImporteDestino(this.importeDestino);
+        dto.setCuentaOrigen(this.cuentaByCuentaOrigenId.getNumeroCuenta());
+        dto.setCuentaDestino(this.cuentaByCuentaDestinoId.getNumeroCuenta());
+        dto.setTipo(this.tipoMovimientoByTipoMovimientoId.getTipo());
+
+        return dto;
+    }
 }
+
