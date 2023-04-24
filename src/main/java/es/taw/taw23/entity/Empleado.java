@@ -15,7 +15,7 @@ public class Empleado {
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
     private List<Chat> chatsById;
     @ManyToOne
-    @JoinColumn(name = "rolEmpleado_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "rolempleado_id", referencedColumnName = "id", nullable = false)
     private Rolempleado rolempleadoByRolEmpleadoId;
     @OneToMany(mappedBy = "empleadoByEmpleadoId")
     private List<Solicitud> solicitudsById;
