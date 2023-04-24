@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `cambio_divisa`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cambio_divisa` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `cambio` int NOT NULL,
+  `cambio` double NOT NULL,
   `origen_id` int NOT NULL,
   `destino_id` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -41,7 +41,7 @@ CREATE TABLE `cambio_divisa` (
 
 LOCK TABLES `cambio_divisa` WRITE;
 /*!40000 ALTER TABLE `cambio_divisa` DISABLE KEYS */;
-INSERT INTO `cambio_divisa` VALUES (1,1,1,2),(2,1,2,1),(3,1,1,3),(4,1,3,1),(5,1,2,3),(6,1,3,2);
+INSERT INTO `cambio_divisa` VALUES (1,1.1,1,2),(2,0.91,2,1),(3,0.89,1,3),(4,1.13,3,1),(5,0.8,2,3),(6,1.24,3,2);
 /*!40000 ALTER TABLE `cambio_divisa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -600,4 +600,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 13:18:52
+-- Dump completed on 2023-04-24 13:23:33

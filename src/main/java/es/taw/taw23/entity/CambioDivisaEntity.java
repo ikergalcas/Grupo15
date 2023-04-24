@@ -11,7 +11,7 @@ public class CambioDivisaEntity {
     private Integer id;
     @Basic
     @Column(name = "cambio", nullable = false)
-    private Integer cambio;
+    private Double cambio;
     @ManyToOne
     @JoinColumn(name = "origen_id", referencedColumnName = "id", nullable = false)
     private DivisaEntity divisaByOrigenId;
@@ -27,11 +27,11 @@ public class CambioDivisaEntity {
         this.id = id;
     }
 
-    public Integer getCambio() {
+    public Double getCambio() {
         return cambio;
     }
 
-    public void setCambio(Integer cambio) {
+    public void setCambio(Double cambio) {
         this.cambio = cambio;
     }
 
