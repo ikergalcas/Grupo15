@@ -1,10 +1,12 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Rolempleado {
+@Table(name = "tipo_movimiento", schema = "grupo15", catalog = "")
+public class TipoMovimientoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -12,8 +14,8 @@ public class Rolempleado {
     @Basic
     @Column(name = "tipo", nullable = false)
     private String tipo;
-    @OneToMany(mappedBy = "rolempleadoByRolEmpleadoId")
-    private List<Empleado> empleadosById;
+    @OneToMany(mappedBy = "tipoMovimientoByTipoMovimientoId")
+    private List<MovimientosEntity> movimientosById;
 
     public Integer getId() {
         return id;
@@ -36,7 +38,7 @@ public class Rolempleado {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Rolempleado that = (Rolempleado) o;
+        TipoMovimientoEntity that = (TipoMovimientoEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
@@ -51,11 +53,11 @@ public class Rolempleado {
         return result;
     }
 
-    public List<Empleado> getEmpleadosById() {
-        return empleadosById;
+    public List<MovimientosEntity> getMovimientosById() {
+        return movimientosById;
     }
 
-    public void setEmpleadosById(List<Empleado> empleadosById) {
-        this.empleadosById = empleadosById;
+    public void setMovimientosById(List<MovimientosEntity> movimientosById) {
+        this.movimientosById = movimientosById;
     }
 }

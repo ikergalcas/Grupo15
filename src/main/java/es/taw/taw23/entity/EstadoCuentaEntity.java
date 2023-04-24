@@ -4,16 +4,17 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Estadocuenta {
+@Table(name = "estado_cuenta", schema = "grupo15", catalog = "")
+public class EstadoCuentaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "estadocuenta", nullable = true)
+    @Column(name = "estado_cuenta", nullable = true)
     private String estadoCuenta;
-    @OneToMany(mappedBy = "estadocuentaByEstadoCuentaId")
-    private List<Cuenta> cuentasById;
+    @OneToMany(mappedBy = "estadoCuentaByEstadoCuentaId")
+    private List<CuentaEntity> cuentasById;
 
     public Integer getId() {
         return id;
@@ -36,7 +37,7 @@ public class Estadocuenta {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Estadocuenta that = (Estadocuenta) o;
+        EstadoCuentaEntity that = (EstadoCuentaEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (estadoCuenta != null ? !estadoCuenta.equals(that.estadoCuenta) : that.estadoCuenta != null) return false;
@@ -51,11 +52,11 @@ public class Estadocuenta {
         return result;
     }
 
-    public List<Cuenta> getCuentasById() {
+    public List<CuentaEntity> getCuentasById() {
         return cuentasById;
     }
 
-    public void setCuentasById(List<Cuenta> cuentasById) {
+    public void setCuentasById(List<CuentaEntity> cuentasById) {
         this.cuentasById = cuentasById;
     }
 }

@@ -1,9 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.taw.taw23.entity.Empresa" %>
-<%@ page import="es.taw.taw23.entity.Cliente" %>
+<%@ page import="es.taw.taw23.entity.EmpresaEntity" %>
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%
     Cliente asociado = (Cliente) request.getAttribute("asociado");
-    Empresa empresa = (Empresa) request.getAttribute("empresaEditada");
+    EmpresaEntity empresa = (EmpresaEntity) request.getAttribute("empresaEditada");
 %>
 
 <html>
@@ -14,8 +14,8 @@
 <body>
     <h1>Editar Datos Empresa del cliente <%= asociado.getPrimerNombre()%></h1>
 
-<form:form action="/empresa/guardarEmpresa?idEmpresa=<%= empresa.getIdEmpresa()%>" modelAttribute="empresaEditada" method="post"><br/>
-    <form:hidden path="idEmpresa" value="<%= empresa.getIdEmpresa()%>"/><br/>
+<form:form action="/empresa/guardarEmpresa?idEmpresa=<%= empresa.getId() %>" modelAttribute="empresaEditada" method="post"><br/>
+    <form:hidden path="id" value="<%= empresa.getId()%>"/><br/>
     <form:input path="nombre"/><br/>
     <form:button>Guardar cambios</form:button>
 </form:form>

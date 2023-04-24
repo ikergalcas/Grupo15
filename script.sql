@@ -1,285 +1,601 @@
--- MySQL Workbench Forward Engineering
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: grupo15
+-- ------------------------------------------------------
+-- Server version	8.0.32
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema grupo15
--- -----------------------------------------------------
+--
+-- Table structure for table `cambio_divisa`
+--
 
--- -----------------------------------------------------
--- Schema grupo15
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `grupo15` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `grupo15` ;
-
--- -----------------------------------------------------
--- Table `grupo15`.`empresa`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`empresa` (
-  `idEmpresa` INT NOT NULL AUTO_INCREMENT,
-  `Nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idEmpresa`),
-  UNIQUE INDEX `idEmpresa_UNIQUE` (`idEmpresa` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `grupo15`.`rolcliente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`rolcliente` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` ENUM('individual', 'autorizado', 'socio') NOT NULL,
+DROP TABLE IF EXISTS `cambio_divisa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cambio_divisa` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cambio` int NOT NULL,
+  `origen_id` int NOT NULL,
+  `destino_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  KEY `fk_cambio_divisa_divisa1_idx` (`origen_id`),
+  KEY `fk_cambio_divisa_divisa2_idx` (`destino_id`),
+  CONSTRAINT `fk_cambio_divisa_divisa1` FOREIGN KEY (`origen_id`) REFERENCES `divisa` (`id`),
+  CONSTRAINT `fk_cambio_divisa_divisa2` FOREIGN KEY (`destino_id`) REFERENCES `divisa` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `cambio_divisa`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`cliente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`cliente` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `NIF` VARCHAR(45) NOT NULL,
-  `primerNombre` VARCHAR(45) NOT NULL,
-  `segundoNombre` VARCHAR(45) NULL DEFAULT NULL,
-  `primerApellido` VARCHAR(45) NOT NULL,
-  `segundoApellido` VARCHAR(45) NULL DEFAULT NULL,
-  `fechaNacimiento` DATETIME NOT NULL,
-  `calle` VARCHAR(45) NOT NULL,
-  `numero` VARCHAR(45) NOT NULL,
-  `puerta` VARCHAR(45) NULL DEFAULT NULL,
-  `ciudad` VARCHAR(45) NOT NULL,
-  `pais` VARCHAR(45) NOT NULL,
-  `region` VARCHAR(45) NULL DEFAULT NULL,
-  `CP` VARCHAR(45) NOT NULL,
-  `contrasena` VARCHAR(45) NOT NULL,
-  `rolcliente_id` INT NOT NULL,
-  `Empresa_idEmpresa` INT NULL DEFAULT NULL,
+LOCK TABLES `cambio_divisa` WRITE;
+/*!40000 ALTER TABLE `cambio_divisa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cambio_divisa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `chat`
+--
+
+DROP TABLE IF EXISTS `chat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cerrado` tinyint NOT NULL,
+  `cliente_id` int NOT NULL,
+  `empleado_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `NIF_UNIQUE` (`NIF` ASC) VISIBLE,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_cliente_rolcliente1_idx` (`rolcliente_id` ASC) VISIBLE,
-  INDEX `fk_cliente_Empresa1_idx` (`Empresa_idEmpresa` ASC) VISIBLE,
-  CONSTRAINT `fk_cliente_Empresa1`
-    FOREIGN KEY (`Empresa_idEmpresa`)
-    REFERENCES `grupo15`.`empresa` (`idEmpresa`),
-  CONSTRAINT `fk_cliente_rolcliente1`
-    FOREIGN KEY (`rolcliente_id`)
-    REFERENCES `grupo15`.`rolcliente` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_chat_cliente1_idx` (`cliente_id`),
+  KEY `fk_chat_empleado1_idx` (`empleado_id`),
+  CONSTRAINT `fk_chat_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `fk_chat_empleado1` FOREIGN KEY (`empleado_id`) REFERENCES `empleado` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `chat`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`rolempleado`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`rolempleado` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` ENUM('gestor', 'asistente') NOT NULL,
+LOCK TABLES `chat` WRITE;
+/*!40000 ALTER TABLE `chat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cliente`
+--
+
+DROP TABLE IF EXISTS `cliente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cliente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nif` varchar(45) NOT NULL,
+  `primer_nombre` varchar(45) DEFAULT NULL,
+  `segundo_nombre` varchar(45) DEFAULT NULL,
+  `primer_apellido` varchar(45) DEFAULT NULL,
+  `segundo_apellido` varchar(45) DEFAULT NULL,
+  `fecha_nacimiento` datetime DEFAULT NULL,
+  `calle` varchar(45) DEFAULT NULL,
+  `numero` varchar(45) DEFAULT NULL,
+  `puerta` varchar(45) DEFAULT NULL,
+  `ciudad` varchar(45) DEFAULT NULL,
+  `pais` varchar(45) DEFAULT NULL,
+  `region` varchar(45) DEFAULT NULL,
+  `CP` varchar(45) DEFAULT NULL,
+  `contrasena` varchar(45) NOT NULL,
+  `rolcliente_id` int NOT NULL,
+  `empresa_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `NIF_UNIQUE` (`nif`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_cliente_rolcliente1_idx` (`rolcliente_id`),
+  KEY `fk_cliente_Empresa1_idx` (`empresa_id`),
+  CONSTRAINT `fk_cliente_Empresa1` FOREIGN KEY (`empresa_id`) REFERENCES `empresa` (`id`),
+  CONSTRAINT `fk_cliente_rolcliente1` FOREIGN KEY (`rolcliente_id`) REFERENCES `rol_cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `cliente`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`empleado`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`empleado` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NULL DEFAULT NULL,
-  `rolEmpleado_id` INT NOT NULL,
+LOCK TABLES `cliente` WRITE;
+/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1),(2,'987654321','Pedro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,1),(3,'123123123','Lucia',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,2);
+/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cuenta`
+--
+
+DROP TABLE IF EXISTS `cuenta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cuenta` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `numero_cuenta` varchar(24) NOT NULL,
+  `fecha_apertura` datetime NOT NULL,
+  `fecha_cierre` datetime DEFAULT NULL,
+  `estado_cuenta_id` int NOT NULL,
+  `tipo_cuenta_id` int NOT NULL,
+  `divisa_id` int NOT NULL,
+  `dinero` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_empleado_rolEmpleado1_idx` (`rolEmpleado_id` ASC) VISIBLE,
-  CONSTRAINT `fk_empleado_rolEmpleado1`
-    FOREIGN KEY (`rolEmpleado_id`)
-    REFERENCES `grupo15`.`rolempleado` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `numeroCuenta_UNIQUE` (`numero_cuenta`),
+  UNIQUE KEY `idCuenta_UNIQUE` (`id`),
+  KEY `fk_cuenta_estadoCuenta1_idx` (`estado_cuenta_id`),
+  KEY `fk_cuenta_tipoCuenta1_idx` (`tipo_cuenta_id`),
+  KEY `fk_cuenta_divisa1_idx` (`divisa_id`),
+  CONSTRAINT `fk_cuenta_divisa1` FOREIGN KEY (`divisa_id`) REFERENCES `divisa` (`id`),
+  CONSTRAINT `fk_cuenta_estadoCuenta1` FOREIGN KEY (`estado_cuenta_id`) REFERENCES `estado_cuenta` (`id`),
+  CONSTRAINT `fk_cuenta_tipoCuenta1` FOREIGN KEY (`tipo_cuenta_id`) REFERENCES `tipo_cuenta` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `cuenta`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`chat`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`chat` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `cerrado` INT NOT NULL,
-  `cliente_id` INT NOT NULL,
-  `empleado_id` INT NOT NULL,
+LOCK TABLES `cuenta` WRITE;
+/*!40000 ALTER TABLE `cuenta` DISABLE KEYS */;
+INSERT INTO `cuenta` VALUES (1,'1111','2022-01-01 00:00:00',NULL,1,2,1,190),(2,'2222','2022-01-01 00:00:00',NULL,1,2,1,210);
+/*!40000 ALTER TABLE `cuenta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cuenta_cliente`
+--
+
+DROP TABLE IF EXISTS `cuenta_cliente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cuenta_cliente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cliente_id` int NOT NULL,
+  `cuenta_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_chat_cliente1_idx` (`cliente_id` ASC) VISIBLE,
-  INDEX `fk_chat_empleado1_idx` (`empleado_id` ASC) VISIBLE,
-  CONSTRAINT `fk_chat_cliente1`
-    FOREIGN KEY (`cliente_id`)
-    REFERENCES `grupo15`.`cliente` (`id`),
-  CONSTRAINT `fk_chat_empleado1`
-    FOREIGN KEY (`empleado_id`)
-    REFERENCES `grupo15`.`empleado` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  KEY `fk_cuenta_cliente_cliente1_idx` (`cliente_id`),
+  KEY `fk_cuenta_cliente_cuenta1_idx` (`cuenta_id`),
+  CONSTRAINT `fk_cuenta_cliente_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `fk_cuenta_cliente_cuenta1` FOREIGN KEY (`cuenta_id`) REFERENCES `cuenta` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `cuenta_cliente`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`tipocuenta`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`tipocuenta` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` ENUM('empresa', 'individual') NULL DEFAULT NULL,
+LOCK TABLES `cuenta_cliente` WRITE;
+/*!40000 ALTER TABLE `cuenta_cliente` DISABLE KEYS */;
+INSERT INTO `cuenta_cliente` VALUES (1,1,1),(2,3,2);
+/*!40000 ALTER TABLE `cuenta_cliente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cuenta_sospechosa`
+--
+
+DROP TABLE IF EXISTS `cuenta_sospechosa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cuenta_sospechosa` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cuenta_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `idtipoCuenta_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  KEY `fk_cuenta_sospechosa_cuenta1_idx` (`cuenta_id`),
+  CONSTRAINT `fk_cuenta_sospechosa_cuenta1` FOREIGN KEY (`cuenta_id`) REFERENCES `cuenta` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `cuenta_sospechosa`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`cuenta`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`cuenta` (
-  `idCuenta` INT NOT NULL AUTO_INCREMENT,
-  `numeroCuenta` VARCHAR(24) NOT NULL,
-  `fechaApertura` DATETIME NOT NULL,
-  `fechaCierre` DATETIME NULL DEFAULT NULL,
-  `cliente_id` INT NOT NULL,
-  `estadoCuenta_id` INT NOT NULL DEFAULT '1',
-  `tipoCuenta_id` INT NOT NULL,
-  `dinero` INT NULL DEFAULT '0',
-  PRIMARY KEY (`idCuenta`),
-  UNIQUE INDEX `numeroCuenta_UNIQUE` (`numeroCuenta` ASC) VISIBLE,
-  UNIQUE INDEX `idCuenta_UNIQUE` (`idCuenta` ASC) VISIBLE,
-  INDEX `fk_cuenta_cliente_idx` (`cliente_id` ASC) VISIBLE,
-  INDEX `fk_cuenta_estadoCuenta1_idx` (`estadoCuenta_id` ASC) VISIBLE,
-  INDEX `fk_cuenta_tipoCuenta1_idx` (`tipoCuenta_id` ASC) VISIBLE,
-  CONSTRAINT `fk_cuenta_cliente`
-    FOREIGN KEY (`cliente_id`)
-    REFERENCES `grupo15`.`cliente` (`id`),
-  CONSTRAINT `fk_cuenta_tipoCuenta1`
-    FOREIGN KEY (`tipoCuenta_id`)
-    REFERENCES `grupo15`.`tipocuenta` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+LOCK TABLES `cuenta_sospechosa` WRITE;
+/*!40000 ALTER TABLE `cuenta_sospechosa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cuenta_sospechosa` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `divisa`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`estadocuenta`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`estadocuenta` (
-  `id` INT NOT NULL,
-  `estadoCuenta` ENUM('activa', 'bloqueada', 'cerrada') NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `divisa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `divisa` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `moneda` enum('euro','USD','libra') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `divisa`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`mensaje`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`mensaje` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `texto` VARCHAR(500) NOT NULL,
-  `fechaEnvio` DATETIME NOT NULL,
-  `remitente` VARCHAR(45) NOT NULL,
-  `chat_id` INT NOT NULL,
+LOCK TABLES `divisa` WRITE;
+/*!40000 ALTER TABLE `divisa` DISABLE KEYS */;
+INSERT INTO `divisa` VALUES (1,'euro'),(2,'USD'),(3,'libra');
+/*!40000 ALTER TABLE `divisa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empleado`
+--
+
+DROP TABLE IF EXISTS `empleado`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empleado` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `rol_empleado_id` int NOT NULL,
+  `numero_empleado` int NOT NULL,
+  `contraseña` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_mensaje_chat1_idx` (`chat_id` ASC) VISIBLE,
-  CONSTRAINT `fk_mensaje_chat1`
-    FOREIGN KEY (`chat_id`)
-    REFERENCES `grupo15`.`chat` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_empleado_rolEmpleado1_idx` (`rol_empleado_id`),
+  CONSTRAINT `fk_empleado_rolEmpleado1` FOREIGN KEY (`rol_empleado_id`) REFERENCES `rol_empleado` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `empleado`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`tipomovimiento`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`tipomovimiento` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` ENUM('pago', 'cambioDivisa', 'sacarDinero') NOT NULL,
+LOCK TABLES `empleado` WRITE;
+/*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empresa`
+--
+
+DROP TABLE IF EXISTS `empresa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empresa` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `idEmpresa_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `empresa`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`movimientos`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`movimientos` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `timeStamp` VARCHAR(45) NOT NULL,
-  `monedaOrigen` VARCHAR(45) NOT NULL,
-  `importeOrigen` INT NOT NULL,
-  `importeDestino` INT NOT NULL,
-  `cuenta_idCuenta` INT NOT NULL,
-  `tipoMovimiento_id` INT NOT NULL,
+LOCK TABLES `empresa` WRITE;
+/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
+INSERT INTO `empresa` VALUES (1,'Apple'),(2,'Microsoft');
+/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `estado_cuenta`
+--
+
+DROP TABLE IF EXISTS `estado_cuenta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estado_cuenta` (
+  `id` int NOT NULL,
+  `estado_cuenta` enum('activa','bloqueada','cerrada') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `estado_cuenta`
+--
+
+LOCK TABLES `estado_cuenta` WRITE;
+/*!40000 ALTER TABLE `estado_cuenta` DISABLE KEYS */;
+INSERT INTO `estado_cuenta` VALUES (1,'activa'),(2,'bloqueada'),(3,'cerrada');
+/*!40000 ALTER TABLE `estado_cuenta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `estado_solicitud`
+--
+
+DROP TABLE IF EXISTS `estado_solicitud`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estado_solicitud` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `estado` enum('pendiente','procesando','resuelta') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `estado_solicitud`
+--
+
+LOCK TABLES `estado_solicitud` WRITE;
+/*!40000 ALTER TABLE `estado_solicitud` DISABLE KEYS */;
+INSERT INTO `estado_solicitud` VALUES (1,'pendiente'),(2,'procesando'),(3,'resuelta');
+/*!40000 ALTER TABLE `estado_solicitud` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mensaje`
+--
+
+DROP TABLE IF EXISTS `mensaje`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mensaje` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `texto` varchar(500) NOT NULL,
+  `fecha_envio` datetime DEFAULT NULL,
+  `remitente` varchar(45) NOT NULL,
+  `chat_id` int NOT NULL,
+  `remitente_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_movimientos_cuenta1_idx` (`cuenta_idCuenta` ASC) VISIBLE,
-  INDEX `fk_movimientos_tipoMovimiento1_idx` (`tipoMovimiento_id` ASC) VISIBLE,
-  CONSTRAINT `fk_movimientos_cuenta1`
-    FOREIGN KEY (`cuenta_idCuenta`)
-    REFERENCES `grupo15`.`cuenta` (`idCuenta`),
-  CONSTRAINT `fk_movimientos_tipoMovimiento1`
-    FOREIGN KEY (`tipoMovimiento_id`)
-    REFERENCES `grupo15`.`tipomovimiento` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 8
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_mensaje_chat1_idx` (`chat_id`),
+  KEY `fk_mensaje_remitente1_idx` (`remitente_id`),
+  CONSTRAINT `fk_mensaje_chat1` FOREIGN KEY (`chat_id`) REFERENCES `chat` (`id`),
+  CONSTRAINT `fk_mensaje_remitente1` FOREIGN KEY (`remitente_id`) REFERENCES `remitente` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `mensaje`
+--
 
--- -----------------------------------------------------
--- Table `grupo15`.`solicitud`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `grupo15`.`solicitud` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `tipo` VARCHAR(45) NOT NULL,
-  `estado` VARCHAR(45) NOT NULL,
-  `cliente_id` INT NOT NULL,
-  `empleado_id` INT NULL DEFAULT NULL,
+LOCK TABLES `mensaje` WRITE;
+/*!40000 ALTER TABLE `mensaje` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mensaje` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `movimientos`
+--
+
+DROP TABLE IF EXISTS `movimientos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `movimientos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `time_stamp` datetime DEFAULT NULL,
+  `importe_origen` int NOT NULL,
+  `importe_destino` int NOT NULL,
+  `cuenta_origen_id` int NOT NULL,
+  `tipo_movimiento_id` int NOT NULL,
+  `cuenta_destino_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `fk_solicitud_cliente1_idx` (`cliente_id` ASC) VISIBLE,
-  INDEX `fk_solicitud_empleado1_idx` (`empleado_id` ASC) VISIBLE,
-  CONSTRAINT `fk_solicitud_cliente1`
-    FOREIGN KEY (`cliente_id`)
-    REFERENCES `grupo15`.`cliente` (`id`),
-  CONSTRAINT `fk_solicitud_empleado1`
-    FOREIGN KEY (`empleado_id`)
-    REFERENCES `grupo15`.`empleado` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_movimientos_cuenta1_idx` (`cuenta_origen_id`),
+  KEY `fk_movimientos_tipoMovimiento1_idx` (`tipo_movimiento_id`),
+  KEY `fk_movimientos_cuenta2_idx` (`cuenta_destino_id`),
+  CONSTRAINT `fk_movimientos_cuenta1` FOREIGN KEY (`cuenta_origen_id`) REFERENCES `cuenta` (`id`),
+  CONSTRAINT `fk_movimientos_cuenta2` FOREIGN KEY (`cuenta_destino_id`) REFERENCES `cuenta` (`id`),
+  CONSTRAINT `fk_movimientos_tipoMovimiento1` FOREIGN KEY (`tipo_movimiento_id`) REFERENCES `tipo_movimiento` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `movimientos`
+--
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+LOCK TABLES `movimientos` WRITE;
+/*!40000 ALTER TABLE `movimientos` DISABLE KEYS */;
+INSERT INTO `movimientos` VALUES (1,'2023-04-23 03:57:33',10,10,1,1,2);
+/*!40000 ALTER TABLE `movimientos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `remitente`
+--
+
+DROP TABLE IF EXISTS `remitente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `remitente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `remitente` enum('cliente','empleado') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `remitente`
+--
+
+LOCK TABLES `remitente` WRITE;
+/*!40000 ALTER TABLE `remitente` DISABLE KEYS */;
+INSERT INTO `remitente` VALUES (1,'cliente'),(2,'empleado');
+/*!40000 ALTER TABLE `remitente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rol_cliente`
+--
+
+DROP TABLE IF EXISTS `rol_cliente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rol_cliente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('individual','autorizado','socio') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol_cliente`
+--
+
+LOCK TABLES `rol_cliente` WRITE;
+/*!40000 ALTER TABLE `rol_cliente` DISABLE KEYS */;
+INSERT INTO `rol_cliente` VALUES (1,'individual'),(2,'autorizado'),(3,'socio');
+/*!40000 ALTER TABLE `rol_cliente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rol_empleado`
+--
+
+DROP TABLE IF EXISTS `rol_empleado`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rol_empleado` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('gestor','asistente') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol_empleado`
+--
+
+LOCK TABLES `rol_empleado` WRITE;
+/*!40000 ALTER TABLE `rol_empleado` DISABLE KEYS */;
+INSERT INTO `rol_empleado` VALUES (1,'gestor'),(2,'asistente');
+/*!40000 ALTER TABLE `rol_empleado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `solicitud`
+--
+
+DROP TABLE IF EXISTS `solicitud`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `solicitud` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `estado` varchar(45) NOT NULL,
+  `cliente_id` int DEFAULT NULL,
+  `empleado_id` int DEFAULT NULL,
+  `tipo_solicitud_id` int NOT NULL,
+  `estado_solicitud_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_solicitud_cliente1_idx` (`cliente_id`),
+  KEY `fk_solicitud_empleado1_idx` (`empleado_id`),
+  KEY `fk_solicitud_tipo_solicitud1_idx` (`tipo_solicitud_id`),
+  KEY `fk_solicitud_estado_solicitud1_idx` (`estado_solicitud_id`),
+  CONSTRAINT `fk_solicitud_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `fk_solicitud_empleado1` FOREIGN KEY (`empleado_id`) REFERENCES `empleado` (`id`),
+  CONSTRAINT `fk_solicitud_estado_solicitud1` FOREIGN KEY (`estado_solicitud_id`) REFERENCES `estado_solicitud` (`id`),
+  CONSTRAINT `fk_solicitud_tipo_solicitud1` FOREIGN KEY (`tipo_solicitud_id`) REFERENCES `tipo_solicitud` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `solicitud`
+--
+
+LOCK TABLES `solicitud` WRITE;
+/*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
+/*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_cuenta`
+--
+
+DROP TABLE IF EXISTS `tipo_cuenta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tipo_cuenta` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('empresa','individual') DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idtipoCuenta_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_cuenta`
+--
+
+LOCK TABLES `tipo_cuenta` WRITE;
+/*!40000 ALTER TABLE `tipo_cuenta` DISABLE KEYS */;
+INSERT INTO `tipo_cuenta` VALUES (1,'empresa'),(2,'individual');
+/*!40000 ALTER TABLE `tipo_cuenta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_movimiento`
+--
+
+DROP TABLE IF EXISTS `tipo_movimiento`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tipo_movimiento` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('pago','cambioDivisa','sacarDinero') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_movimiento`
+--
+
+LOCK TABLES `tipo_movimiento` WRITE;
+/*!40000 ALTER TABLE `tipo_movimiento` DISABLE KEYS */;
+INSERT INTO `tipo_movimiento` VALUES (1,'pago'),(2,'cambioDivisa'),(3,'sacarDinero');
+/*!40000 ALTER TABLE `tipo_movimiento` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_solicitud`
+--
+
+DROP TABLE IF EXISTS `tipo_solicitud`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tipo_solicitud` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo` enum('alta_cliente','alta_empresa','activacion','desbloqueo') NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_solicitud`
+--
+
+LOCK TABLES `tipo_solicitud` WRITE;
+/*!40000 ALTER TABLE `tipo_solicitud` DISABLE KEYS */;
+INSERT INTO `tipo_solicitud` VALUES (1,'alta_cliente'),(2,'alta_empresa'),(3,'activacion'),(4,'desbloqueo');
+/*!40000 ALTER TABLE `tipo_solicitud` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-04-23  4:01:37

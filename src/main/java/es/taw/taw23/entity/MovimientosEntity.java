@@ -1,31 +1,33 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-public class Movimientos {
+@Table(name = "movimientos", schema = "grupo15", catalog = "")
+public class MovimientosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "timestamp", nullable = false, length = 45)
-    private String timeStamp;
+    @Column(name = "time_stamp", nullable = true)
+    private Timestamp timeStamp;
     @Basic
-    @Column(name = "monedaorigen", nullable = false, length = 45)
-    private String monedaOrigen;
-    @Basic
-    @Column(name = "importeorigen", nullable = false)
+    @Column(name = "importe_origen", nullable = false)
     private Integer importeOrigen;
     @Basic
-    @Column(name = "importedestino", nullable = false)
+    @Column(name = "importe_destino", nullable = false)
     private Integer importeDestino;
     @ManyToOne
-    @JoinColumn(name = "cuenta_idcuenta", referencedColumnName = "idCuenta", nullable = false)
-    private Cuenta cuentaByCuentaIdCuenta;
+    @JoinColumn(name = "cuenta_origen_id", referencedColumnName = "id", nullable = false)
+    private CuentaEntity cuentaByCuentaOrigenId;
     @ManyToOne
-    @JoinColumn(name = "tipomovimiento_id", referencedColumnName = "id", nullable = false)
-    private Tipomovimiento tipomovimientoByTipoMovimientoId;
+    @JoinColumn(name = "tipo_movimiento_id", referencedColumnName = "id", nullable = false)
+    private TipoMovimientoEntity tipoMovimientoByTipoMovimientoId;
+    @ManyToOne
+    @JoinColumn(name = "cuenta_destino_id", referencedColumnName = "id", nullable = false)
+    private CuentaEntity cuentaByCuentaDestinoId;
 
     public Integer getId() {
         return id;
@@ -35,20 +37,12 @@ public class Movimientos {
         this.id = id;
     }
 
-    public String getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
-    }
-
-    public String getMonedaOrigen() {
-        return monedaOrigen;
-    }
-
-    public void setMonedaOrigen(String monedaOrigen) {
-        this.monedaOrigen = monedaOrigen;
     }
 
     public Integer getImporteOrigen() {
@@ -72,11 +66,10 @@ public class Movimientos {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Movimientos that = (Movimientos) o;
+        MovimientosEntity that = (MovimientosEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (timeStamp != null ? !timeStamp.equals(that.timeStamp) : that.timeStamp != null) return false;
-        if (monedaOrigen != null ? !monedaOrigen.equals(that.monedaOrigen) : that.monedaOrigen != null) return false;
         if (importeOrigen != null ? !importeOrigen.equals(that.importeOrigen) : that.importeOrigen != null)
             return false;
         if (importeDestino != null ? !importeDestino.equals(that.importeDestino) : that.importeDestino != null)
@@ -89,25 +82,32 @@ public class Movimientos {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (timeStamp != null ? timeStamp.hashCode() : 0);
-        result = 31 * result + (monedaOrigen != null ? monedaOrigen.hashCode() : 0);
         result = 31 * result + (importeOrigen != null ? importeOrigen.hashCode() : 0);
         result = 31 * result + (importeDestino != null ? importeDestino.hashCode() : 0);
         return result;
     }
 
-    public Cuenta getCuentaByCuentaIdCuenta() {
-        return cuentaByCuentaIdCuenta;
+    public CuentaEntity getCuentaByCuentaOrigenId() {
+        return cuentaByCuentaOrigenId;
     }
 
-    public void setCuentaByCuentaIdCuenta(Cuenta cuentaByCuentaIdCuenta) {
-        this.cuentaByCuentaIdCuenta = cuentaByCuentaIdCuenta;
+    public void setCuentaByCuentaOrigenId(CuentaEntity cuentaByCuentaOrigenId) {
+        this.cuentaByCuentaOrigenId = cuentaByCuentaOrigenId;
     }
 
-    public Tipomovimiento getTipomovimientoByTipoMovimientoId() {
-        return tipomovimientoByTipoMovimientoId;
+    public TipoMovimientoEntity getTipoMovimientoByTipoMovimientoId() {
+        return tipoMovimientoByTipoMovimientoId;
     }
 
-    public void setTipomovimientoByTipoMovimientoId(Tipomovimiento tipomovimientoByTipoMovimientoId) {
-        this.tipomovimientoByTipoMovimientoId = tipomovimientoByTipoMovimientoId;
+    public void setTipoMovimientoByTipoMovimientoId(TipoMovimientoEntity tipoMovimientoByTipoMovimientoId) {
+        this.tipoMovimientoByTipoMovimientoId = tipoMovimientoByTipoMovimientoId;
+    }
+
+    public CuentaEntity getCuentaByCuentaDestinoId() {
+        return cuentaByCuentaDestinoId;
+    }
+
+    public void setCuentaByCuentaDestinoId(CuentaEntity cuentaByCuentaDestinoId) {
+        this.cuentaByCuentaDestinoId = cuentaByCuentaDestinoId;
     }
 }

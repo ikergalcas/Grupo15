@@ -1,70 +1,73 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Cliente;
+
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.List;
 
 @Entity
-public class Cliente {
+@Table(name = "cliente", schema = "grupo15", catalog = "")
+public class ClienteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "NIF", nullable = false, length = 45)
+    @Column(name = "nif", nullable = false, length = 45)
     private String nif;
     @Basic
-    @Column(name = "primernombre", nullable = false, length = 45)
+    @Column(name = "primer_nombre", nullable = true, length = 45)
     private String primerNombre;
     @Basic
-    @Column(name = "segundonombre", nullable = true, length = 45)
+    @Column(name = "segundo_nombre", nullable = true, length = 45)
     private String segundoNombre;
     @Basic
-    @Column(name = "primerapellido", nullable = false, length = 45)
+    @Column(name = "primer_apellido", nullable = true, length = 45)
     private String primerApellido;
     @Basic
-    @Column(name = "segundoapellido", nullable = true, length = 45)
+    @Column(name = "segundo_apellido", nullable = true, length = 45)
     private String segundoApellido;
     @Basic
-    @Column(name = "fechanacimiento", nullable = false)
-    private Date fechaNacimiento;
+    @Column(name = "fecha_nacimiento", nullable = true)
+    private Timestamp fechaNacimiento;
     @Basic
-    @Column(name = "calle", nullable = false, length = 45)
+    @Column(name = "calle", nullable = true, length = 45)
     private String calle;
     @Basic
-    @Column(name = "numero", nullable = false, length = 45)
+    @Column(name = "numero", nullable = true, length = 45)
     private String numero;
     @Basic
     @Column(name = "puerta", nullable = true, length = 45)
     private String puerta;
     @Basic
-    @Column(name = "ciudad", nullable = false, length = 45)
+    @Column(name = "ciudad", nullable = true, length = 45)
     private String ciudad;
     @Basic
-    @Column(name = "pais", nullable = false, length = 45)
+    @Column(name = "pais", nullable = true, length = 45)
     private String pais;
     @Basic
     @Column(name = "region", nullable = true, length = 45)
     private String region;
     @Basic
-    @Column(name = "CP", nullable = false, length = 45)
+    @Column(name = "CP", nullable = true, length = 45)
     private String cp;
     @Basic
     @Column(name = "contrasena", nullable = false, length = 45)
     private String contrasena;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private List<Chat> chatsById;
+    private List<ChatEntity> chatsById;
     @ManyToOne
     @JoinColumn(name = "rolcliente_id", referencedColumnName = "id", nullable = false)
-    private Rolcliente rolclienteByRolclienteId;
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "empresa_idempresa", referencedColumnName = "idempresa")
-    private Empresa empresaByEmpresaIdEmpresa;
+    private RolClienteEntity rolClienteByRolclienteId;
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id")
+    private EmpresaEntity empresaByEmpresaId;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private List<Cuenta> cuentasById;
+    private List<CuentaClienteEntity> cuentaClientesById;
     @OneToMany(mappedBy = "clienteByClienteId")
-    private List<Solicitud> solicitudsById;
+    private List<SolicitudEntity> solicitudsById;
 
     public Integer getId() {
         return id;
@@ -114,11 +117,11 @@ public class Cliente {
         this.segundoApellido = segundoApellido;
     }
 
-    public Date getFechaNacimiento() {
+    public Timestamp getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(Timestamp fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -191,28 +194,27 @@ public class Cliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Cliente cliente = (Cliente) o;
+        ClienteEntity that = (ClienteEntity) o;
 
-        if (id != null ? !id.equals(cliente.id) : cliente.id != null) return false;
-        if (nif != null ? !nif.equals(cliente.nif) : cliente.nif != null) return false;
-        if (primerNombre != null ? !primerNombre.equals(cliente.primerNombre) : cliente.primerNombre != null)
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (nif != null ? !nif.equals(that.nif) : that.nif != null) return false;
+        if (primerNombre != null ? !primerNombre.equals(that.primerNombre) : that.primerNombre != null) return false;
+        if (segundoNombre != null ? !segundoNombre.equals(that.segundoNombre) : that.segundoNombre != null)
             return false;
-        if (segundoNombre != null ? !segundoNombre.equals(cliente.segundoNombre) : cliente.segundoNombre != null)
+        if (primerApellido != null ? !primerApellido.equals(that.primerApellido) : that.primerApellido != null)
             return false;
-        if (primerApellido != null ? !primerApellido.equals(cliente.primerApellido) : cliente.primerApellido != null)
+        if (segundoApellido != null ? !segundoApellido.equals(that.segundoApellido) : that.segundoApellido != null)
             return false;
-        if (segundoApellido != null ? !segundoApellido.equals(cliente.segundoApellido) : cliente.segundoApellido != null)
+        if (fechaNacimiento != null ? !fechaNacimiento.equals(that.fechaNacimiento) : that.fechaNacimiento != null)
             return false;
-        if (fechaNacimiento != null ? !fechaNacimiento.equals(cliente.fechaNacimiento) : cliente.fechaNacimiento != null)
-            return false;
-        if (calle != null ? !calle.equals(cliente.calle) : cliente.calle != null) return false;
-        if (numero != null ? !numero.equals(cliente.numero) : cliente.numero != null) return false;
-        if (puerta != null ? !puerta.equals(cliente.puerta) : cliente.puerta != null) return false;
-        if (ciudad != null ? !ciudad.equals(cliente.ciudad) : cliente.ciudad != null) return false;
-        if (pais != null ? !pais.equals(cliente.pais) : cliente.pais != null) return false;
-        if (region != null ? !region.equals(cliente.region) : cliente.region != null) return false;
-        if (cp != null ? !cp.equals(cliente.cp) : cliente.cp != null) return false;
-        if (contrasena != null ? !contrasena.equals(cliente.contrasena) : cliente.contrasena != null) return false;
+        if (calle != null ? !calle.equals(that.calle) : that.calle != null) return false;
+        if (numero != null ? !numero.equals(that.numero) : that.numero != null) return false;
+        if (puerta != null ? !puerta.equals(that.puerta) : that.puerta != null) return false;
+        if (ciudad != null ? !ciudad.equals(that.ciudad) : that.ciudad != null) return false;
+        if (pais != null ? !pais.equals(that.pais) : that.pais != null) return false;
+        if (region != null ? !region.equals(that.region) : that.region != null) return false;
+        if (cp != null ? !cp.equals(that.cp) : that.cp != null) return false;
+        if (contrasena != null ? !contrasena.equals(that.contrasena) : that.contrasena != null) return false;
 
         return true;
     }
@@ -237,43 +239,68 @@ public class Cliente {
         return result;
     }
 
-    public List<Chat> getChatsById() {
+    public List<ChatEntity> getChatsById() {
         return chatsById;
     }
 
-    public void setChatsById(List<Chat> chatsById) {
+    public void setChatsById(List<ChatEntity> chatsById) {
         this.chatsById = chatsById;
     }
 
-    public Rolcliente getRolclienteByRolclienteId() {
-        return rolclienteByRolclienteId;
+    public RolClienteEntity getRolClienteByRolclienteId() {
+        return rolClienteByRolclienteId;
     }
 
-    public void setRolclienteByRolclienteId(Rolcliente rolclienteByRolclienteId) {
-        this.rolclienteByRolclienteId = rolclienteByRolclienteId;
+    public void setRolClienteByRolclienteId(RolClienteEntity rolClienteByRolclienteId) {
+        this.rolClienteByRolclienteId = rolClienteByRolclienteId;
     }
 
-    public Empresa getEmpresaByEmpresaIdEmpresa() {
-        return empresaByEmpresaIdEmpresa;
+    public EmpresaEntity getEmpresaByEmpresaId() {
+        return empresaByEmpresaId;
     }
 
-    public void setEmpresaByEmpresaIdEmpresa(Empresa empresaByEmpresaIdEmpresa) {
-        this.empresaByEmpresaIdEmpresa = empresaByEmpresaIdEmpresa;
+    public void setEmpresaByEmpresaId(EmpresaEntity empresaByEmpresaId) {
+        this.empresaByEmpresaId = empresaByEmpresaId;
     }
 
-    public List<Cuenta> getCuentasById() {
-        return cuentasById;
+    public List<CuentaClienteEntity> getCuentaClientesById() {
+        return cuentaClientesById;
     }
 
-    public void setCuentasById(List<Cuenta> cuentasById) {
-        this.cuentasById = cuentasById;
+    public void setCuentaClientesById(List<CuentaClienteEntity> cuentaClientesById) {
+        this.cuentaClientesById = cuentaClientesById;
     }
 
-    public List<Solicitud> getSolicitudsById() {
+    public List<SolicitudEntity> getSolicitudsById() {
         return solicitudsById;
     }
 
-    public void setSolicitudsById(List<Solicitud> solicitudsById) {
+    public void setSolicitudsById(List<SolicitudEntity> solicitudsById) {
         this.solicitudsById = solicitudsById;
+    }
+
+    public Cliente toDTO() {
+        Cliente dto = new Cliente();
+
+        dto.setId(this.id);
+        dto.setNif(this.nif);
+        dto.setPrimerNombre(this.primerNombre);
+        dto.setSegundoNombre(this.segundoNombre);
+        dto.setPrimerApellido(this.primerApellido);
+        dto.setSegundoApellido(this.segundoApellido);
+        dto.setFechaNacimiento(this.fechaNacimiento);
+        dto.setCalle(this.calle);
+        dto.setNumero(this.numero);
+        dto.setPuerta(this.puerta);
+        dto.setCalle(this.ciudad);
+        dto.setPais(this.pais);
+        dto.setRegion(this.region);
+        dto.setCp(this.cp);
+        dto.setContrasena(this.contrasena);
+        dto.setTipo(this.getRolClienteByRolclienteId().getTipo());
+        dto.setEmpresa(this.empresaByEmpresaId.getNombre());
+        dto.setIdEmpresa(this.empresaByEmpresaId.getId());
+
+        return dto;
     }
 }

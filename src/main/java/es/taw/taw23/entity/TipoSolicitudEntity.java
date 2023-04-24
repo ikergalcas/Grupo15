@@ -1,10 +1,12 @@
 package es.taw.taw23.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Rolcliente {
+@Table(name = "tipo_solicitud", schema = "grupo15", catalog = "")
+public class TipoSolicitudEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -12,8 +14,8 @@ public class Rolcliente {
     @Basic
     @Column(name = "tipo", nullable = false)
     private String tipo;
-    @OneToMany(mappedBy = "rolclienteByRolclienteId")
-    private List<Cliente> clientesById;
+    @OneToMany(mappedBy = "tipoSolicitudByTipoSolicitudId")
+    private List<SolicitudEntity> solicitudsById;
 
     public Integer getId() {
         return id;
@@ -36,7 +38,7 @@ public class Rolcliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Rolcliente that = (Rolcliente) o;
+        TipoSolicitudEntity that = (TipoSolicitudEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (tipo != null ? !tipo.equals(that.tipo) : that.tipo != null) return false;
@@ -51,11 +53,11 @@ public class Rolcliente {
         return result;
     }
 
-    public List<Cliente> getClientesById() {
-        return clientesById;
+    public List<SolicitudEntity> getSolicitudsById() {
+        return solicitudsById;
     }
 
-    public void setClientesById(List<Cliente> clientesById) {
-        this.clientesById = clientesById;
+    public void setSolicitudsById(List<SolicitudEntity> solicitudsById) {
+        this.solicitudsById = solicitudsById;
     }
 }

@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.taw.taw23.entity.Cliente" %>
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -35,9 +35,9 @@
 %>
     <tr>
         <td><%= socio.getPrimerNombre() %></td>
-        <td><%= socio.getEmpresaByEmpresaIdEmpresa().getNombre() %></td>
+        <td><%= socio.getEmpresa() %></td>
         <%
-            if(socio.getRolclienteByRolclienteId().getTipo().equals("socio") && socio.getEmpresaByEmpresaIdEmpresa().getIdEmpresa() == cliente.getEmpresaByEmpresaIdEmpresa().getIdEmpresa()) {
+            if(socio.getTipo().equals("socio") && socio.getIdEmpresa() == cliente.getIdEmpresa()) {
         %>
         <td><a href="/empresa/miEmpresa?id=<%= socio.getId() %>" >Ver socios/autorizados de mi empresa</a></td>
         <%

@@ -1,7 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.taw.taw23.entity.Cliente" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.taw.taw23.entity.Cuenta" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
