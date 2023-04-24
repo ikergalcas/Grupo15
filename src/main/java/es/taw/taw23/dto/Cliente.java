@@ -1,7 +1,9 @@
 package es.taw.taw23.dto;
 
+import es.taw.taw23.entity.CuentaClienteEntity;
+
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class Cliente implements Serializable {
@@ -11,7 +13,7 @@ public class Cliente implements Serializable {
     private String segundoNombre;
     private String primerApellido;
     private String segundoApellido;
-    private Timestamp fechaNacimiento;
+    private Date fechaNacimiento;
     private String calle;
     private String numero;
     private String puerta;
@@ -23,7 +25,7 @@ public class Cliente implements Serializable {
     private String tipo;
     private String empresa;
     private Integer idEmpresa;
-    private List<String> cuentas;
+    private List<CuentaClienteEntity> cuentas;
 
     public Integer getId() {
         return id;
@@ -73,11 +75,11 @@ public class Cliente implements Serializable {
         this.segundoApellido = segundoApellido;
     }
 
-    public Timestamp getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Timestamp fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
@@ -169,11 +171,11 @@ public class Cliente implements Serializable {
         this.idEmpresa = idEmpresa;
     }
 
-    public List<String> getCuentas() {
+    public List<CuentaClienteEntity> getCuentas() {
         return cuentas;
     }
 
-    public void setCuentas(List<String> cuentas) {
+    public void setCuentas(List<CuentaClienteEntity> cuentas) {
         this.cuentas = cuentas;
     }
 }

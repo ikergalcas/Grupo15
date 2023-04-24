@@ -1,11 +1,14 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.DTO;
+import es.taw.taw23.dto.Divisa;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "divisa", schema = "grupo15", catalog = "")
-public class DivisaEntity {
+public class DivisaEntity implements DTO<Divisa> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -78,5 +81,14 @@ public class DivisaEntity {
 
     public void setCuentasById(List<CuentaEntity> cuentasById) {
         this.cuentasById = cuentasById;
+    }
+
+    @Override
+    public Divisa toDTO() {
+        Divisa dto = new Divisa();
+
+        dto.setMoneda(this.moneda);
+
+        return dto;
     }
 }
