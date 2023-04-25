@@ -19,7 +19,7 @@
         </form>
         </th>
         <th style="width:850px"></th>
-        <th style="width:800px"><h1>¡Bienvenidx al cajero!</h1></th>
+        <th style="width:800px"><h1>¡Hola <%=cliente.getPrimerNombre()%>!</h1></th>
         <th style="width:900px"></th>
         <th>
             <form action="/cajero/<%=cliente.getId()%>/modificar/">
@@ -54,14 +54,14 @@
                     if (mov.getTipo().equals("cambioDivisa")) { %>
                     <tr>
                         <th>Cambio de divisa</th>
-                        <th><u>De:</u><%//%><u>A:</u><%//%></th>
+                        <th>Divisa cambiada</th>
                         <th><%=mov.getTimeStamp().toString()%></th>
                     </tr>
                     <% } else {
                         if (mov.getTipo().equals("sacarDinero")) { %>
                         <tr>
                             <th>Retirada de dinero</th>
-                            <th><u>Cantidad:</u><%//%></th>
+                            <th><u>Cantidad:</u> -<%=(mov.getImporteOrigen()-mov.getImporteDestino())%></th>
                             <th><%=mov.getTimeStamp().toString()%></th>
                         </tr>
                         <% }
@@ -107,6 +107,11 @@
     <%} else{ %>
     <th><button type="button" disabled>Desbloquear cuenta</button></th>
     <%}%>
+</table> <br>
+
+<table style="position: fixed; margin-left:40%">
+    <td style="background-color:lightblue"><h1>SALDO: <%=cuenta.getDinero()%> <%=cuenta.getMoneda()%></h1></td>
 </table>
+
 </body>
 </html>

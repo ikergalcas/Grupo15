@@ -1,5 +1,6 @@
 package es.taw.taw23.dao;
 
+import es.taw.taw23.entity.CambioDivisaEntity;
 import es.taw.taw23.entity.CuentaEntity;
 import es.taw.taw23.entity.DivisaEntity;
 import es.taw.taw23.entity.TipoMovimientoEntity;
@@ -18,4 +19,7 @@ public interface CajeroRepository extends JpaRepository<CuentaEntity,Integer> {
 
     @Query("Select x From DivisaEntity x WHERE x.moneda = :moneda")
     DivisaEntity findByMoneyName(@Param("moneda") String moneda);
+
+    @Query("Select x From CambioDivisaEntity x Where x.divisaByOrigenId.id = :origen AND x.divisaByDestinoId.id = :destino")
+    CambioDivisaEntity cambiarDivisa(@Param("origen") Integer origen, @Param("destino") Integer destino);
 }

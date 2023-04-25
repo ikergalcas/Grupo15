@@ -16,11 +16,7 @@
             <input style="width:200px; height: 30px" type="submit" value="Volver atrás" />
         </form>
     </th>
-    <th style="width:850px"></th>
-    <th style="width:800px"><h1>¡Bienvenidx al cajero!</h1></th>
-    <th style="width:900px"></th>
-    <th style="width:900px"></th>
-    <th style="width:200px"></th>
+    <th><h1>¡Hola <%=cliente.getPrimerNombre()%>!</h1></th>
     </td>
 </table>
 <h1 style="position: fixed; left: 36.5%">Cuentas asociadas</h1><br>

@@ -15,6 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/cajero")
+@SessionAttributes("cliente, cuenta")
 public class CajeroController {
 
     @Autowired
@@ -61,64 +62,90 @@ Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por
         return "redirect:/"+cliente.getId();
     }
 
-
     @GetMapping("/{clienteId}/cuenta/{id}/transferencia")
-    public String doTransferencia(@PathVariable("id") Integer id, @PathVariable("clienteId") Integer clienteId, Model model){
+    public String doTransferencia(@PathVariable("id") Integer id, @PathVariable("clienteId") Integer clienteId,
+                                  boolean badAmount, Model model){
         Cliente cliente = this.cajeroService.buscarCliente(clienteId);
         Cuenta cuenta = this.cajeroService.buscarCuenta(id);
         List<Cuenta> cuentasMenosOrigen = this.cajeroService.obtenerTodasLasCuentasMenosOrigen(id);
+        Movimiento mov = new Movimiento();
+        mov.setCuentaOrigen(cuenta.getNumeroCuenta());
+        model.addAttribute("movimiento",mov);
         model.addAttribute("cliente",cliente);
         model.addAttribute("cuenta",cuenta);
         model.addAttribute("cuentasMenosOrigen",cuentasMenosOrigen);
-        return "transferencia";
+
+        if (badAmount)
+            return "transferenciaCajeroAux";
+        else
+            return "transferenciaCajero";
     }
     @PostMapping("/transferir")
     public String procesarTransferencia(@ModelAttribute("movimiento") Movimiento mov,
                                         @ModelAttribute("cliente") Cliente cliente,
-                                        @ModelAttribute("cuenta") Cuenta cuenta){
+                                        @ModelAttribute("cuenta") Cuenta cuenta,
+                                        Model model){
 
-        //Cuenta origen = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaOrigen());
-        //this.cajeroService.procesarDinero(origen,mov.getImporteOrigen());
+        Cuenta origen = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaOrigen());
+        Cuenta destino = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaDestino());
+        if(mov.getImporteOrigen()>origen.getDinero() || mov.getImporteOrigen()<=0 || destino==null)
+            return doTransferencia(cuenta.getId(),cliente.getId(),true,model);
+        else{
+            this.cajeroService.setNewMovimiento(origen,destino,mov.getImporteOrigen());
+            this.cajeroService.setNewSaldo(origen,mov.getImporteOrigen());
+            if (origen.getMoneda().equals(destino.getMoneda()))
+                this.cajeroService.setNewSaldo(destino,-mov.getImporteOrigen());
+            else
+                this.cajeroService.setNewSaldoDivisaDistinta(origen,destino,mov.getImporteOrigen());
+            return "redirect:/cajero/"+cliente.getId()+"/cuenta/"+cuenta.getId();
+        }
 
-        //Cuenta destino = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaDestino());
-        //this.cajeroService.procesarDinero(destino,mov.getImporteDestino());
-
-        this.cajeroService.addMovimiento(movAux(mov));
-        return "redirect:/"+cliente.getId()+"/cuenta/"+cuenta.getId();
-    }
-    private Movimiento movAux(Movimiento mov){
-        Movimiento aux = new Movimiento();
-        aux.setId(mov.getId());
-        aux.setCuentaOrigen(mov.getCuentaOrigen());
-        aux.setCuentaDestino(mov.getCuentaDestino());
-        aux.setTipo(mov.getTipo());
-        aux.setImporteOrigen(mov.getImporteOrigen());
-        aux.setImporteDestino(mov.getImporteDestino());
-        aux.setTimeStamp(mov.getTimeStamp());
-        return aux;
     }
 
     @GetMapping("/{clienteId}/cuenta/{id}/retirar")
-    public String doRetirar(@PathVariable("id") Integer id,@PathVariable("clienteId") Integer clienteId, Model model){
+    public String doRetirar(@PathVariable("id") Integer id,@PathVariable("clienteId") Integer clienteId, boolean badAmount,Model model){
         Cliente cliente = this.cajeroService.buscarCliente(clienteId);
         Cuenta cuenta = this.cajeroService.buscarCuenta(id);
         model.addAttribute("cliente",cliente);
         model.addAttribute("cuenta",cuenta);
-        return "retirar";
+        if (badAmount)
+            return "retirarAux";
+        else
+            return "retirar";
     }
     @PostMapping("/sacar")
     public String procesarRetirar(@ModelAttribute("cuenta") Cuenta cuenta,
-                                  @ModelAttribute("cliente") Cliente cliente){
-        this.cajeroService.setNewSaldo(cuenta);
-        return "redirect:/"+cliente.getId()+"/cuenta/"+cuenta.getId();
-    }
+                                  @ModelAttribute("cliente") Cliente cliente, Model model){
+        Cuenta aux = this.cajeroService.buscarCuenta(cuenta.getId());
+        if (cuenta.getDinero()>aux.getDinero() || cuenta.getDinero()<0){
+            return doRetirar(cuenta.getId(),cliente.getId(),true,model);
+        } else{
+            this.cajeroService.setNewSaldo(aux, cuenta.getDinero());
+            this.cajeroService.setNewMovimiento(aux,aux,cuenta.getDinero());
+            return "redirect:/cajero/"+cliente.getId()+"/cuenta/"+cuenta.getId();
+            }
+        }
 
     @GetMapping("/{clienteId}/cuenta/{id}/cambiarDivisa")
-    public String doCambiarDivisa(@PathVariable("id") Integer id, Model model){
+    public String doCambiarDivisa(@PathVariable("id") Integer id,@PathVariable("clienteId") Integer clienteId, Model model){
+        List<Divisa> divisas = this.cajeroService.obtenerTodasLasDivisas();
+        Cuenta cuenta = this.cajeroService.buscarCuenta(id);
+        Cliente cliente = this.cajeroService.buscarCliente(clienteId);
+
+        model.addAttribute("divisas",divisas);
+        model.addAttribute("cuenta",cuenta);
+        model.addAttribute("cliente",cliente);
+
         return "cambiarDivisa";
     }
     @PostMapping("/cambiar")
-    public String procesarCambiarDivisa(@ModelAttribute("divisa") Divisa divisa, @ModelAttribute("cuenta") Cuenta cuenta){
-        return "redirect:/{clienteId}/cuenta/{id}";
+    public String procesarCambiarDivisa(@ModelAttribute("cliente") Cliente cliente,
+                                        @ModelAttribute("cuenta") Cuenta cuenta){
+        Cuenta aux = this.cajeroService.buscarCuenta(cuenta.getId());
+        if (!aux.getMoneda().equals(cuenta.getMoneda())){
+            this.cajeroService.setNewDivisa(cuenta.getMoneda(),aux);
+            this.cajeroService.setNewMovimiento(aux,cuenta,cuenta.getDinero());
+        }
+        return "redirect:/cajero/"+cliente.getId()+"/cuenta/"+cuenta.getId();
     }
 }

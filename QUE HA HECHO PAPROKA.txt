@@ -6,11 +6,12 @@ What is Paproka touching in this project?            -------> ¡TIENE Q REDIRIGI
 JSP
 -Cajero.jsp
 -CuentasCliente.jsp
------------------------------------------(Faltan)
 -Retirar.jsp
--Transferencia.jsp
+-RetirarAux.jsp
+-TransferenciaCajero.jsp
+-TransferenciaCajeroAux.jsp
 -CambiarDivisa.jsp
--Modificar.jsp
+FALTA -> Modificar.jsp
 
 ¿Qué falta?
-Hacer los jsp, y plantear el filtro. Ver como puedo hacer modificar.
+Plantear el filtro. Ver como puedo hacer modificar. ¿Como me paso los atributos para redireccionar?

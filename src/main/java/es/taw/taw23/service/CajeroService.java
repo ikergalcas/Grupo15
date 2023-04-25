@@ -9,6 +9,8 @@ import es.taw.taw23.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -59,33 +61,80 @@ public class CajeroService {
         return (cuenta!=null) ? cuenta.toDTO() : null;
     }
 
-    public void addMovimiento(Movimiento mov){
-        MovimientosEntity aux = new MovimientosEntity();
-        aux.setId(mov.getId());
-        aux.setCuentaByCuentaOrigenId(cajeroRepository.findByAccountNumber(mov.getCuentaOrigen()));
-        aux.setCuentaByCuentaDestinoId(cajeroRepository.findByAccountNumber(mov.getCuentaDestino()));
-        aux.setTipoMovimientoByTipoMovimientoId(cajeroRepository.findByMovementName(mov.getTipo()));
-        aux.setImporteOrigen(mov.getImporteOrigen());
-        aux.setImporteDestino(mov.getImporteDestino());
-        aux.setTimeStamp(mov.getTimeStamp());
-        this.movimientoRepository.save(aux);
-    }
-
     public void setNewCliente(Cliente cliente){
 
 
     }
 
-    public void setNewSaldo(Cuenta cuenta){
+    public void setNewMovimiento(Cuenta origen, Cuenta destino,
+                                 Double cantidadOrigen){
+        CuentaEntity origenAux = cuentaRepository.findById(origen.getId()).orElse(null);
+        CuentaEntity destinoAux = cuentaRepository.findById(destino.getId()).orElse(null);
+        MovimientosEntity movimiento = new MovimientosEntity();
+        List<MovimientosEntity> movimientosTotales = movimientoRepository.findAll();
+        movimiento.setId(movimientosTotales.size()+1);
+        if (origen.getId().equals(destino.getId()) && origen.getMoneda().equals(destino.getMoneda())){
+            TipoMovimientoEntity tipoMovimiento = cajeroRepository.findByMovementName("sacarDinero");
+            movimiento.setImporteOrigen(redondear(origenAux.getDinero()));
+            movimiento.setImporteDestino(redondear(origenAux.getDinero()-cantidadOrigen));
+            movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
+        }
+        else if(origen.getId().equals(destino.getId()) && !origen.getMoneda().equals(destino.getMoneda())){
+            TipoMovimientoEntity tipoMovimiento = cajeroRepository.findByMovementName("cambioDivisa");
+            CambioDivisaEntity cambioDivisa = cajeroRepository.cambiarDivisa(
+                    cajeroRepository.findByMoneyName(origen.getMoneda()).getId(),
+                    cajeroRepository.findByMoneyName(destino.getMoneda()).getId());
+            movimiento.setImporteOrigen(redondear(origenAux.getDinero()));
+            movimiento.setImporteDestino(redondear(cambioDivisa.getCambio()*origenAux.getDinero()));
+            movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
+        }
+        else{
+            TipoMovimientoEntity tipoMovimiento = cajeroRepository.findByMovementName("pago");
+            movimiento.setImporteOrigen(redondear(cantidadOrigen));
+            if (origen.getMoneda().equals(destino.getMoneda())){
+                movimiento.setImporteDestino(redondear(cantidadOrigen));
+            }else{
+                CambioDivisaEntity cambioDivisa = cajeroRepository.cambiarDivisa(
+                        cajeroRepository.findByMoneyName(origen.getMoneda()).getId(),
+                        cajeroRepository.findByMoneyName(destino.getMoneda()).getId());
+                movimiento.setImporteDestino(redondear(cambioDivisa.getCambio()*cantidadOrigen));
+
+            }
+            movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
+
+        }
+        movimiento.setCuentaByCuentaOrigenId(origenAux);
+        movimiento.setCuentaByCuentaDestinoId(destinoAux);
+        movimiento.setTimeStamp(new Timestamp(System.currentTimeMillis()));
+        movimientoRepository.save(movimiento);
+    }
+
+    public void setNewSaldo(Cuenta cuenta, Double cantidad){
         CuentaEntity aux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
-        aux.setDinero(cuenta.getDinero());
+        aux.setDinero(redondear(cuenta.getDinero() - cantidad));
         this.cuentaRepository.save(aux);
     }
 
-    public void setNewDivisa(Divisa divisaDTO, Cuenta cuenta){
-        DivisaEntity divisa = this.cajeroRepository.findByMoneyName(divisaDTO.getMoneda());
+    public void setNewSaldoDivisaDistinta(Cuenta origen, Cuenta destino, Double cantidad){
+        CambioDivisaEntity cambioDivisa = cajeroRepository.cambiarDivisa(
+                cajeroRepository.findByMoneyName(origen.getMoneda()).getId(),
+                cajeroRepository.findByMoneyName(destino.getMoneda()).getId());
+        CuentaEntity aux = this.cajeroRepository.findByAccountNumber(destino.getNumeroCuenta());
+        aux.setDinero(redondear(destino.getDinero()+(cantidad*cambioDivisa.getCambio())));
+        this.cuentaRepository.save(aux);
+    }
+
+    public void setNewDivisa(String divisaNombre, Cuenta cuenta){
+        DivisaEntity divisa = this.cajeroRepository.findByMoneyName(divisaNombre);
         CuentaEntity aux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
+
+        Integer divisaOrigenId = this.cajeroRepository.findByMoneyName(aux.getDivisaByDivisaId().getMoneda()).getId();
+        Integer divisaDestinoId = divisa.getId();
+
+        CambioDivisaEntity cambioDivisa = cajeroRepository.cambiarDivisa(divisaOrigenId, divisaDestinoId);
+
         aux.setDivisaByDivisaId(divisa);
+        aux.setDinero(redondear(cambioDivisa.getCambio()*aux.getDinero()));
         this.cuentaRepository.save(aux);
     }
 
@@ -106,5 +155,9 @@ public class CajeroService {
             divisasDTO.add(x.toDTO());
         }
         return divisasDTO;
+    }
+
+    private Double redondear(Double cantidad){
+        return Double.valueOf(Math.round((cantidad.doubleValue()*100d) / 100));
     }
 }
