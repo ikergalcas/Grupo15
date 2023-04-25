@@ -5,10 +5,11 @@ What is Paproka touching in this project?            -------> ¡TIENE Q REDIRIGI
 
 JSP
 -Cajero.jsp
+-----------------------------------------(Faltan)
 -Retirar.jsp
 -Transferencia.jsp
 -CambiarDivisa.jsp
-
+-Modificar.jsp
 
 ¿Qué falta?
-Hacer los jsp, y plantear el filtro
+Hacer los jsp, y plantear el filtro. Ver como puedo hacer modificar.

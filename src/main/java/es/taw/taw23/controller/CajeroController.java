@@ -1,5 +1,6 @@
 package es.taw.taw23.controller;
 
+import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Cuenta;
 import es.taw.taw23.dto.Movimiento;
 import es.taw.taw23.dto.Divisa;
@@ -35,6 +36,18 @@ Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por
         model.addAttribute("movimientos",movimientos);
         return "cajero";
     }
+    @GetMapping("/modificar/{id}")
+    public String doModificar(@PathVariable("id") Integer id, Model model){
+        List<Cliente> clientes = this.cajeroService.buscarClientes(id);
+        model.addAttribute("clientes",clientes);
+        return "modificar";
+    }
+    @PostMapping("/guardar")
+    public String procesarModificacion(@ModelAttribute("cliente") Cliente cliente){
+        this.cajeroService.setNewCliente(cliente);
+        return "redirect:/cajero/{id}";
+    }
+
 
     @GetMapping("/transferencia/{id}")
     public String doTransferencia(@PathVariable("id") Integer id, Model model){
@@ -44,7 +57,7 @@ Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por
         model.addAttribute("cuentasMenosOrigen",cuentasMenosOrigen);
         return "transferencia";
     }
-    @PostMapping("/transferir/{id}")
+    @PostMapping("/transferir")
     public String procesarTransferencia(@ModelAttribute("movimiento") Movimiento mov){
 
         //Cuenta origen = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaOrigen());

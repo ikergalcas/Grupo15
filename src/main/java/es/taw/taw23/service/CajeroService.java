@@ -1,12 +1,11 @@
 package es.taw.taw23.service;
 
 import es.taw.taw23.dao.*;
+import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Cuenta;
 import es.taw.taw23.dto.Divisa;
 import es.taw.taw23.dto.Movimiento;
-import es.taw.taw23.entity.CuentaEntity;
-import es.taw.taw23.entity.DivisaEntity;
-import es.taw.taw23.entity.MovimientosEntity;
+import es.taw.taw23.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +42,20 @@ public class CajeroService {
         return (cuenta!=null) ? cuenta.toDTO() : null;
     }
 
+    public List<Cliente> buscarClientes(Integer id){
+        CuentaEntity cuenta = cuentaRepository.findById(id).orElse(null);
+        List<CuentaClienteEntity> cuentas = cuenta.getCuentaClientesById();
+        List<ClienteEntity> clientes = new ArrayList<>();
+        for (CuentaClienteEntity x : cuentas){
+            clientes.add(x.getClienteByClienteId());
+        }
+        List<Cliente> clientesDTO = new ArrayList<>();
+        for (ClienteEntity x : clientes){
+            clientesDTO.add(x.toDTO());
+        }
+        return clientesDTO;
+    }
+
     public void addMovimiento(Movimiento mov){
         MovimientosEntity aux = new MovimientosEntity();
         aux.setId(mov.getId());
@@ -53,6 +66,11 @@ public class CajeroService {
         aux.setImporteDestino(mov.getImporteDestino());
         aux.setTimeStamp(mov.getTimeStamp());
         this.movimientoRepository.save(aux);
+    }
+
+    public void setNewCliente(Cliente cliente){
+
+
     }
 
     public void setNewSaldo(Cuenta cuenta){
