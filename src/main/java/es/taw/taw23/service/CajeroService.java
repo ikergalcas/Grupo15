@@ -31,7 +31,24 @@ public class CajeroService {
     protected TipoMovimientoRepository tipoMovimientoRepository;
     @Autowired
     protected CajeroRepository cajeroRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
 
+    public Cliente buscarCliente(Integer id){
+        ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
+        return (cliente!=null) ? cliente.toDTO() : null;
+    }
+
+    public List<Cuenta> buscarCuentasAsociadas(Integer id){
+        ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
+        List<CuentaClienteEntity> cuentas = cliente.getCuentaClientesById();
+
+        List<Cuenta> cuentasAsociadas = new ArrayList<>();
+        for (CuentaClienteEntity x : cuentas){
+            cuentasAsociadas.add(x.getCuentaByCuentaId().toDTO());
+        }
+        return cuentasAsociadas;
+    }
     public Cuenta buscarCuenta(Integer id){
         CuentaEntity cuenta = cuentaRepository.findById(id).orElse(null);
         return (cuenta!=null) ? cuenta.toDTO() : null;
@@ -40,20 +57,6 @@ public class CajeroService {
     public Cuenta buscarCuentaPorNumero(String numero){
         CuentaEntity cuenta = cajeroRepository.findByAccountNumber(numero);
         return (cuenta!=null) ? cuenta.toDTO() : null;
-    }
-
-    public List<Cliente> buscarClientes(Integer id){
-        CuentaEntity cuenta = cuentaRepository.findById(id).orElse(null);
-        List<CuentaClienteEntity> cuentas = cuenta.getCuentaClientesById();
-        List<ClienteEntity> clientes = new ArrayList<>();
-        for (CuentaClienteEntity x : cuentas){
-            clientes.add(x.getClienteByClienteId());
-        }
-        List<Cliente> clientesDTO = new ArrayList<>();
-        for (ClienteEntity x : clientes){
-            clientesDTO.add(x.toDTO());
-        }
-        return clientesDTO;
     }
 
     public void addMovimiento(Movimiento mov){
@@ -87,10 +90,11 @@ public class CajeroService {
     }
 
     public List<Cuenta> obtenerTodasLasCuentasMenosOrigen(Integer id){
-        List<CuentaEntity> cuentas = this.cajeroRepository.findAllButNotThis(id);
+        List<CuentaEntity> cuentas = this.cuentaRepository.findAll();
         List<Cuenta> cuentasDTO = new ArrayList<>();
         for (CuentaEntity x : cuentas){
-            cuentasDTO.add(x.toDTO());
+            if (!x.getId().equals(id)) //Esto debería hacerlo con SQL pero no se honestamente
+                cuentasDTO.add(x.toDTO());
         }
         return cuentasDTO;
     }

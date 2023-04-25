@@ -22,10 +22,22 @@ public class CajeroController {
 
 
 /*
+!!LE PASO LA ID DEL CLIENTE!!!!
 Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por tanto, necesito los movimientos para sacar el tipo, importe, el id y la fecha
  */
-    @GetMapping("/{id}")
-    public String doListarCajero(@PathVariable("id") Integer id, Model model){
+
+    @GetMapping("/{clienteId}")
+    public String doMostrarCuentas(@PathVariable("clienteId") Integer clienteId, Model model){
+        List<Cuenta> cuentasAsociadas = this.cajeroService.buscarCuentasAsociadas(clienteId);
+        Cliente cliente = this.cajeroService.buscarCliente(clienteId);
+        model.addAttribute("cuentasAsociadas",cuentasAsociadas);
+        model.addAttribute("cliente",cliente);
+        return "cuentasCliente";
+    }
+
+    @GetMapping("/{clienteId}/cuenta/{id}")
+    public String doListarCajero(@PathVariable("id") Integer id,@PathVariable("clienteId") Integer clienteId, Model model){
+        Cliente cliente = this.cajeroService.buscarCliente(clienteId);
         Cuenta cuenta = this.cajeroService.buscarCuenta(id);
         List<Movimiento> movimientos = cuenta.getMovimientosOrigen();
         for (Movimiento x : cuenta.getMovimientosDestino()){
@@ -34,31 +46,36 @@ Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por
         }
         model.addAttribute("cuenta",cuenta);
         model.addAttribute("movimientos",movimientos);
+        model.addAttribute("cliente",cliente);
         return "cajero";
     }
-    @GetMapping("/modificar/{id}")
-    public String doModificar(@PathVariable("id") Integer id, Model model){
-        List<Cliente> clientes = this.cajeroService.buscarClientes(id);
-        model.addAttribute("clientes",clientes);
+    @GetMapping("/{clienteId}/modificar")
+    public String doModificar(@PathVariable("clienteId") Integer clienteId, Model model){
+        Cliente cliente = this.cajeroService.buscarCliente(clienteId);
+        model.addAttribute("cliente",cliente);
         return "modificar";
     }
     @PostMapping("/guardar")
     public String procesarModificacion(@ModelAttribute("cliente") Cliente cliente){
         this.cajeroService.setNewCliente(cliente);
-        return "redirect:/cajero/{id}";
+        return "redirect:/"+cliente.getId();
     }
 
 
-    @GetMapping("/transferencia/{id}")
-    public String doTransferencia(@PathVariable("id") Integer id, Model model){
+    @GetMapping("/{clienteId}/cuenta/{id}/transferencia")
+    public String doTransferencia(@PathVariable("id") Integer id, @PathVariable("clienteId") Integer clienteId, Model model){
+        Cliente cliente = this.cajeroService.buscarCliente(clienteId);
         Cuenta cuenta = this.cajeroService.buscarCuenta(id);
         List<Cuenta> cuentasMenosOrigen = this.cajeroService.obtenerTodasLasCuentasMenosOrigen(id);
+        model.addAttribute("cliente",cliente);
         model.addAttribute("cuenta",cuenta);
         model.addAttribute("cuentasMenosOrigen",cuentasMenosOrigen);
         return "transferencia";
     }
     @PostMapping("/transferir")
-    public String procesarTransferencia(@ModelAttribute("movimiento") Movimiento mov){
+    public String procesarTransferencia(@ModelAttribute("movimiento") Movimiento mov,
+                                        @ModelAttribute("cliente") Cliente cliente,
+                                        @ModelAttribute("cuenta") Cuenta cuenta){
 
         //Cuenta origen = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaOrigen());
         //this.cajeroService.procesarDinero(origen,mov.getImporteOrigen());
@@ -67,7 +84,7 @@ Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por
         //this.cajeroService.procesarDinero(destino,mov.getImporteDestino());
 
         this.cajeroService.addMovimiento(movAux(mov));
-        return "redirect:/cajero/{id}";
+        return "redirect:/"+cliente.getId()+"/cuenta/"+cuenta.getId();
     }
     private Movimiento movAux(Movimiento mov){
         Movimiento aux = new Movimiento();
@@ -81,29 +98,27 @@ Cuenta tiene: id, Lista de movimientos_origen, lista de movimientos_destino. Por
         return aux;
     }
 
-    @GetMapping("/retirar/{id}")
-    public String doRetirar(@PathVariable("id") Integer id, Model model){
+    @GetMapping("/{clienteId}/cuenta/{id}/retirar")
+    public String doRetirar(@PathVariable("id") Integer id,@PathVariable("clienteId") Integer clienteId, Model model){
+        Cliente cliente = this.cajeroService.buscarCliente(clienteId);
         Cuenta cuenta = this.cajeroService.buscarCuenta(id);
+        model.addAttribute("cliente",cliente);
         model.addAttribute("cuenta",cuenta);
         return "retirar";
     }
     @PostMapping("/sacar")
-    public String procesarRetirar(@ModelAttribute("cuenta") Cuenta cuenta){
+    public String procesarRetirar(@ModelAttribute("cuenta") Cuenta cuenta,
+                                  @ModelAttribute("cliente") Cliente cliente){
         this.cajeroService.setNewSaldo(cuenta);
-        return "redirect:/cajero/{id}";
+        return "redirect:/"+cliente.getId()+"/cuenta/"+cuenta.getId();
     }
 
-    @GetMapping("/cambiarDivisa/{id}")
+    @GetMapping("/{clienteId}/cuenta/{id}/cambiarDivisa")
     public String doCambiarDivisa(@PathVariable("id") Integer id, Model model){
-        Cuenta cuenta = this.cajeroService.buscarCuenta(id);
-        List<Divisa> divisas = this.cajeroService.obtenerTodasLasDivisas();
-        model.addAttribute("cuenta",cuenta);
-        model.addAttribute("divisas",divisas);
         return "cambiarDivisa";
     }
     @PostMapping("/cambiar")
     public String procesarCambiarDivisa(@ModelAttribute("divisa") Divisa divisa, @ModelAttribute("cuenta") Cuenta cuenta){
-        this.cajeroService.setNewDivisa(divisa,cuenta);
-        return "redirect:/cajero/{id}";
+        return "redirect:/{clienteId}/cuenta/{id}";
     }
 }

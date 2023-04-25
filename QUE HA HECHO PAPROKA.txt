@@ -5,6 +5,7 @@ What is Paproka touching in this project?            -------> ¡TIENE Q REDIRIGI
 
 JSP
 -Cajero.jsp
+-CuentasCliente.jsp
 -----------------------------------------(Faltan)
 -Retirar.jsp
 -Transferencia.jsp

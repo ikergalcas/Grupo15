@@ -1,20 +1,28 @@
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.dto.Movimiento" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Cajero</title>
 </head>
 <body>
-<% Cuenta x = (Cuenta) request.getAttribute("cuenta");
-   List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos"); %>
+<% Cuenta cuenta = (Cuenta) request.getAttribute("cuenta");
+   List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
+ Cliente cliente = (Cliente) request.getAttribute("cliente");%>
 <table>
     <td>
-        <th style="width:600px"><h1>¡Bienvenidx al cajero!</h1></th>
+        <th>
+        <form action="/cajero/<%=cliente.getId()%>">
+            <input style="width:200px; height: 30px" type="submit" value="Volver al listado de cuentas" />
+        </form>
+        </th>
+        <th style="width:850px"></th>
+        <th style="width:800px"><h1>¡Bienvenidx al cajero!</h1></th>
         <th style="width:900px"></th>
         <th>
-            <form action="/cajero/modificar/<%=x.getId()%>">
+            <form action="/cajero/<%=cliente.getId()%>/modificar/">
                 <input style="width:200px; height: 30px" type="submit" value="Modificar datos" />
             </form>
         </th>
@@ -67,17 +75,17 @@
 <table style="margin-left: 30%">
     <td>
         <th>
-            <form action="/cajero/transferencia/<%=x.getId()%>">
+            <form action="/cajero/<%=cliente.getId()%>/cuenta/<%=cuenta.getId()%>/transferencia">
                 <input style="width:200px; height: 30px" type="submit" value="Realizar una transferencia" />
             </form>
         </th>
         <th>
-            <form action="/cajero/retirar/<%=x.getId()%>">
+            <form action="/cajero/<%=cliente.getId()%>/cuenta/<%=cuenta.getId()%>/retirar">
                 <input style="width:200px; height: 30px" type="submit" value="Retirar dinero" />
             </form>
         </th>
         <th>
-            <form action="/cajero/cambiarDivisa/<%=x.getId()%>">
+            <form action="/cajero/<%=cliente.getId()%>/cuenta/<%=cuenta.getId()%>/cambiarDivisa">
                 <input style="width:205px; height: 30px" type="submit" value="Cambiar divisa" />
             </form>
         </th>
@@ -86,9 +94,16 @@
 
 <table style="margin-left: 40%">
     <th>Estado cuenta: </th>
-    <th><%=x.getEstadoCuenta()%></th>
-    <% if (x.getEstadoCuenta().equals("2")){ %>
-    <th><a href="/solicitud?id=<%=x.getId()%>" type="button" id="Desbloquear">Desbloquear cuenta</a></th>
+    <% if (cuenta.getEstadoCuenta().equals("activa")){ %>
+    <th><h4 style="background-color: chartreuse; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
+    <%} else { %>
+    <th><h4 style="background-color: red; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
+    <% }if (cuenta.getEstadoCuenta().equals("bloqueada")){ %>
+    <th>
+        <form action="/cajero/<%=cliente.getId()%>/solicitud/<%=cuenta.getId()%>/cambiarDivisa/<%=cuenta.getId()%>">
+            <input style="width:205px; height: 20px; margin-top:15px" type="submit" value="Desbloquear cuenta" />
+        </form>
+    </th>
     <%} else{ %>
     <th><button type="button" disabled>Desbloquear cuenta</button></th>
     <%}%>
