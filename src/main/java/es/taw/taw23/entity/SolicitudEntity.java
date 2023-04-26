@@ -1,7 +1,5 @@
 package es.taw.taw23.entity;
 
-import ch.qos.logback.core.net.server.Client;
-import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Solicitud;
 
 import javax.persistence.*;

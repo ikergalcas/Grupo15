@@ -114,7 +114,7 @@ public class GestorController {
 
         Solicitud solicitud = solicitudService.buscarSolicitud(cuenta.getIdSolicitud());
         Empleado gestor = gestorService.BuscarGestor(cuenta.getIdGestor());
-        Empresa empresa = empresaService.buscarEmpresaDevuelveDTO(cuenta.getIdEmpresa());
+        Empresa empresa = empresaService.buscarEmpresa(cuenta.getIdEmpresa());
 
         cuentaService.crearNuevaCuenta(cuenta);
 

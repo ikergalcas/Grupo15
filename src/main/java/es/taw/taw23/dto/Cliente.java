@@ -3,7 +3,7 @@ package es.taw.taw23.dto;
 import es.taw.taw23.entity.CuentaClienteEntity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class Cliente implements Serializable {
@@ -23,9 +23,8 @@ public class Cliente implements Serializable {
     private String cp;
     private String contrasena;
     private String tipo;
-    private String empresa;
-    private Integer idEmpresa;
-    private List<CuentaClienteEntity> cuentas;
+    private Integer empresa;
+    private Integer acceso;
 
     public Integer getId() {
         return id;
@@ -155,27 +154,19 @@ public class Cliente implements Serializable {
         this.tipo = tipo;
     }
 
-    public String getEmpresa() {
+    public Integer getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(String empresa) {
+    public void setEmpresa(Integer empresa) {
         this.empresa = empresa;
     }
 
-    public Integer getIdEmpresa() {
-        return idEmpresa;
+    public Integer getAcceso() {
+        return acceso;
     }
 
-    public void setIdEmpresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa;
-    }
-
-    public List<CuentaClienteEntity> getCuentas() {
-        return cuentas;
-    }
-
-    public void setCuentas(List<CuentaClienteEntity> cuentas) {
-        this.cuentas = cuentas;
+    public void setAcceso(Integer acceso) {
+        this.acceso = acceso;
     }
 }

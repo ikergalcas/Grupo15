@@ -13,4 +13,7 @@ public interface GestorRepository extends JpaRepository<EmpleadoEntity,Integer> 
 
     @Query("select e from EmpleadoEntity e where e.rolEmpleadoByRolEmpleadoId.id = 1 and e.id = :id")
     public EmpleadoEntity findGestorById(@Param("id") Integer id);
+
+    @Query("select e from EmpleadoEntity e where e.rolEmpleadoByRolEmpleadoId.tipo = 'gestor'")
+    public List<EmpleadoEntity> buscarGestores();
 }
