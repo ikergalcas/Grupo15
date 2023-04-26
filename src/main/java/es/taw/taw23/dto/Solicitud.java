@@ -1,5 +1,7 @@
 package es.taw.taw23.dto;
 
+import es.taw.taw23.entity.TipoSolicitudEntity;
+
 import java.io.Serializable;
 
 public class Solicitud implements Serializable {
@@ -10,6 +12,9 @@ public class Solicitud implements Serializable {
     private Integer tipo_solicitud_id;
     private Integer estado_solicitud_id;
     private Cliente cliente;
+    private Tipo_solicitud tipo_solicitud;
+    private Estado_solicitud estado_solicitud;
+
     public Integer getId() {
         return id;
     }
@@ -64,5 +69,21 @@ public class Solicitud implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Tipo_solicitud getTipo_solicitud() {
+        return tipo_solicitud;
+    }
+
+    public void setTipo_solicitud(Tipo_solicitud tipo_solicitud) {
+        this.tipo_solicitud = tipo_solicitud;
+    }
+
+    public Estado_solicitud getEstado_solicitud() {
+        return estado_solicitud;
+    }
+
+    public void setEstado_solicitud(Estado_solicitud estado_solicitud) {
+        this.estado_solicitud = estado_solicitud;
     }
 }

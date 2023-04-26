@@ -18,6 +18,8 @@ public class Cuenta implements Serializable {
     private List<CuentaClienteEntity> cuentaCliente;
     private List<Movimiento> movimientosOrigen;     //Lista de movimientos en los que esta es la cuenta origen
     private List<Movimiento> movimientosDestino;    //Lista de movimientos en los que esta es la cuenta destino
+    private Integer idSolicitud;
+    private Integer idGestor;
 
     public Integer getId() {
         return id;
@@ -105,5 +107,21 @@ public class Cuenta implements Serializable {
 
     public void setMovimientosDestino(List<Movimiento> movimientosDestino) {
         this.movimientosDestino = movimientosDestino;
+    }
+
+    public Integer getIdSolicitud() {
+        return idSolicitud;
+    }
+
+    public void setIdSolicitud(Integer idSolicitud) {
+        this.idSolicitud = idSolicitud;
+    }
+
+    public Integer getIdGestor() {
+        return idGestor;
+    }
+
+    public void setIdGestor(Integer idGestor) {
+        this.idGestor = idGestor;
     }
 }

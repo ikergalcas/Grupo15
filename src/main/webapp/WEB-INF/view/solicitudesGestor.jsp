@@ -22,13 +22,28 @@
 <table border="1">
     <tr>
         <th>CLIENTE</th>
+        <th>NIF</th>
         <th>TIPO SOLICITUD</th>
+        <th>ESTADO DE LA SOLICITUD</th>
     </tr>
     <% for (Solicitud s : solicitudes) {%>
 
     <tr>
         <td><%=s.getCliente().getPrimerNombre()%> <%= s.getCliente().getPrimerApellido()%></td>
-        <td><%=s.getTipo_solicitud_id()%></td>
+        <td><%=s.getCliente().getNif()%></td>
+        <td><%=s.getTipo_solicitud().getTipo()%></td>
+        <td><%=s.getEstado_solicitud().getEstado()%></td>
+        <td><input type="submit" value="Información del cliente"></td>
+        <% if ((s.getTipo_solicitud().getTipo().equals("alta_cliente") && s.getEstado_solicitud().getId() == 1) ||
+                (s.getTipo_solicitud().getTipo().equals("alta_empresa") && s.getEstado_solicitud().getId() == 1)) {%>
+            <td><input type="submit" value="Ver solicitud" onclick="location.href='/gestor/verSolicitudAltaCliente/<%=s.getId()%>/<%=gestor.getId()%>';"/>  <input type="submit" value="Rechazar solicitud"></td>
+        <% } else if (s.getEstado_solicitud().getId() == 3) { %>
+            <td><input type="submit" value="Revisar solicitud aprobada"></td>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("activacion")) { %>
+            <td><input type="submit" value="Activar cuenta"></td>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("desbloqueo")) {%>
+            <td><input type="submit" value="Desbloquear cuenta"></td>
+        <% } %>
     </tr>
 
     <%

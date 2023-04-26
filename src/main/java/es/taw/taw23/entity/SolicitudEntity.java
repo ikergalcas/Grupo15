@@ -106,6 +106,8 @@ public class SolicitudEntity {
         dto.setEstado_solicitud_id(this.estadoSolicitudByEstadoSolicitudId.getId());
         dto.setTipo_solicitud_id(this.tipoSolicitudByTipoSolicitudId.getId());
         dto.setCliente(this.clienteByClienteId.toDTO());
+        dto.setTipo_solicitud(this.tipoSolicitudByTipoSolicitudId.toDTO());
+        dto.setEstado_solicitud(this.estadoSolicitudByEstadoSolicitudId.toDTO());
         return dto;
     }
 
