@@ -99,6 +99,7 @@
 <%
     }
 %>
+<a href="/empresa/transferencia?id=<%= cliente.getId() %>">Realizar transferencia</a> <br/>
 
 </body>
 </html>

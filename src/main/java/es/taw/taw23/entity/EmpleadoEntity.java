@@ -1,5 +1,7 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Empleado;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -106,5 +108,15 @@ public class EmpleadoEntity {
 
     public void setSolicitudsById(List<SolicitudEntity> solicitudsById) {
         this.solicitudsById = solicitudsById;
+    }
+
+    public Empleado toDTO(){
+        Empleado dto = new Empleado();
+        dto.setId(id);
+        dto.setNombre(nombre);
+        dto.setNumeroEmpleado(numeroEmpleado);
+        dto.setContrasena(contraseña);
+        dto.setRol(rolEmpleadoByRolEmpleadoId.getId());
+        return dto;
     }
 }

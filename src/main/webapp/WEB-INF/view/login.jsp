@@ -11,7 +11,7 @@
 <form action="/" method="post">
     <table>
         <tr>
-            <td>NIF:</td> <td><input type="text" name="nif"></td>
+            <td>NIF/No Empleado:</td> <td><input type="text" name="nif"></td> <%------------- Añadir Nº empleado -------------%>
         </tr>
         <tr>
             <td>Contraseña</td> <td><input type="password" name="contrasena"></td>
