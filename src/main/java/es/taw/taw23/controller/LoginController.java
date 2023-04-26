@@ -33,7 +33,7 @@ public class LoginController {
                 urlto = "redirect:/empresa/?id=" + cliente.getId(); // ------------- HAY QUE CAMBIAR ESTA URL -----------------
             }
         } else if (empleado != null) {
-            if (empleado.getRol() == 2){
+            if (empleado.getRol().equals("asistente")){
                 urlto = "redirect:/asistente/"+empleado.getId();
             }
         }

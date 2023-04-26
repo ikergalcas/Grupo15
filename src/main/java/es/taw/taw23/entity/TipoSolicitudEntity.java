@@ -1,5 +1,7 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Tipo_solicitud;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -50,6 +52,13 @@ public class TipoSolicitudEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
         return result;
+    }
+
+    public Tipo_solicitud toDTO() {
+        Tipo_solicitud dto = new Tipo_solicitud();
+        dto.setId(this.id);
+        dto.setTipo(this.tipo);
+        return dto;
     }
 
     public List<SolicitudEntity> getSolicitudsById() {

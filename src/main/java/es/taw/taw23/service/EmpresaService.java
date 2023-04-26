@@ -4,6 +4,7 @@ import es.taw.taw23.dao.*;
 import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Cuenta;
 import es.taw.taw23.dto.Divisa;
+import es.taw.taw23.dto.Empresa;
 import es.taw.taw23.entity.*;
 import es.taw.taw23.ui.MovimientoCambioDivisa;
 import es.taw.taw23.ui.MovimientoTransferencia;
@@ -40,6 +41,10 @@ public class EmpresaService {
     @Autowired
     protected RolClienteRepository rolClienteRepository;
 
+    @Autowired
+    protected ClienteRepository clienteRepository;
+
+
     public Cliente buscarCliente(Integer id) {
         ClienteEntity asociadoEntity = this.asociadoRepository.findById(id).orElse(null);
         if(asociadoEntity != null) {
@@ -47,6 +52,11 @@ public class EmpresaService {
         } else {
             return null;
         }
+    }
+
+    public Empresa buscarEmpresaDevuelveDTO(Integer id) {
+        EmpresaEntity empresaEntity = this.empresaRepository.findById(id).orElse(null);
+        return empresaEntity.toDTO();
     }
 
     public EmpresaEntity buscarEmpresa(Integer id) {
@@ -241,5 +251,12 @@ public class EmpresaService {
         cuenta.setDinero(dineroMonedaNueva);
 
         this.cuentaRepository.save(cuenta);
+    }
+
+    public Empresa buscarEmpresaAPartirDeCliente(Cliente cliente) {
+
+        EmpresaEntity empresa = empresaRepository.findById(cliente.getIdEmpresa()).orElse(null);
+
+        return empresa.toDTO();
     }
 }
