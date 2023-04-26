@@ -1,49 +1,39 @@
 package es.taw.taw23.dto;
 
-public class Empleado {
-    private int id;
+import es.taw.taw23.entity.SolicitudEntity;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class Empleado implements Serializable{
+    private Integer id;
     private String nombre;
-    private int numeroEmpleado;
+    private Integer numero_empleado;
     private String contrasena;
-    private int rol;
+    private String rol;
+    private List<Solicitud> solicitudes;
 
-    public int getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public Integer getNumero_empleado() { return numero_empleado; }
 
-    public int getNumeroEmpleado() {
-        return numeroEmpleado;
-    }
+    public String getContrasena() { return contrasena; }
 
-    public void setNumeroEmpleado(int numeroEmpleado) {
-        this.numeroEmpleado = numeroEmpleado;
-    }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getContrasena() {
-        return contrasena;
-    }
+    public void setNumero_empleado(Integer numero_empleado) { this.numero_empleado = numero_empleado; }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 
-    public int getRol() {
-        return rol;
-    }
+    public String getRol() { return rol; }
 
-    public void setRol(int rol) {
-        this.rol = rol;
-    }
+    public void setRol(String rol) { this.rol = rol; }
+
+    public List<Solicitud> getSolicitudes() { return solicitudes; }
+
+    public void setSolicitudes(List<Solicitud> solicitudes) { this.solicitudes = solicitudes; }
 }
