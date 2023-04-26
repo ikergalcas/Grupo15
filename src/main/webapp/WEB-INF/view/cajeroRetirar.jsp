@@ -28,15 +28,14 @@
             <form:form modelAttribute="cuenta" action="/cajero/sacar" method="post">
                 <form:hidden path="id"/>
                 <form:input path="dinero"/>
-                <form:button>Sacar dinero</form:button>
+                <form action="/cajero/sacar" method="post">
+                    <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
+                    <button>Sacar dinero</button>
+                </form>
             </form:form>
         </th>
     </td>
 </table>
-<table style="margin-left: 44%; margin-top: 10px">
-    <th><h2 style="background: red">Cantidad invalida</h2></th>
-</table>
-
 
 <table style="margin-left:40%">
     <td style="background-color:lightblue"><h1>SALDO: <%=cuenta.getDinero()%> <%=cuenta.getMoneda()%></h1></td>

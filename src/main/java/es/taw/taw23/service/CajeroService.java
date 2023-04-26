@@ -1,14 +1,12 @@
 package es.taw.taw23.service;
 
 import es.taw.taw23.dao.*;
-import es.taw.taw23.dto.Cliente;
-import es.taw.taw23.dto.Cuenta;
-import es.taw.taw23.dto.Divisa;
-import es.taw.taw23.dto.Movimiento;
+import es.taw.taw23.dto.*;
 import es.taw.taw23.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,6 +34,7 @@ public class CajeroService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+
     public Cliente buscarCliente(Integer id){
         ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
         return (cliente!=null) ? cliente.toDTO() : null;
@@ -62,8 +61,26 @@ public class CajeroService {
     }
 
     public void setNewCliente(Cliente cliente){
+        this.clienteRepository.save(guardarAux(cliente));
+    }
 
-
+    private ClienteEntity guardarAux(Cliente cliente){
+        ClienteEntity aux = this.clienteRepository.findById(cliente.getId()).orElse(null);
+        aux.setNif(cliente.getNif());
+        aux.setPrimerNombre(cliente.getPrimerNombre());
+        aux.setSegundoNombre(cliente.getSegundoNombre());
+        aux.setPrimerApellido(cliente.getPrimerApellido());
+        aux.setSegundoApellido(cliente.getSegundoApellido());
+        aux.setFechaNacimiento((Date) cliente.getFechaNacimiento());
+        aux.setCalle(cliente.getCalle());
+        aux.setNumero(cliente.getNumero());
+        aux.setPuerta(cliente.getPuerta());
+        aux.setCiudad(cliente.getCiudad());
+        aux.setPais(cliente.getPais());
+        aux.setRegion(cliente.getRegion());
+        aux.setCp(cliente.getCp());
+        aux.setContrasena(cliente.getContrasena());
+        return aux;
     }
 
     public void setNewMovimiento(Cuenta origen, Cuenta destino,

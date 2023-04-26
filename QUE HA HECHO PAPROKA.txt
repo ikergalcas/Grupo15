@@ -1,17 +1,19 @@
-What is Paproka touching in this project?            -------> ¡TIENE Q REDIRIGIR LA ID DE LA CUENTA! <-----------
+What is Paproka touching in this project?
 -CajeroController
 -CajeroService
 -CajeroRepository
 
 JSP
--Cajero.jsp
--CuentasCliente.jsp
--Retirar.jsp
--RetirarAux.jsp
--TransferenciaCajero.jsp
--TransferenciaCajeroAux.jsp
--CambiarDivisa.jsp
-FALTA -> Modificar.jsp
+-cajero.jsp
+-cajeroCuentasCliente.jsp
+-cajeroRetirar.jsp
+-cajeroRetirarAux.jsp
+-cajeroTransferencia.jsp
+-cajeroTransferenciaAux.jsp
+-cajeroCambiarDivisa.jsp
+-cajeroModificarCliente.jsp
 
 ¿Qué falta?
-Plantear el filtro. Ver como puedo hacer modificar. ¿Como me paso los atributos para redireccionar?
+Filtro
+
+FALTA FECHA MODIFICAR

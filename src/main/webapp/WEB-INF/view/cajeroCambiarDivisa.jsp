@@ -30,7 +30,10 @@
 <form:form method="post" modelAttribute="cuenta" action="/cajero/cambiar">
     <form:hidden path="id"/>
     <form:select path="moneda" items="${divisas}" itemLabel="moneda" itemValue="moneda"/>
-    <button:button>Cambiar divisa</button:button>
+    <form action="/cajero/transferir" method="post">
+        <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
+        <button>Cambiar divisa</button>
+    </form>
 </form:form>
 </body>
 </html>

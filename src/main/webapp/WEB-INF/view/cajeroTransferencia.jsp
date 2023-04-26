@@ -30,7 +30,11 @@
                 <form:hidden path="cuentaOrigen"/>
                 Importe: <form:input path="importeOrigen"/>
                 Cuenta: <form:input path="cuentaDestino"/>
-                <form:button>Transferir</form:button>
+                <form action="/cajero/transferir" method="post">
+                    <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
+                    <input type="hidden" name="idCuenta" value="<%=cuenta.getId()%>"/>
+                    <button>Transferir</button>
+                </form>
             </form:form>
         </th>
         </td>
