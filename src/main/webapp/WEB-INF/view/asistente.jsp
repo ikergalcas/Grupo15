@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<h1>Asistente (<%=asistente.getNumeroEmpleado()%>)</h1>
+<h1>Asistente (<%=asistente.getNumero_empleado()%>)</h1>
 <h2>Listado de chats</h2>
 
 <form:form action="/asistente/filtrar" method="post" modelAttribute="filtro">
