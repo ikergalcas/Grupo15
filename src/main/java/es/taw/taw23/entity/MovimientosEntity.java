@@ -125,7 +125,8 @@ public class MovimientosEntity implements DTO<Movimiento> {
         dto.setCuentaOrigen(this.cuentaByCuentaOrigenId.getNumeroCuenta());
         dto.setCuentaDestino(this.cuentaByCuentaDestinoId.getNumeroCuenta());
         dto.setTipo(this.tipoMovimientoByTipoMovimientoId.getTipo());
-
+        dto.setDivisaCuentaDestino(this.cuentaByCuentaDestinoId.getDivisaByDivisaId().getMoneda());
+        dto.setDivisaCuentaOrigen(this.cuentaByCuentaOrigenId.getDivisaByDivisaId().getMoneda());
         return dto;
     }
 }

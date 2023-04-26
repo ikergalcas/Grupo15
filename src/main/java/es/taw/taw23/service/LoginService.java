@@ -4,6 +4,7 @@ import es.taw.taw23.dao.*;
 import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Empleado;
 import es.taw.taw23.dto.Empresa;
+import es.taw.taw23.dto.Solicitud;
 import es.taw.taw23.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,5 +105,14 @@ public class LoginService {
 
         }
         return empleado;
+    }
+
+    public Solicitud buscarSolicitudAltaPorIdCliente(Integer id) {
+        SolicitudEntity solicitud = this.solicitudRepository.buscarSolicitudAltaClientePorIdCliente(id);
+        if(solicitud != null) {
+            return solicitud.toDTO();
+        } else {
+            return null;
+        }
     }
 }

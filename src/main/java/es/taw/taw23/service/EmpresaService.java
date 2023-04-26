@@ -355,7 +355,7 @@ public class EmpresaService {
     }
 
     public List<Movimiento> listarMovimientosCuenta(Integer idCuenta) {
-        List<MovimientosEntity> movimientos = this.movimientoRepository.buscarMovimientosDeCuenta(idCuenta);
+        List<MovimientosEntity> movimientos = this.movimientoRepository.buscarMovimientosPorIdCuenta(idCuenta);
 
         return movimientosADTO(movimientos);
     }

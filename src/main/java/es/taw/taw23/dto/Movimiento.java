@@ -12,6 +12,26 @@ public class Movimiento implements Serializable {
     String cuentaDestino;
     String tipo;
 
+    String divisaCuentaOrigen;
+
+    public String getDivisaCuentaOrigen() {
+        return divisaCuentaOrigen;
+    }
+
+    public void setDivisaCuentaOrigen(String divisaCuentaOrigen) {
+        this.divisaCuentaOrigen = divisaCuentaOrigen;
+    }
+
+    public String getDivisaCuentaDestino() {
+        return divisaCuentaDestino;
+    }
+
+    public void setDivisaCuentaDestino(String divisaCuentaDestino) {
+        this.divisaCuentaDestino = divisaCuentaDestino;
+    }
+
+    String divisaCuentaDestino;
+
     public Integer getId() {
         return id;
     }

@@ -3,6 +3,7 @@ package es.taw.taw23.controller;
 import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Empleado;
 import es.taw.taw23.dto.Empresa;
+import es.taw.taw23.dto.Solicitud;
 import es.taw.taw23.entity.*;
 import es.taw.taw23.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,19 @@ public class LoginController {
         String urlto = "login";
         Cliente cliente = this.loginService.buscarCliente(nif, contrasena);
         Empleado empleado = this.loginService.buscarEmpleado(nif, contrasena);
+        Solicitud solicitud = null;
+        if (cliente != null){
+            solicitud = this.loginService.buscarSolicitudAltaPorIdCliente(cliente.getId());
+        }
+        //si la busqueda de solicitud es null significa q esta resuelta, cuenta activa
         //Esta registrado
-        if(cliente != null) {
+        if(cliente != null && solicitud == null) {
+
             //Lo mandamos a la vista de la Empresa
-            if(cliente.getTipo().equals("socio") ||
-                cliente.getTipo().equals("autorizado")) {
+            if(cliente.getTipo().equals("socio") || cliente.getTipo().equals("autorizado")) {
                 urlto = "redirect:/empresa/?id=" + cliente.getId(); // ------------- HAY QUE CAMBIAR ESTA URL -----------------
+            } else{//if(cliente.getTipo().equals("individual")){
+                urlto = "redirect:/cliente/" + cliente.getId();
             }
         } else if (empleado != null) {
             if (empleado.getRol().equals("asistente")){

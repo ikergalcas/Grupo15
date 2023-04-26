@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MovimientoRepository extends JpaRepository<MovimientosEntity, Integer> {
-    @Query("select m from MovimientosEntity m where m.cuentaByCuentaOrigenId.id = :idCuenta")
-    public List<MovimientosEntity> buscarMovimientosDeCuenta(@Param("idCuenta")Integer idCuenta);
+    @Query("select m from MovimientosEntity m where m.cuentaByCuentaDestinoId.id = :idCuenta or m.cuentaByCuentaOrigenId.id = :idCuenta")
+    public List<MovimientosEntity> buscarMovimientosPorIdCuenta(@Param("idCuenta") Integer idCuenta);
 }

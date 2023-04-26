@@ -22,4 +22,7 @@ public interface SolicitudRepository extends JpaRepository<SolicitudEntity,Integ
 
     @Query("select s from SolicitudEntity s where s.clienteByClienteId.id = :idCliente and s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente' and s.tipoSolicitudByTipoSolicitudId.tipo = 'activacion'")
     List<SolicitudEntity> buscarSolicitudesPendientesPorClienteTipoActivacion(@Param("idCliente") Integer id);
+
+    @Query("select s from SolicitudEntity s where s.clienteByClienteId.id = :idCliente and s.tipoSolicitudByTipoSolicitudId.id = 1 and (s.estadoSolicitudByEstadoSolicitudId.id = 1 or s.estadoSolicitudByEstadoSolicitudId.id = 2)" )
+    public SolicitudEntity buscarSolicitudAltaClientePorIdCliente(@Param("idCliente") Integer idCliente);
 }
