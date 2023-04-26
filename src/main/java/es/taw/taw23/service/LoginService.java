@@ -43,7 +43,7 @@ public class LoginService {
         try {
             EmpleadoEntity entity = this.empleadoRepository.inicioSesion(Integer.parseInt(numero), contrasena);
             if(entity != null) {
-                empleado = entity.toDTO();
+                empleado = entity.toDto();
             }
         } catch (NumberFormatException e) {
 

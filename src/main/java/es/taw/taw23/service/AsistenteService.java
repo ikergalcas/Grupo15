@@ -11,7 +11,7 @@ public class AsistenteService {
     protected EmpleadoRepository empleadoRepository;
 
     public Empleado buscarEmpleado(int id){
-        Empleado empleado = empleadoRepository.findById(id).orElse(null).toDTO();
+        Empleado empleado = empleadoRepository.findById(id).orElse(null).toDto();
         return empleado;
     }
 }

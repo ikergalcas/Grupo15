@@ -2,12 +2,10 @@ package es.taw.taw23.controller;
 
 import es.taw.taw23.dao.ClienteRepository;
 import es.taw.taw23.dao.GestorRepository;
-import es.taw.taw23.dto.Cliente;
-import es.taw.taw23.dto.Cuenta;
-import es.taw.taw23.dto.Empleado;
-import es.taw.taw23.dto.Solicitud;
+import es.taw.taw23.dto.*;
 import es.taw.taw23.entity.EmpleadoEntity;
 import es.taw.taw23.entity.SolicitudEntity;
+import es.taw.taw23.service.CuentaService;
 import es.taw.taw23.service.EmpresaService;
 import es.taw.taw23.service.GestorService;
 import es.taw.taw23.service.SolicitudService;
@@ -27,6 +25,12 @@ public class GestorController {
 
     @Autowired
     protected GestorService gestorService;
+
+    @Autowired
+    protected CuentaService cuentaService;
+
+    @Autowired
+    protected EmpresaService empresaService;
 
     @GetMapping("/")
     public String doPaginaPrincipalGestor(@RequestParam(value="id", required = true)Integer id, Model model) {
@@ -49,8 +53,8 @@ public class GestorController {
         return "solicitudesGestor";
     }
 
-    @GetMapping("/verSolicitudAltaCliente/{idSolicitud}/{idGestor}")
-    public String doVerSolicitud(@PathVariable("idSolicitud") Integer idSolicitud,
+    @GetMapping("/verSolicitudAltaClienteIndividual/{idSolicitud}/{idGestor}")
+    public String doVerSolicitudIndividual(@PathVariable("idSolicitud") Integer idSolicitud,
                                  @PathVariable("idGestor") Integer idGestor,
                                  Model model) {
         Solicitud solicitud = solicitudService.buscarSolicitud(idSolicitud);
@@ -64,29 +68,62 @@ public class GestorController {
 
         Cuenta cuenta = new Cuenta();
         model.addAttribute("cuenta",cuenta);
-        return "verSolicitudAltaCliente";
+        return "verSolicitudAltaClienteIndividual";
     }
 
-    @PostMapping("/crearCuentaBancariaCliente")
+    @GetMapping("/verSolicitudAltaClienteEmpresa/{idSolicitud}/{idGestor}")
+    public String doVerSolicitudEmpresa(@PathVariable("idSolicitud") Integer idSolicitud,
+                                 @PathVariable("idGestor") Integer idGestor,
+                                 Model model) {
+        Solicitud solicitud = solicitudService.buscarSolicitud(idSolicitud);
+        model.addAttribute("solicitud",solicitud);
+
+        Empleado gestor = gestorService.BuscarGestor(idGestor);
+        model.addAttribute("gestor",gestor);
+
+        Cliente cliente = solicitudService.buscarClienteAPartirDeSolicitud(idSolicitud);
+        Empresa empresa = empresaService.buscarEmpresaAPartirDeCliente(cliente);
+
+        model.addAttribute("empresa",empresa);
+        model.addAttribute("cliente",cliente);
+
+        Cuenta cuenta = new Cuenta();
+        model.addAttribute("cuenta",cuenta);
+        return "verSolicitudAltaClienteEmpresa";
+    }
+
+    @PostMapping("/crearCuentaBancariaClienteIndividual")
     public String doCrearCuentaBancaria(@ModelAttribute("cuenta") Cuenta cuenta,
                                         Model model) {
 
         Solicitud solicitud = solicitudService.buscarSolicitud(cuenta.getIdSolicitud());
         Empleado gestor = gestorService.BuscarGestor(cuenta.getIdGestor());
+        cuentaService.crearNuevaCuenta(cuenta);
+
+        solicitudService.aprobarSolicitud(solicitud.getId());
+
         model.addAttribute("solicitud",solicitud);
         model.addAttribute("gestor",gestor);
         model.addAttribute("cuenta",cuenta);
-        return "confirmacionAprobarSolicitud";
+        return "confirmacionAprobarSolicitudAltaIndividual";
     }
-    @GetMapping("/aprobarSolicitud/{idSolicitud}/{idGestor}")
-    public String doAprobarSolicitud(@PathVariable("idSolicitud") Integer idSolicitud,
-                                     @PathVariable("idGestor") Integer idGestor,
-                                     Model model) {
-        solicitudService.aprobarSolicitud(idSolicitud);
-        List<Solicitud> solicitudes = gestorService.buscarSolicitudesDeGestor(idGestor);
-        model.addAttribute("solicitudes", solicitudes);
-        Empleado gestor = gestorService.BuscarGestor(idGestor);
+
+    @PostMapping("/crearCuentaBancariaClienteEmpresa")
+    public String doCrearCuentaBancariaEmpresa(@ModelAttribute("cuenta") Cuenta cuenta,
+                                        Model model) {
+
+        Solicitud solicitud = solicitudService.buscarSolicitud(cuenta.getIdSolicitud());
+        Empleado gestor = gestorService.BuscarGestor(cuenta.getIdGestor());
+        Empresa empresa = empresaService.buscarEmpresaDevuelveDTO(cuenta.getIdEmpresa());
+
+        cuentaService.crearNuevaCuenta(cuenta);
+
+        solicitudService.aprobarSolicitud(solicitud.getId());
+
+        model.addAttribute("empresa",empresa);
+        model.addAttribute("solicitud",solicitud);
         model.addAttribute("gestor",gestor);
-        return "redirect:/gestor/solicitudes/?id=" + idGestor;
+        model.addAttribute("cuenta",cuenta);
+        return "confirmacionAprobarSolicitudAltaEmpresa";
     }
 }

@@ -33,15 +33,18 @@
         <td><%=s.getCliente().getNif()%></td>
         <td><%=s.getTipo_solicitud().getTipo()%></td>
         <td><%=s.getEstado_solicitud().getEstado()%></td>
+
         <td><input type="submit" value="Información del cliente"></td>
-        <% if ((s.getTipo_solicitud().getTipo().equals("alta_cliente") && s.getEstado_solicitud().getId() == 1) ||
-                (s.getTipo_solicitud().getTipo().equals("alta_empresa") && s.getEstado_solicitud().getId() == 1)) {%>
-            <td><input type="submit" value="Ver solicitud" onclick="location.href='/gestor/verSolicitudAltaCliente/<%=s.getId()%>/<%=gestor.getId()%>';"/>  <input type="submit" value="Rechazar solicitud"></td>
+
+        <% if (s.getTipo_solicitud().getTipo().equals("alta_cliente") && s.getEstado_solicitud().getId() == 1){%>
+            <td><input type="submit" value="Ver solicitud cliente" onclick="location.href='/gestor/verSolicitudAltaClienteIndividual/<%=s.getId()%>/<%=gestor.getId()%>';"/>  <input type="submit" value="Rechazar solicitud"></td>
+        <% }else if (s.getTipo_solicitud().getTipo().equals("alta_empresa") && s.getEstado_solicitud().getId() == 1){ %>
+            <td><input type="submit" value="Ver solicitud empresa" onclick="location.href='/gestor/verSolicitudAltaClienteEmpresa/<%=s.getId()%>/<%=gestor.getId()%>';"/>  <input type="submit" value="Rechazar solicitud"></td></td>
         <% } else if (s.getEstado_solicitud().getId() == 3) { %>
             <td><input type="submit" value="Revisar solicitud aprobada"></td>
-        <% } else if (s.getTipo_solicitud().getTipo().equals("activacion")) { %>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("activacion") && s.getEstado_solicitud().getId() == 1) { %>
             <td><input type="submit" value="Activar cuenta"></td>
-        <% } else if (s.getTipo_solicitud().getTipo().equals("desbloqueo")) {%>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("desbloqueo") && s.getEstado_solicitud().getId() == 1) {%>
             <td><input type="submit" value="Desbloquear cuenta"></td>
         <% } %>
     </tr>
