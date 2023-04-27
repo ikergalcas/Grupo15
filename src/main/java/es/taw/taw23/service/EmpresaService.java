@@ -223,7 +223,7 @@ public class EmpresaService {
     }
 
     public String transferencia(MovimientoTransferencia transferencia) {
-        MovimientosEntity movimiento = new MovimientosEntity();
+        MovimientoEntity movimiento = new MovimientoEntity();
         String error = "";
 
         //Primero pillo las cuentas y miro si no hay errores en los datos
@@ -246,6 +246,8 @@ public class EmpresaService {
 
             movimiento.setCuentaByCuentaDestinoId(cuentaDestino);
             movimiento.setCuentaByCuentaOrigenId(cuentaOrigen);
+            movimiento.setDivisaByMonedaOrigenId(cuentaOrigen.getDivisaByDivisaId());
+            movimiento.setDivisaByMonedaDestinoId(cuentaDestino.getDivisaByDivisaId());
 
             //La transferencia es sin cambio de divisa
             if(cuentaOrigen.getDivisaByDivisaId().getMoneda().equals(cuentaDestino.getDivisaByDivisaId().getMoneda())) {
@@ -268,7 +270,7 @@ public class EmpresaService {
                 cuentaDestino.setDinero(cuentaDestino.getDinero() + dineroMonedaDestinoRedondeado);
 
                 //En este caso hago tambien un movimiento por el cambio de divisa
-                MovimientosEntity movimientoCambioDivisa = new MovimientosEntity();
+                MovimientoEntity movimientoCambioDivisa = new MovimientoEntity();
                 TipoMovimientoEntity tipoMov2 = this.tipoMovimientoRepository.buscarTipoCambioDivisa();
                 movimientoCambioDivisa.setTipoMovimientoByTipoMovimientoId(tipoMov2);
                 movimientoCambioDivisa.setImporteOrigen(transferencia.getImporte());
@@ -276,6 +278,9 @@ public class EmpresaService {
                 movimientoCambioDivisa.setTimeStamp(timestamp);
                 movimientoCambioDivisa.setCuentaByCuentaDestinoId(cuentaDestino);
                 movimientoCambioDivisa.setCuentaByCuentaOrigenId(cuentaOrigen);
+                movimientoCambioDivisa.setDivisaByMonedaOrigenId(cuentaOrigen.getDivisaByDivisaId());
+                movimientoCambioDivisa.setDivisaByMonedaDestinoId(cuentaDestino.getDivisaByDivisaId());
+
                 this.movimientoRepository.save(movimientoCambioDivisa);
             }
 
@@ -308,7 +313,7 @@ public class EmpresaService {
     }
 
     public void cambioDivisa(MovimientoCambioDivisa divisa) {
-        MovimientosEntity movimiento = new MovimientosEntity();
+        MovimientoEntity movimiento = new MovimientoEntity();
 
         TipoMovimientoEntity tipoMov = this.tipoMovimientoRepository.buscarTipoCambioDivisa();
         CuentaEntity cuenta = this.cuentaRepository.buscarCuentaPorNumeroCuenta(divisa.getCuenta());
@@ -327,6 +332,8 @@ public class EmpresaService {
         Double dineroMonedaDestinoRedondeado = Double.parseDouble(redondeo);
         movimiento.setImporteOrigen(cuenta.getDinero());
         movimiento.setImporteDestino(dineroMonedaDestinoRedondeado);
+        movimiento.setDivisaByMonedaOrigenId(cuenta.getDivisaByDivisaId());
+        movimiento.setDivisaByMonedaDestinoId(divisaNueva);
         cuenta.setDivisaByDivisaId(divisaNueva);
         cuenta.setDinero(dineroMonedaDestinoRedondeado);
 
@@ -355,15 +362,15 @@ public class EmpresaService {
     }
 
     public List<Movimiento> listarMovimientosCuenta(Integer idCuenta) {
-        List<MovimientosEntity> movimientos = this.movimientoRepository.buscarMovimientosPorIdCuenta(idCuenta);
+        List<MovimientoEntity> movimientos = this.movimientoRepository.buscarMovimientosPorIdCuenta(idCuenta);
 
         return movimientosADTO(movimientos);
     }
 
-    private List<Movimiento> movimientosADTO(List<MovimientosEntity> movimientosEntities) {
+    private List<Movimiento> movimientosADTO(List<MovimientoEntity> movimientosEntities) {
         List<Movimiento> movimientos = new ArrayList<>();
 
-        for(MovimientosEntity entity : movimientosEntities) {
+        for(MovimientoEntity entity : movimientosEntities) {
             movimientos.add(entity.toDTO());
         }
 
@@ -378,7 +385,6 @@ public class EmpresaService {
         TipoSolicitudEntity tipoDesbloqueo = this.tipoSolicitudRepository.buscarTipoDesbloqueo();
         solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoPendiente);
         solicitud.setTipoSolicitudByTipoSolicitudId(tipoDesbloqueo);
-        solicitud.setEstado(estadoPendiente.getEstado());
         solicitud.setEmpleadoByEmpleadoId(buscarGestorMenosOcupado());
         solicitud.setClienteByClienteId(cliente);
 
@@ -394,7 +400,6 @@ public class EmpresaService {
         TipoSolicitudEntity tipoActivacion = this.tipoSolicitudRepository.buscarTipoActivacion();
         solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoPendiente);
         solicitud.setTipoSolicitudByTipoSolicitudId(tipoActivacion);
-        solicitud.setEstado(estadoPendiente.getEstado());
         solicitud.setEmpleadoByEmpleadoId(buscarGestorMenosOcupado());
         solicitud.setClienteByClienteId(cliente);
 

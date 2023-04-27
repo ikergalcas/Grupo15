@@ -74,7 +74,7 @@ public class ClienteService {
     }
 
     public String transferencia(MovimientoTransferencia transferencia) {
-        MovimientosEntity movimiento = new MovimientosEntity();
+        MovimientoEntity movimiento = new MovimientoEntity();
         String error = "";
 
         //Primero pillo las cuentas y miro si no hay errores en los datos
@@ -95,6 +95,8 @@ public class ClienteService {
 
             movimiento.setCuentaByCuentaDestinoId(cuentaDestino);
             movimiento.setCuentaByCuentaOrigenId(cuentaOrigen);
+            movimiento.setDivisaByMonedaOrigenId(cuentaOrigen.getDivisaByDivisaId());
+            movimiento.setDivisaByMonedaDestinoId(cuentaDestino.getDivisaByDivisaId());
 
             //La transferencia es sin cambio de divisa
             if(cuentaOrigen.getDivisaByDivisaId().getMoneda().equals(cuentaDestino.getDivisaByDivisaId().getMoneda())) {
@@ -139,11 +141,9 @@ public class ClienteService {
         DivisaEntity divisaNueva = this.divisaRepository.buscarDivisaPorNombre(divisa.getDivisa());
         CambioDivisaEntity cambio = this.cambioDivisaRepository.buscarCambioDivisa(cuenta.getDivisaByDivisaId().getMoneda(), divisa.getDivisa());
 
-
         Double dineroMonedaNueva = cuenta.getDinero() * cambio.getCambio();
-        cuenta.setDivisaByDivisaId(divisaNueva);
-        cuenta.setDinero(dineroMonedaNueva);
-        MovimientosEntity movimiento = new MovimientosEntity();
+
+        MovimientoEntity movimiento = new MovimientoEntity();
         CuentaEntity cuentaOrigen = this.cuentaRepository.buscarCuentaPorNumeroCuenta(cuenta.getNumeroCuenta());
         CuentaEntity cuentaDestino = this.cuentaRepository.buscarCuentaPorNumeroCuenta(cuenta.getNumeroCuenta());
         TipoMovimientoEntity tipoMov = this.tipoMovimientoRepository.buscarTipoCambioDivisa();
@@ -156,7 +156,11 @@ public class ClienteService {
         movimiento.setCuentaByCuentaOrigenId(cuentaOrigen);
         movimiento.setImporteOrigen(cuentaOrigen.getDinero());
         movimiento.setImporteDestino(dineroMonedaNueva);
+        movimiento.setDivisaByMonedaOrigenId(cuentaOrigen.getDivisaByDivisaId());
+        movimiento.setDivisaByMonedaDestinoId(divisaNueva);
 
+        cuenta.setDivisaByDivisaId(divisaNueva);
+        cuenta.setDinero(dineroMonedaNueva);
 
         this.cuentaRepository.save(cuenta);
         this.movimientoRepository.save(movimiento);

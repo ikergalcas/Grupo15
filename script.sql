@@ -41,7 +41,7 @@ CREATE TABLE `cambio_divisa` (
 
 LOCK TABLES `cambio_divisa` WRITE;
 /*!40000 ALTER TABLE `cambio_divisa` DISABLE KEYS */;
-INSERT INTO `cambio_divisa` VALUES (1,1.1,1,2),(2,0.91,2,1),(3,0.89,1,3),(4,1.13,3,1),(5,0.8,2,3),(6,1.24,3,2);
+INSERT INTO `cambio_divisa` VALUES (1,0.91,1,2),(2,1.1,2,1),(3,1.13,1,3),(4,0.88,3,1),(5,1.25,2,3),(6,0.8,3,2);
 /*!40000 ALTER TABLE `cambio_divisa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `chat` (
   KEY `fk_chat_empleado1_idx` (`empleado_id`),
   CONSTRAINT `fk_chat_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
   CONSTRAINT `fk_chat_empleado1` FOREIGN KEY (`empleado_id`) REFERENCES `empleado` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,6 +72,7 @@ CREATE TABLE `chat` (
 
 LOCK TABLES `chat` WRITE;
 /*!40000 ALTER TABLE `chat` DISABLE KEYS */;
+INSERT INTO `chat` VALUES (1,0,1,1);
 /*!40000 ALTER TABLE `chat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +109,7 @@ CREATE TABLE `cliente` (
   KEY `fk_cliente_Empresa1_idx` (`empresa_id`),
   CONSTRAINT `fk_cliente_Empresa1` FOREIGN KEY (`empresa_id`) REFERENCES `empresa` (`id`),
   CONSTRAINT `fk_cliente_rolcliente1` FOREIGN KEY (`rolcliente_id`) REFERENCES `rol_cliente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +118,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1,NULL),(2,'987654321','Pedro',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,1,NULL),(3,'123123123','Lucia',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'socio',3,2,NULL);
+INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,'2002-11-21',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1,1),(2,'987654321','Maria','','','','1995-08-17','','','','','','','','socio',3,1,1),(3,'112233445','Rociop','','','','2000-04-06','','','','','','','','individual',1,NULL,NULL),(4,'12121212','Pedro',NULL,NULL,NULL,'2003-06-06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'pedro',3,2,1);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +147,7 @@ CREATE TABLE `cuenta` (
   CONSTRAINT `fk_cuenta_divisa1` FOREIGN KEY (`divisa_id`) REFERENCES `divisa` (`id`),
   CONSTRAINT `fk_cuenta_estadoCuenta1` FOREIGN KEY (`estado_cuenta_id`) REFERENCES `estado_cuenta` (`id`),
   CONSTRAINT `fk_cuenta_tipoCuenta1` FOREIGN KEY (`tipo_cuenta_id`) REFERENCES `tipo_cuenta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +156,7 @@ CREATE TABLE `cuenta` (
 
 LOCK TABLES `cuenta` WRITE;
 /*!40000 ALTER TABLE `cuenta` DISABLE KEYS */;
-INSERT INTO `cuenta` VALUES (1,'1111','2022-01-01 00:00:00',NULL,1,2,1,190),(2,'2222','2022-01-01 00:00:00',NULL,1,2,1,210);
+INSERT INTO `cuenta` VALUES (1,'1111','2022-12-24 00:00:00',NULL,1,2,1,310),(2,'2222','2022-12-25 00:00:00',NULL,1,2,2,182),(3,'3333','2023-05-05 00:00:00',NULL,1,2,1,240.25),(4,'4444','2023-02-14 00:00:00',NULL,1,1,1,900);
 /*!40000 ALTER TABLE `cuenta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,7 +176,7 @@ CREATE TABLE `cuenta_cliente` (
   KEY `fk_cuenta_cliente_cuenta1_idx` (`cuenta_id`),
   CONSTRAINT `fk_cuenta_cliente_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
   CONSTRAINT `fk_cuenta_cliente_cuenta1` FOREIGN KEY (`cuenta_id`) REFERENCES `cuenta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +185,7 @@ CREATE TABLE `cuenta_cliente` (
 
 LOCK TABLES `cuenta_cliente` WRITE;
 /*!40000 ALTER TABLE `cuenta_cliente` DISABLE KEYS */;
-INSERT INTO `cuenta_cliente` VALUES (1,1,1),(2,3,2);
+INSERT INTO `cuenta_cliente` VALUES (1,1,1),(2,2,2),(3,3,3),(4,1,4),(5,2,4);
 /*!40000 ALTER TABLE `cuenta_cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,6 +264,7 @@ CREATE TABLE `empleado` (
 
 LOCK TABLES `empleado` WRITE;
 /*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
+INSERT INTO `empleado` VALUES (1,'Iker',2,123456789,'iker'),(2,'Serra',1,987654321,'serra');
 /*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,6 +278,8 @@ DROP TABLE IF EXISTS `empresa`;
 CREATE TABLE `empresa` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
+  `cif` varchar(45) NOT NULL,
+  `contrasena` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idEmpresa_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -287,7 +291,7 @@ CREATE TABLE `empresa` (
 
 LOCK TABLES `empresa` WRITE;
 /*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-INSERT INTO `empresa` VALUES (1,'Apple'),(2,'Microsoft');
+INSERT INTO `empresa` VALUES (1,'Apple','1234','apple'),(2,'Microsoft','4321','microsoft');
 /*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,7 +304,7 @@ DROP TABLE IF EXISTS `estado_cuenta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estado_cuenta` (
   `id` int NOT NULL,
-  `estado_cuenta` enum('activa','bloqueada','cerrada') DEFAULT NULL,
+  `estado_cuenta` enum('activa','bloqueada','inactiva') DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -311,7 +315,7 @@ CREATE TABLE `estado_cuenta` (
 
 LOCK TABLES `estado_cuenta` WRITE;
 /*!40000 ALTER TABLE `estado_cuenta` DISABLE KEYS */;
-INSERT INTO `estado_cuenta` VALUES (1,'activa'),(2,'bloqueada'),(3,'cerrada');
+INSERT INTO `estado_cuenta` VALUES (1,'activa'),(2,'bloqueada'),(3,'inactiva');
 /*!40000 ALTER TABLE `estado_cuenta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,7 +328,7 @@ DROP TABLE IF EXISTS `estado_solicitud`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estado_solicitud` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `estado` enum('pendiente','procesando','resuelta') DEFAULT NULL,
+  `estado` enum('pendiente','denegada','aceptada') DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -335,7 +339,7 @@ CREATE TABLE `estado_solicitud` (
 
 LOCK TABLES `estado_solicitud` WRITE;
 /*!40000 ALTER TABLE `estado_solicitud` DISABLE KEYS */;
-INSERT INTO `estado_solicitud` VALUES (1,'pendiente'),(2,'procesando'),(3,'resuelta');
+INSERT INTO `estado_solicitud` VALUES (1,'pendiente'),(2,'denegada'),(3,'aceptada');
 /*!40000 ALTER TABLE `estado_solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -359,7 +363,7 @@ CREATE TABLE `mensaje` (
   KEY `fk_mensaje_remitente1_idx` (`remitente_id`),
   CONSTRAINT `fk_mensaje_chat1` FOREIGN KEY (`chat_id`) REFERENCES `chat` (`id`),
   CONSTRAINT `fk_mensaje_remitente1` FOREIGN KEY (`remitente_id`) REFERENCES `remitente` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,17 +372,18 @@ CREATE TABLE `mensaje` (
 
 LOCK TABLES `mensaje` WRITE;
 /*!40000 ALTER TABLE `mensaje` DISABLE KEYS */;
+INSERT INTO `mensaje` VALUES (1,'holi','2023-04-28 01:03:05','',1,2),(2,'q paza bro','2023-04-28 01:03:10','',1,2);
 /*!40000 ALTER TABLE `mensaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `movimientos`
+-- Table structure for table `movimiento`
 --
 
-DROP TABLE IF EXISTS `movimientos`;
+DROP TABLE IF EXISTS `movimiento`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `movimientos` (
+CREATE TABLE `movimiento` (
   `id` int NOT NULL AUTO_INCREMENT,
   `time_stamp` datetime DEFAULT NULL,
   `importe_origen` double NOT NULL,
@@ -386,25 +391,34 @@ CREATE TABLE `movimientos` (
   `cuenta_origen_id` int NOT NULL,
   `tipo_movimiento_id` int NOT NULL,
   `cuenta_destino_id` int NOT NULL,
+  `moneda_origen_id` int NOT NULL,
+  `moneda_destino_id` int NOT NULL,
+  `cliente_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_movimientos_cuenta1_idx` (`cuenta_origen_id`),
   KEY `fk_movimientos_tipoMovimiento1_idx` (`tipo_movimiento_id`),
   KEY `fk_movimientos_cuenta2_idx` (`cuenta_destino_id`),
+  KEY `fk_movimiento_divisa1_idx` (`moneda_origen_id`),
+  KEY `fk_movimiento_divisa2_idx` (`moneda_destino_id`),
+  KEY `fk_movimiento_cliente1_idx` (`cliente_id`),
+  CONSTRAINT `fk_movimiento_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `fk_movimiento_divisa1` FOREIGN KEY (`moneda_origen_id`) REFERENCES `divisa` (`id`),
+  CONSTRAINT `fk_movimiento_divisa2` FOREIGN KEY (`moneda_destino_id`) REFERENCES `divisa` (`id`),
   CONSTRAINT `fk_movimientos_cuenta1` FOREIGN KEY (`cuenta_origen_id`) REFERENCES `cuenta` (`id`),
   CONSTRAINT `fk_movimientos_cuenta2` FOREIGN KEY (`cuenta_destino_id`) REFERENCES `cuenta` (`id`),
   CONSTRAINT `fk_movimientos_tipoMovimiento1` FOREIGN KEY (`tipo_movimiento_id`) REFERENCES `tipo_movimiento` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `movimientos`
+-- Dumping data for table `movimiento`
 --
 
-LOCK TABLES `movimientos` WRITE;
-/*!40000 ALTER TABLE `movimientos` DISABLE KEYS */;
-INSERT INTO `movimientos` VALUES (1,'2023-04-23 03:57:33',10,10,1,1,2);
-/*!40000 ALTER TABLE `movimientos` ENABLE KEYS */;
+LOCK TABLES `movimiento` WRITE;
+/*!40000 ALTER TABLE `movimiento` DISABLE KEYS */;
+INSERT INTO `movimiento` VALUES (2,'2023-04-28 00:53:08',100,91,2,2,2,1,2,NULL),(3,'2023-04-28 00:58:43',100,91,4,2,2,1,2,NULL),(4,'2023-04-28 00:58:43',100,91,4,1,2,1,2,NULL),(5,'2023-04-28 01:02:04',250,227.5,3,2,3,1,2,NULL),(6,'2023-04-28 01:02:07',227.5,284.375,3,2,3,2,3,NULL),(7,'2023-04-28 01:02:09',284.375,250.25,3,2,3,3,1,NULL),(8,'2023-04-28 01:02:19',10,10,3,1,1,1,1,NULL);
+/*!40000 ALTER TABLE `movimiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -490,7 +504,6 @@ DROP TABLE IF EXISTS `solicitud`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `solicitud` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `estado` varchar(45) NOT NULL,
   `cliente_id` int DEFAULT NULL,
   `empleado_id` int DEFAULT NULL,
   `tipo_solicitud_id` int NOT NULL,
@@ -576,9 +589,9 @@ DROP TABLE IF EXISTS `tipo_solicitud`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_solicitud` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `tipo` enum('alta_cliente','alta_empresa','activacion','desbloqueo') NOT NULL,
+  `tipo` enum('alta_cliente','alta_empresa','activa_empresa','desbloqueo_empresa','desbloqueo_individual','activa_individual') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -587,7 +600,7 @@ CREATE TABLE `tipo_solicitud` (
 
 LOCK TABLES `tipo_solicitud` WRITE;
 /*!40000 ALTER TABLE `tipo_solicitud` DISABLE KEYS */;
-INSERT INTO `tipo_solicitud` VALUES (1,'alta_cliente'),(2,'alta_empresa'),(3,'activacion'),(4,'desbloqueo');
+INSERT INTO `tipo_solicitud` VALUES (1,'alta_cliente'),(2,'alta_empresa'),(3,'activa_empresa'),(4,'desbloqueo_empresa'),(5,'desbloqueo_individual'),(6,'activa_individual');
 /*!40000 ALTER TABLE `tipo_solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -600,4 +613,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 13:23:33
+-- Dump completed on 2023-04-28  1:05:50

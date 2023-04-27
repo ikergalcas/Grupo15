@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SolicitudRepository extends JpaRepository<SolicitudEntity,Integer> {
-    @Query("select s from SolicitudEntity s where s.estado = 'pendiente' and s.empleadoByEmpleadoId.id = :idGestor")
+    @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente' and s.empleadoByEmpleadoId.id = :idGestor")
     public List<SolicitudEntity> buscarSolicitudesPendientesDeUnGestor(@Param("idGestor") Integer id);
 
     @Query("select s from SolicitudEntity s where s.clienteByClienteId.id = :idCliente and s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente'")

@@ -88,7 +88,6 @@ public class LoginService {
         TipoSolicitudEntity tipoAltaEmpresa = this.tipoSolicitudRepository.buscarTipoAltaEmpresa();
         solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoPendiente);
         solicitud.setTipoSolicitudByTipoSolicitudId(tipoAltaEmpresa);
-        solicitud.setEstado(estadoPendiente.getEstado());
         solicitud.setEmpleadoByEmpleadoId(this.empresaService.buscarGestorMenosOcupado());
         solicitud.setClienteByClienteId(clienteBD);
         this.solicitudRepository.save(solicitud);

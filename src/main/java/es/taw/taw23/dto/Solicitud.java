@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class Solicitud implements Serializable {
     private Integer id;
-    private String estado;
     private Integer cliente_id;
     private Integer empleado_id;
     private Integer tipo_solicitud_id;
@@ -21,14 +20,6 @@ public class Solicitud implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public Integer getCliente_id() {

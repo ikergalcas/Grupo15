@@ -43,9 +43,9 @@ public class CuentaEntity implements DTO<Cuenta> {
     @OneToMany(mappedBy = "cuentaByCuentaId")
     private List<CuentaSospechosaEntity> cuentaSospechosasById;
     @OneToMany(mappedBy = "cuentaByCuentaOrigenId")
-    private List<MovimientosEntity> movimientosById;
+    private List<MovimientoEntity> movimientosById;
     @OneToMany(mappedBy = "cuentaByCuentaDestinoId")
-    private List<MovimientosEntity> movimientosById_0;
+    private List<MovimientoEntity> movimientosById_0;
 
     public Integer getId() {
         return id;
@@ -154,19 +154,19 @@ public class CuentaEntity implements DTO<Cuenta> {
         this.cuentaSospechosasById = cuentaSospechosasById;
     }
 
-    public List<MovimientosEntity> getMovimientosById() {
+    public List<MovimientoEntity> getMovimientosById() {
         return movimientosById;
     }
 
-    public void setMovimientosById(List<MovimientosEntity> movimientosById) {
+    public void setMovimientosById(List<MovimientoEntity> movimientosById) {
         this.movimientosById = movimientosById;
     }
 
-    public List<MovimientosEntity> getMovimientosById_0() {
+    public List<MovimientoEntity> getMovimientosById_0() {
         return movimientosById_0;
     }
 
-    public void setMovimientosById_0(List<MovimientosEntity> movimientosById_0) {
+    public void setMovimientosById_0(List<MovimientoEntity> movimientosById_0) {
         this.movimientosById_0 = movimientosById_0;
     }
 
@@ -186,13 +186,13 @@ public class CuentaEntity implements DTO<Cuenta> {
         dto.setCuentaCliente(this.cuentaClientesById);
 
         List<Movimiento> movimientosOrigenDTO = new ArrayList<>();
-        for (MovimientosEntity movimiento : this.movimientosById) {
+        for (MovimientoEntity movimiento : this.movimientosById) {
             movimientosOrigenDTO.add(movimiento.toDTO());
         }
         dto.setMovimientosOrigen(movimientosOrigenDTO);
 
         List<Movimiento> movimientosDestinoDTO = new ArrayList<>();
-        for (MovimientosEntity movimiento : this.movimientosById_0) {
+        for (MovimientoEntity movimiento : this.movimientosById_0) {
             movimientosDestinoDTO.add(movimiento.toDTO());
         }
         dto.setMovimientosDestino(movimientosDestinoDTO);

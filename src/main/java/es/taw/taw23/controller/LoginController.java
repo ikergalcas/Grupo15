@@ -44,6 +44,8 @@ public class LoginController {
         } else if (empleado != null) {
             if (empleado.getRol().equals("asistente")){
                 urlto = "redirect:/asistente/"+empleado.getId();
+            } else {
+                urlto = "redirect:/gestor/?id=" + empleado.getId();
             }
         }
         return urlto;
