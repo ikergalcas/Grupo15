@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,12 +86,15 @@ public class CajeroService {
     }
 
     public void setNewMovimiento(Cuenta origen, Cuenta destino,
-                                 Double cantidadOrigen){
+                                 Double cantidadOrigen, Integer clienteId){
+        ClienteEntity cliente = clienteRepository.findById(clienteId).orElse(null);
         CuentaEntity origenAux = cuentaRepository.findById(origen.getId()).orElse(null);
         CuentaEntity destinoAux = cuentaRepository.findById(destino.getId()).orElse(null);
-        MovimientosEntity movimiento = new MovimientosEntity();
-        List<MovimientosEntity> movimientosTotales = movimientoRepository.findAll();
-        movimiento.setId(movimientosTotales.size()+1);
+        MovimientoEntity movimiento = new MovimientoEntity();
+        List<MovimientoEntity> movimientosTotales = movimientoRepository.findAll();
+        movimiento.setId(movimientosTotales.get(movimientosTotales.size()-1).getId()+1);
+        movimiento.setCuentaByCuentaOrigenId(origenAux);
+        movimiento.setDivisaByMonedaOrigenId(origenAux.getDivisaByDivisaId());
         if (origen.getId().equals(destino.getId()) && origen.getMoneda().equals(destino.getMoneda())){
             TipoMovimientoEntity tipoMovimiento = cajeroRepository.findByMovementName("sacarDinero");
             movimiento.setImporteOrigen(redondear(origenAux.getDinero()));
@@ -121,9 +125,10 @@ public class CajeroService {
             movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
 
         }
-        movimiento.setCuentaByCuentaOrigenId(origenAux);
         movimiento.setCuentaByCuentaDestinoId(destinoAux);
+        movimiento.setDivisaByMonedaDestinoId(destinoAux.getDivisaByDivisaId());
         movimiento.setTimeStamp(new Timestamp(System.currentTimeMillis()));
+        movimiento.setClienteByClienteId(cliente);
         movimientoRepository.save(movimiento);
     }
 

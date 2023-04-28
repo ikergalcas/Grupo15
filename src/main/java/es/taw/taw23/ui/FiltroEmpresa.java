@@ -5,12 +5,14 @@ public class FiltroEmpresa {
     private String primerNombre;
     private String primerApellido;
     private String nombreEmpresa;
+    private String puesto;
 
     public FiltroEmpresa() {
         nif = "";
         primerApellido = "";
         primerNombre = "";
         nombreEmpresa = "";
+        puesto = "";
     }
 
     public String getPrimerNombre() {
@@ -36,4 +38,13 @@ public class FiltroEmpresa {
     public void setNombreEmpresa(String nombreEmpresa) {
         this.nombreEmpresa = nombreEmpresa;
     }
+
+    public String getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
+
 }

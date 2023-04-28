@@ -11,4 +11,10 @@ public interface CuentaClienteRepository extends JpaRepository<CuentaClienteEnti
 
     @Query("select c from CuentaClienteEntity c where c.clienteByClienteId.id = :idCliente")
     List<CuentaClienteEntity> buscarCuentaClientePorIdCliente(@Param("idCliente") Integer id);
+
+    @Query("select c from CuentaClienteEntity c where c.clienteByClienteId.id = :idCliente and c.cuentaByCuentaId.estadoCuentaByEstadoCuentaId.estadoCuenta = 'activa'")
+    List<CuentaClienteEntity> buscarCuentasActivas(@Param("idCliente") Integer id);
+
+    @Query("select c from CuentaClienteEntity c where c.clienteByClienteId.id = :idCliente")
+    List<CuentaClienteEntity> buscarCuentasCliente(@Param("idCliente") Integer id);
 }

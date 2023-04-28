@@ -21,6 +21,9 @@
 <h1>Cambiar datos</h1>
 <form:form method="post" action="/cajero/guardar" modelAttribute="cliente">
     <form:hidden path="id"/>
+    <form:hidden path="tipo"/>
+    <form:hidden path="empresa"/>
+    <form:hidden path="acceso"/>
     NIF: <form:input path="nif"/><br>
     Primer nombre: <form:input path="primerNombre"/><br>
     Segundo nombre: <form:input path="segundoNombre"/><br>

@@ -16,7 +16,6 @@
 <h1>Mis datos</h1>
 <form:form action="/empresa/guardarPerfil?id=<%= cliente.getId() %>" modelAttribute="asociadoEditado" method="post">
     <form:hidden path="id"/>
-    <form:hidden path="idEmpresa"/>
     <form:hidden path="empresa" />
     <form:hidden path="tipo" />
     NIF: <form:input path="nif" size="9" maxlength="10" value="<%= cliente.getNif()%>"/><br/>

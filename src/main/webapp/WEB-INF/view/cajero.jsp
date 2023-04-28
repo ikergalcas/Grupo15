@@ -31,10 +31,10 @@
 </table>
 
 
-<table border="1" style="margin-left: 30%">
+<table border="1" style="margin-left: 25%">
     <tr>
         <th style="width:200px">MOVIMIENTOS</th>
-        <th style="width:200px">IMPORTE</th>
+        <th style="width:300px">IMPORTE</th>
         <th style="width:200px">FECHA</th>
     </tr>
     <% if (movimientos==null){%>
@@ -48,7 +48,7 @@
                 if (mov.getTipo().equals("pago")) { %>
                 <tr>
                     <th>De <%=mov.getCuentaOrigen()%> a <%=mov.getCuentaDestino()%></th>
-                    <th><u>Origen:</u> <%=mov.getImporteOrigen()%> <u>Destino:</u> <%=mov.getImporteDestino()%></th>
+                    <th><u>Origen:</u> <%=mov.getImporteOrigen()%> <%=mov.getDivisaCuentaOrigen()%> <u>Destino:</u> <%=mov.getImporteDestino()%> <%=mov.getDivisaCuentaDestino()%></th>
                     <th><%=mov.getTimeStamp().toString()%></th>
                 </tr>
                 <% } else {

@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TipoMovimientoRepository extends JpaRepository<TipoMovimientoEntity, Integer> {
-
     @Query("select t from TipoMovimientoEntity t where t.tipo = 'pago'")
     public TipoMovimientoEntity buscarTipoTransferencia();
+
+    @Query("select t from TipoMovimientoEntity t where t.tipo = 'cambioDivisa'")
+    public TipoMovimientoEntity buscarTipoCambioDivisa();
 }

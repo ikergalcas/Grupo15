@@ -53,7 +53,7 @@ public class CajeroController {
     @PostMapping("/guardar")
     public String procesarModificacion(@ModelAttribute("cliente") Cliente cliente){
         this.cajeroService.setNewCliente(cliente);
-        return "redirect:/"+cliente.getId();
+        return "redirect:/cajero/"+cliente.getId();
     }
 
     @GetMapping("/{clienteId}/cuenta/{id}/transferencia")
@@ -70,9 +70,9 @@ public class CajeroController {
         model.addAttribute("cuentasMenosOrigen",cuentasMenosOrigen);
 
         if (badAmount)
-            return "cajeroTransferencia";
-        else
             return "cajeroTransferenciaAux";
+        else
+            return "cajeroTransferencia";
     }
     @PostMapping("/transferir")
     public String procesarTransferencia(@ModelAttribute("movimiento") Movimiento mov, @RequestParam("idCliente") Integer idCliente,
@@ -80,10 +80,11 @@ public class CajeroController {
 
         Cuenta origen = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaOrigen());
         Cuenta destino = this.cajeroService.buscarCuentaPorNumero(mov.getCuentaDestino());
-        if(mov.getImporteOrigen()>origen.getDinero() || mov.getImporteOrigen()<=0 || destino==null)
+        if(mov.getImporteOrigen()>origen.getDinero() ||
+                mov.getImporteOrigen()<=0 || destino==null || mov.getCuentaOrigen().equals(mov.getCuentaDestino()))
             return doTransferencia(idCuenta,idCliente,true,model);
         else{
-            this.cajeroService.setNewMovimiento(origen,destino,mov.getImporteOrigen());
+            this.cajeroService.setNewMovimiento(origen,destino,mov.getImporteOrigen(), idCliente);
             this.cajeroService.setNewSaldo(origen,mov.getImporteOrigen());
             if (origen.getMoneda().equals(destino.getMoneda()))
                 this.cajeroService.setNewSaldo(destino,-mov.getImporteOrigen());
@@ -113,7 +114,7 @@ public class CajeroController {
             return doRetirar(cuenta.getId(),idCliente,true,model);
         } else{
             this.cajeroService.setNewSaldo(aux, cuenta.getDinero());
-            this.cajeroService.setNewMovimiento(aux,aux,cuenta.getDinero());
+            this.cajeroService.setNewMovimiento(aux,aux,cuenta.getDinero(), idCliente);
             return "redirect:/cajero/"+idCliente+"/cuenta/"+cuenta.getId();
             }
         }
@@ -135,8 +136,8 @@ public class CajeroController {
                                         @ModelAttribute("cuenta") Cuenta cuenta){
         Cuenta aux = this.cajeroService.buscarCuenta(cuenta.getId());
         if (!aux.getMoneda().equals(cuenta.getMoneda())){
+            this.cajeroService.setNewMovimiento(aux,cuenta,cuenta.getDinero(),clienteId);
             this.cajeroService.setNewDivisa(cuenta.getMoneda(),aux);
-            this.cajeroService.setNewMovimiento(aux,cuenta,cuenta.getDinero());
         }
         return "redirect:/cajero/"+clienteId+"/cuenta/"+cuenta.getId();
     }

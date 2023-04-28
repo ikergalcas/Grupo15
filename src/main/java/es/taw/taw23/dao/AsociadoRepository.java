@@ -25,15 +25,21 @@ public interface AsociadoRepository extends JpaRepository<ClienteEntity, Integer
     public List<ClienteEntity> buscarPorPrimerApellido(@Param("idempresa") Integer idEmpresa, @Param("primerApellido") String apellido);
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif like CONCAT('%', :nif, '%') ")
-    public List<ClienteEntity> buscarPorNif(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif);
+    public ClienteEntity buscarPorNif(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif);
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.primerNombre like CONCAT('%', :primerNombre, '%') and c.primerApellido like CONCAT('%', :primerApellido, '%')")
     public List<ClienteEntity> buscarPorPrimerNombreyPrimerApellido(@Param("idempresa") Integer idEmpresa, @Param("primerNombre") String nombre, @Param("primerApellido") String apellido);
 
-    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif like CONCAT('%', :nif, '%') and c.primerNombre like CONCAT('%', :primerNombre, '%')")
-    public List<ClienteEntity> buscarPorNifyPrimerNombre(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif, @Param("primerNombre") String nombre);
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.rolClienteByRolclienteId.tipo like CONCAT('%', :puesto, '%')")
+    List<ClienteEntity> buscarPorPuesto(@Param("idempresa") Integer idEmpresa, @Param("puesto") String puesto);
 
-    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif like CONCAT('%', :nif, '%') and c.primerApellido like CONCAT('%', :primerApellido, '%')")
-    public List<ClienteEntity> buscarPorNifyPrimerApellido(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif, @Param("primerApellido") String apellido);
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.rolClienteByRolclienteId.tipo = :puesto and c.primerNombre like CONCAT('%', :primerNombre, '%')")
+    List<ClienteEntity> buscarPorPrimerNombreyPuesto(@Param("idempresa") Integer idEmpresa, @Param("primerNombre") String primerNombre, @Param("puesto") String puesto);
+
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.rolClienteByRolclienteId.tipo = :puesto and c.primerApellido like CONCAT('%', :primerApellido, '%')")
+    List<ClienteEntity> buscarPorPrimerApellidoyPuesto(@Param("idempresa") Integer idEmpresa, @Param("primerApellido") String primerApellido, @Param("puesto") String puesto);
+
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.rolClienteByRolclienteId.tipo = :puesto and c.primerNombre like CONCAT('%', :primerNombre, '%') and c.primerApellido like CONCAT('%', :primerApellido, '%')")
+    List<ClienteEntity> buscarPorTodo(@Param("idempresa") Integer idEmpresa, @Param("primerNombre") String primerNombre, @Param("primerApellido") String primerApellido, @Param("puesto") String puesto);
 }
 

@@ -1,5 +1,7 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Estado_solicitud;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -50,6 +52,13 @@ public class EstadoSolicitudEntity {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (estado != null ? estado.hashCode() : 0);
         return result;
+    }
+
+    public Estado_solicitud toDTO() {
+        Estado_solicitud dto = new Estado_solicitud();
+        dto.setId(this.id);
+        dto.setEstado(this.estado);
+        return dto;
     }
 
     public List<SolicitudEntity> getSolicitudsById() {

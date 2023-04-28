@@ -40,7 +40,7 @@
         </th>
         </td>
     </table>
-    <table>
+    <table style="margin-left: 530px">
         <td><h1 style="background: red">DATOS INCORRECTOS</h1></td>
     </table>
 

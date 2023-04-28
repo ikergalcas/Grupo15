@@ -1,5 +1,8 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Chat;
+import es.taw.taw23.dto.Mensaje;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -96,5 +99,15 @@ public class MensajeEntity {
 
     public void setRemitenteByRemitenteId(RemitenteEntity remitenteByRemitenteId) {
         this.remitenteByRemitenteId = remitenteByRemitenteId;
+    }
+
+    public Mensaje toDTO(){
+        Mensaje dto = new Mensaje();
+        dto.setId(id);
+        dto.setTexto(texto);
+        dto.setFechaEnvio(fechaEnvio);
+        dto.setRemitente(remitenteByRemitenteId.getRemitente());
+        dto.setChatId(chatByChatId.getId());
+        return dto;
     }
 }

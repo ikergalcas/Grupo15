@@ -16,6 +16,7 @@
     -------------------------------------------------------------- <br/>
     Datos socio: <br/>
     <form:form method="post" action="registroEmpresa" modelAttribute="socio">
+        <form:hidden path="id" />
         NIF (obligatorio): <form:input path="nif" /> <br/>
         Primer Nombre: <form:input path="primerNombre" /> <br/>
         Segundo Nombre: <form:input path="segundoNombre" /> <br/>
@@ -30,6 +31,9 @@
         Region: <form:input path="region" /> <br/>
         Código Postal: <form:input path="cp" /> <br/>
         Contraseña (obligatorio): <form:input path="contrasena" /> <br/>
+        <form:hidden path="tipo" />
+        <form:hidden path="empresa" />
+        <form:hidden path="acceso" />
         <form:button>Guardar</form:button>
     </form:form>
 </form:form>

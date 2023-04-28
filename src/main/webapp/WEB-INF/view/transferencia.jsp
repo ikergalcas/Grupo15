@@ -1,6 +1,11 @@
 
 <%@ page import="java.util.List" %>
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<%
+    Cliente asociado = (Cliente) request.getAttribute("asociado");
+%>
 
 <html>
 <head>
@@ -19,7 +24,10 @@
         <form:options items="${cuentas}" itemValue="numeroCuenta" itemLabel="numeroCuenta" />
     </form:select> <br/>
     Numero de Cuenta Destino: <form:input path="cuentaDestino" /> <br/>
-    <form:button>Hacer transferencia</form:button>
+    <form action="/empresa/guardarTransferencia" method="post">
+        <input type="hidden" name="idAsociado" value="<%= asociado.getId() %>">
+        <button>Hacer transferencia</button>
+    </form>
 </form:form>
 
 </body>

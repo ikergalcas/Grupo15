@@ -1,5 +1,7 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Chat;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -80,5 +82,16 @@ public class ChatEntity {
 
     public void setMensajesById(List<MensajeEntity> mensajesById) {
         this.mensajesById = mensajesById;
+    }
+
+    public Chat toDTO(){
+        Chat dto = new Chat();
+        dto.setId(id);
+        dto.setCerrado(cerrado);
+        dto.setCliente(clienteByClienteId.getNif());
+        dto.setClienteId(clienteByClienteId.getId());
+        dto.setEmpleado(empleadoByEmpleadoId.getNumeroEmpleado());
+        dto.setEmpleadoId(empleadoByEmpleadoId.getId());
+        return dto;
     }
 }

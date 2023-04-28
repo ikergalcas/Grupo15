@@ -14,7 +14,7 @@ public class TipoMovimientoEntity {
     @Column(name = "tipo", nullable = false)
     private String tipo;
     @OneToMany(mappedBy = "tipoMovimientoByTipoMovimientoId")
-    private List<MovimientosEntity> movimientosById;
+    private List<MovimientoEntity> movimientosById;
 
     public Integer getId() {
         return id;
@@ -52,11 +52,11 @@ public class TipoMovimientoEntity {
         return result;
     }
 
-    public List<MovimientosEntity> getMovimientosById() {
+    public List<MovimientoEntity> getMovimientosById() {
         return movimientosById;
     }
 
-    public void setMovimientosById(List<MovimientosEntity> movimientosById) {
+    public void setMovimientosById(List<MovimientoEntity> movimientosById) {
         this.movimientosById = movimientosById;
     }
 }

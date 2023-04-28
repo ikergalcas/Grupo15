@@ -312,11 +312,10 @@ public class ClienteEntity implements DTO<Cliente> {
         dto.setCp(this.cp);
         dto.setContrasena(this.contrasena);
         dto.setTipo(this.getRolClienteByRolclienteId().getTipo());
-        dto.setEmpresa(this.empresaByEmpresaId.getNombre());
-        dto.setIdEmpresa(this.empresaByEmpresaId.getId());
-
-        dto.setCuentas(this.cuentaClientesById);
-
+        dto.setAcceso(this.acceso);
+        if(this.empresaByEmpresaId != null){
+            dto.setEmpresa(this.empresaByEmpresaId.getId());
+        }
         return dto;
     }
 }

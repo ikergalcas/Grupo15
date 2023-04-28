@@ -1,14 +1,13 @@
 package es.taw.taw23.entity;
 
-import es.taw.taw23.dto.DTO;
 import es.taw.taw23.dto.Movimiento;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "movimientos", schema = "grupo15", catalog = "")
-public class MovimientosEntity implements DTO<Movimiento> {
+@Table(name = "movimiento", schema = "grupo15", catalog = "")
+public class MovimientoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -17,10 +16,10 @@ public class MovimientosEntity implements DTO<Movimiento> {
     @Column(name = "time_stamp", nullable = true)
     private Timestamp timeStamp;
     @Basic
-    @Column(name = "importe_origen", nullable = false)
+    @Column(name = "importe_origen", nullable = false, precision = 0)
     private Double importeOrigen;
     @Basic
-    @Column(name = "importe_destino", nullable = false)
+    @Column(name = "importe_destino", nullable = false, precision = 0)
     private Double importeDestino;
     @ManyToOne
     @JoinColumn(name = "cuenta_origen_id", referencedColumnName = "id", nullable = false)
@@ -31,6 +30,15 @@ public class MovimientosEntity implements DTO<Movimiento> {
     @ManyToOne
     @JoinColumn(name = "cuenta_destino_id", referencedColumnName = "id", nullable = false)
     private CuentaEntity cuentaByCuentaDestinoId;
+    @ManyToOne
+    @JoinColumn(name = "moneda_origen_id", referencedColumnName = "id", nullable = false)
+    private DivisaEntity divisaByMonedaOrigenId;
+    @ManyToOne
+    @JoinColumn(name = "moneda_destino_id", referencedColumnName = "id", nullable = false)
+    private DivisaEntity divisaByMonedaDestinoId;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    private ClienteEntity clienteByClienteId;
 
     public Integer getId() {
         return id;
@@ -69,7 +77,7 @@ public class MovimientosEntity implements DTO<Movimiento> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MovimientosEntity that = (MovimientosEntity) o;
+        MovimientoEntity that = (MovimientoEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (timeStamp != null ? !timeStamp.equals(that.timeStamp) : that.timeStamp != null) return false;
@@ -114,7 +122,30 @@ public class MovimientosEntity implements DTO<Movimiento> {
         this.cuentaByCuentaDestinoId = cuentaByCuentaDestinoId;
     }
 
-    @Override
+    public DivisaEntity getDivisaByMonedaOrigenId() {
+        return divisaByMonedaOrigenId;
+    }
+
+    public void setDivisaByMonedaOrigenId(DivisaEntity divisaByMonedaOrigenId) {
+        this.divisaByMonedaOrigenId = divisaByMonedaOrigenId;
+    }
+
+    public DivisaEntity getDivisaByMonedaDestinoId() {
+        return divisaByMonedaDestinoId;
+    }
+
+    public void setDivisaByMonedaDestinoId(DivisaEntity divisaByMonedaDestinoId) {
+        this.divisaByMonedaDestinoId = divisaByMonedaDestinoId;
+    }
+
+    public ClienteEntity getClienteByClienteId() {
+        return clienteByClienteId;
+    }
+
+    public void setClienteByClienteId(ClienteEntity clienteByClienteId) {
+        this.clienteByClienteId = clienteByClienteId;
+    }
+
     public Movimiento toDTO() {
         Movimiento dto = new Movimiento();
 
@@ -125,8 +156,8 @@ public class MovimientosEntity implements DTO<Movimiento> {
         dto.setCuentaOrigen(this.cuentaByCuentaOrigenId.getNumeroCuenta());
         dto.setCuentaDestino(this.cuentaByCuentaDestinoId.getNumeroCuenta());
         dto.setTipo(this.tipoMovimientoByTipoMovimientoId.getTipo());
-
+        dto.setDivisaCuentaDestino(this.cuentaByCuentaDestinoId.getDivisaByDivisaId().getMoneda());
+        dto.setDivisaCuentaOrigen(this.cuentaByCuentaOrigenId.getDivisaByDivisaId().getMoneda());
         return dto;
     }
 }
-

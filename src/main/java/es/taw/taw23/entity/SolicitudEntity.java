@@ -1,5 +1,7 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Solicitud;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,9 +11,6 @@ public class SolicitudEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Basic
-    @Column(name = "estado", nullable = false, length = 45)
-    private String estado;
     @ManyToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private ClienteEntity clienteByClienteId;
@@ -33,14 +32,6 @@ public class SolicitudEntity {
         this.id = id;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,16 +40,13 @@ public class SolicitudEntity {
         SolicitudEntity that = (SolicitudEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (estado != null ? !estado.equals(that.estado) : that.estado != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (estado != null ? estado.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
     public ClienteEntity getClienteByClienteId() {
@@ -91,5 +79,18 @@ public class SolicitudEntity {
 
     public void setEstadoSolicitudByEstadoSolicitudId(EstadoSolicitudEntity estadoSolicitudByEstadoSolicitudId) {
         this.estadoSolicitudByEstadoSolicitudId = estadoSolicitudByEstadoSolicitudId;
+    }
+
+    public Solicitud toDTO() {
+        Solicitud dto = new Solicitud();
+        dto.setId(this.id);
+        dto.setCliente_id(this.clienteByClienteId.getId());
+        dto.setEmpleado_id(this.empleadoByEmpleadoId.getId());
+        dto.setEstado_solicitud_id(this.estadoSolicitudByEstadoSolicitudId.getId());
+        dto.setTipo_solicitud_id(this.tipoSolicitudByTipoSolicitudId.getId());
+        dto.setCliente(this.clienteByClienteId.toDTO());
+        dto.setTipo_solicitud(this.tipoSolicitudByTipoSolicitudId.toDTO());
+        dto.setEstado_solicitud(this.estadoSolicitudByEstadoSolicitudId.toDTO());
+        return dto;
     }
 }
