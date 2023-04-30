@@ -1,10 +1,12 @@
 package es.taw.taw23.entity;
 
 import es.taw.taw23.dto.Cliente;
+import es.taw.taw23.dto.CuentaCliente;
 import es.taw.taw23.dto.DTO;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -314,9 +316,18 @@ public class ClienteEntity implements DTO<Cliente> {
         dto.setTipo(this.getRolClienteByRolclienteId().getTipo());
         dto.setEmpresa(this.empresaByEmpresaId.getNombre());
         dto.setIdEmpresa(this.empresaByEmpresaId.getId());
-
+        dto.setRol(this.rolClienteByRolclienteId.getTipo());
         dto.setCuentas(this.cuentaClientesById);
-
+        dto.setCuentaClientesDTO(convertCuentasClientesDTO(this.cuentaClientesById));
         return dto;
+    }
+
+    private List<CuentaCliente> convertCuentasClientesDTO(List<CuentaClienteEntity> cuentaClienteEntities) {
+        List<CuentaCliente> cuentaCliente = new ArrayList<>();
+        for (CuentaClienteEntity cc : cuentaClienteEntities) {
+            cuentaCliente.add(cc.toDTO());
+        }
+
+        return cuentaCliente;
     }
 }

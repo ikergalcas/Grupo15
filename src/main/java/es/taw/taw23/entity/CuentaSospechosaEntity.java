@@ -1,5 +1,8 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Cuenta;
+import es.taw.taw23.dto.CuentaSospechosa;
+
 import javax.persistence.*;
 
 @Entity
@@ -44,5 +47,13 @@ public class CuentaSospechosaEntity {
 
     public void setCuentaByCuentaId(CuentaEntity cuentaByCuentaId) {
         this.cuentaByCuentaId = cuentaByCuentaId;
+    }
+
+    public CuentaSospechosa toDTO() {
+        CuentaSospechosa dto = new CuentaSospechosa();
+        dto.setId(this.id);
+        dto.setCuenta_id(this.cuentaByCuentaId.getId());
+        dto.setCuenta(this.cuentaByCuentaId);
+        return dto;
     }
 }

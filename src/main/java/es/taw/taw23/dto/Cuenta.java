@@ -16,10 +16,13 @@ public class Cuenta implements Serializable {
     private String moneda;
     private Double dinero;
     private List<CuentaClienteEntity> cuentaCliente;
+    private List<CuentaCliente> cuentaClienteDTO;
     private List<Movimiento> movimientosOrigen;     //Lista de movimientos en los que esta es la cuenta origen
     private List<Movimiento> movimientosDestino;    //Lista de movimientos en los que esta es la cuenta destino
     private Integer idSolicitud;
     private Integer idGestor;
+    private Integer idCliente;
+    private Integer idEmpresa;
 
     public Integer getId() {
         return id;
@@ -123,5 +126,29 @@ public class Cuenta implements Serializable {
 
     public void setIdGestor(Integer idGestor) {
         this.idGestor = idGestor;
+    }
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public Integer getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public List<CuentaCliente> getCuentaClienteDTO() {
+        return cuentaClienteDTO;
+    }
+
+    public void setCuentaClienteDTO(List<CuentaCliente> cuentaClienteDTO) {
+        this.cuentaClienteDTO = cuentaClienteDTO;
     }
 }

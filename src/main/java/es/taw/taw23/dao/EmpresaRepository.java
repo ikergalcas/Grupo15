@@ -14,4 +14,5 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer>
      */
     @Query("select e from EmpresaEntity e where e.nombre = :name and e.clientesById.size = 0")
     public EmpresaEntity buscarEmpresaPorNombreRegistro(@Param("name") String name);
+
 }

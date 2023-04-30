@@ -8,6 +8,8 @@ public class Movimiento implements Serializable {
     Timestamp timeStamp;
     Double importeOrigen;
     Double importeDestino;
+    Integer idCuentaOrigen;
+    Integer idCuentaDestino;
     String cuentaOrigen;
     String cuentaDestino;
     String tipo;
@@ -66,5 +68,21 @@ public class Movimiento implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Integer getIdCuentaOrigen() {
+        return idCuentaOrigen;
+    }
+
+    public void setIdCuentaOrigen(Integer idCuentaOrigen) {
+        this.idCuentaOrigen = idCuentaOrigen;
+    }
+
+    public Integer getIdCuentaDestino() {
+        return idCuentaDestino;
+    }
+
+    public void setIdCuentaDestino(Integer idCuentaDestino) {
+        this.idCuentaDestino = idCuentaDestino;
     }
 }

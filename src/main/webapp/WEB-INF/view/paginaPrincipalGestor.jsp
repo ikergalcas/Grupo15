@@ -17,10 +17,19 @@
 
 <table border="1">
     <tr>
-        <th><input type="submit" value="SOLICITUDES" onclick="location.href='/gestor/solicitudes/?id=<%=gestor.getId()%>'"></th>
+        <th><input type="submit" value="SOLICITUDES PENDIENTES" onclick="location.href='/gestor/solicitudes/<%=gestor.getId()%>'"></th>
     </tr>
     <tr>
-        <th>LISTADO DE CLIENTES</th>
+        <th><input type="submit" value="SOLICITUDES RESUELTAS" onclick="location.href='/gestor/solicitudesResueltas/<%=gestor.getId()%>'"></th>
+    </tr>
+    <tr>
+        <th><input type="submit" value="LISTADO DE CLIENTES" onclick="location.href='/gestor/listadoDeClientes'"></th>
+    </tr>
+    <tr>
+        <th><input type="submit" value="LISTADO DE EMPRESAS" onclick="location.href='/gestor/listadoDeEmpresas'"></th>
+    </tr>
+    <tr>
+        <th><a href="/gestor/listadoCuentasSospechosas"> Listado de cuentas sospechosas</a></th>
     </tr>
 </table>
 </body>

@@ -26,6 +26,8 @@ public class Cliente implements Serializable {
     private String empresa;
     private Integer idEmpresa;
     private List<CuentaClienteEntity> cuentas;
+    private List<CuentaCliente> cuentaClientesDTO;
+    private String rol;
 
     public Integer getId() {
         return id;
@@ -177,5 +179,21 @@ public class Cliente implements Serializable {
 
     public void setCuentas(List<CuentaClienteEntity> cuentas) {
         this.cuentas = cuentas;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public List<CuentaCliente> getCuentaClientesDTO() {
+        return cuentaClientesDTO;
+    }
+
+    public void setCuentaClientesDTO(List<CuentaCliente> cuentaClientesDTO) {
+        this.cuentaClientesDTO = cuentaClientesDTO;
     }
 }

@@ -42,4 +42,18 @@ public class GestorService {
         }
     }
 
+    public List<Solicitud> buscarSolicitudesResueltasDeGestor(Integer id) {
+        List<Solicitud> listaSolicitudesDto = new ArrayList<>();
+        List<SolicitudEntity> listaSolicitudes = solicitudRepository.buscarSolicitudesResueltasDeUnGestor(id);
+        if (!listaSolicitudes.isEmpty() || listaSolicitudes != null) {
+            for (SolicitudEntity s : listaSolicitudes) {
+                listaSolicitudesDto.add(s.toDTO());
+            }
+
+            return listaSolicitudesDto;
+        } else {
+            return null;
+        }
+    }
+
 }

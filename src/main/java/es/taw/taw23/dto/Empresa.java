@@ -1,10 +1,12 @@
 package es.taw.taw23.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Empresa implements Serializable {
     private Integer id;
     private String nombre;
+    private List<Cliente> listaClientes;
 
     public Integer getId() {
         return id;
@@ -20,5 +22,13 @@ public class Empresa implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public void setListaClientes(List<Cliente> listaClientes) {
+        this.listaClientes = listaClientes;
     }
 }

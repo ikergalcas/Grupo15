@@ -1,6 +1,10 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Cliente;
+import es.taw.taw23.dto.Empresa;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -58,5 +62,21 @@ public class EmpresaEntity {
 
     public void setClientesById(List<ClienteEntity> clientesById) {
         this.clientesById = clientesById;
+    }
+
+    public Empresa toDTO() {
+        Empresa dto = new Empresa();
+        dto.setId(this.id);
+        dto.setNombre(this.nombre);
+        dto.setListaClientes(this.listaClientestoDTO(this.clientesById));
+        return dto;
+    }
+
+    private List<Cliente> listaClientestoDTO(List<ClienteEntity> clientes) {
+        List<Cliente> clientesDTO = new ArrayList<>();
+        for (ClienteEntity c : clientes) {
+            clientesDTO.add(c.toDTO());
+        }
+        return clientesDTO;
     }
 }
