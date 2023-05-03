@@ -6,11 +6,13 @@ import es.taw.taw23.dto.Cuenta;
 import es.taw.taw23.dto.Movimiento;
 import es.taw.taw23.dto.Divisa;
 import es.taw.taw23.service.CajeroService;
+import es.taw.taw23.ui.FiltroCajero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,18 +34,47 @@ public class CajeroController {
 
     @GetMapping("/{clienteId}/cuenta/{id}")
     public String doListarCajero(@PathVariable("id") Integer id,@PathVariable("clienteId") Integer clienteId, Model model){
+        return this.procesarFiltroCajero(id,clienteId,model,null);
+    }
+    @PostMapping("/filtrar")
+    public String doFiltrarCajero(@RequestParam("idCuenta") Integer idCuenta, @RequestParam("clienteId") Integer clienteId,
+                                  Model model, FiltroCajero filtroCajero){
+        return this.procesarFiltroCajero(idCuenta,clienteId,model,filtroCajero);
+    }
+
+    protected String procesarFiltroCajero(Integer idCuenta, Integer clienteId, Model model, FiltroCajero filtroCajero){
         Cliente cliente = this.cajeroService.buscarCliente(clienteId);
-        Cuenta cuenta = this.cajeroService.buscarCuenta(id);
-        List<Movimiento> movimientos = cuenta.getMovimientosOrigen();
-        for (Movimiento x : cuenta.getMovimientosDestino()){
-            if (!x.getCuentaOrigen().equals(x.getCuentaDestino()))
-                movimientos.add(x);
+        Cuenta cuenta = this.cajeroService.buscarCuenta(idCuenta);
+        List<Movimiento> movimientos = new ArrayList<>();
+
+        if ((filtroCajero==null) || filterEmpty(filtroCajero)){
+            filtroCajero = new FiltroCajero();
+            movimientos = cuenta.getMovimientosOrigen();
+            for (Movimiento x : cuenta.getMovimientosDestino()){
+                if (!x.getCuentaOrigen().equals(x.getCuentaDestino()))
+                    movimientos.add(x);
+            }
         }
+        if (!filterEmpty(filtroCajero)){ //Ensure
+
+        }
+
+
+
         model.addAttribute("cuenta",cuenta);
         model.addAttribute("movimientos",movimientos);
         model.addAttribute("cliente",cliente);
+        model.addAttribute("filtroCajero", filtroCajero);
         return "cajero";
     }
+
+    private boolean filterEmpty(FiltroCajero filtroCajero){
+        return (filtroCajero.getFiltrarPorDivisa().equals("") &&
+                filtroCajero.getFiltrarPorMovimiento().equals("")
+                && filtroCajero.getOrdenar().equals(""));
+    }
+
+
     @GetMapping("/{clienteId}/modificar")
     public String doModificar(@PathVariable("clienteId") Integer clienteId, Model model){
         Cliente cliente = this.cajeroService.buscarCliente(clienteId);

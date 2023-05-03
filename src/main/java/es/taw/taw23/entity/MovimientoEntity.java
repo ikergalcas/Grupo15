@@ -156,8 +156,8 @@ public class MovimientoEntity {
         dto.setCuentaOrigen(this.cuentaByCuentaOrigenId.getNumeroCuenta());
         dto.setCuentaDestino(this.cuentaByCuentaDestinoId.getNumeroCuenta());
         dto.setTipo(this.tipoMovimientoByTipoMovimientoId.getTipo());
-        dto.setDivisaCuentaDestino(this.cuentaByCuentaDestinoId.getDivisaByDivisaId().getMoneda());
-        dto.setDivisaCuentaOrigen(this.cuentaByCuentaOrigenId.getDivisaByDivisaId().getMoneda());
+        dto.setDivisaCuentaDestino(this.divisaByMonedaDestinoId.getMoneda());
+        dto.setDivisaCuentaOrigen(this.divisaByMonedaOrigenId.getMoneda());
         return dto;
     }
 }

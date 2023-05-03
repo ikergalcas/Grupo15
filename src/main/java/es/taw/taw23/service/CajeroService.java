@@ -100,15 +100,18 @@ public class CajeroService {
             movimiento.setImporteOrigen(redondear(origenAux.getDinero()));
             movimiento.setImporteDestino(redondear(origenAux.getDinero()-cantidadOrigen));
             movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
+            movimiento.setDivisaByMonedaDestinoId(destinoAux.getDivisaByDivisaId());
         }
         else if(origen.getId().equals(destino.getId()) && !origen.getMoneda().equals(destino.getMoneda())){
             TipoMovimientoEntity tipoMovimiento = cajeroRepository.findByMovementName("cambioDivisa");
+            DivisaEntity divisaNueva = cajeroRepository.findByMoneyName(destino.getMoneda());
             CambioDivisaEntity cambioDivisa = cajeroRepository.cambiarDivisa(
                     cajeroRepository.findByMoneyName(origen.getMoneda()).getId(),
                     cajeroRepository.findByMoneyName(destino.getMoneda()).getId());
             movimiento.setImporteOrigen(redondear(origenAux.getDinero()));
             movimiento.setImporteDestino(redondear(cambioDivisa.getCambio()*origenAux.getDinero()));
             movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
+            movimiento.setDivisaByMonedaDestinoId(divisaNueva);
         }
         else{
             TipoMovimientoEntity tipoMovimiento = cajeroRepository.findByMovementName("pago");
@@ -123,10 +126,10 @@ public class CajeroService {
 
             }
             movimiento.setTipoMovimientoByTipoMovimientoId(tipoMovimiento);
+            movimiento.setDivisaByMonedaDestinoId(destinoAux.getDivisaByDivisaId());
 
         }
         movimiento.setCuentaByCuentaDestinoId(destinoAux);
-        movimiento.setDivisaByMonedaDestinoId(destinoAux.getDivisaByDivisaId());
         movimiento.setTimeStamp(new Timestamp(System.currentTimeMillis()));
         movimiento.setClienteByClienteId(cliente);
         movimientoRepository.save(movimiento);

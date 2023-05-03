@@ -55,14 +55,14 @@
                     if (mov.getTipo().equals("cambioDivisa")) { %>
                     <tr>
                         <th>Cambio de divisa</th>
-                        <th>Divisa cambiada</th>
+                        <th>Divisa cambiada de <%=mov.getDivisaCuentaOrigen()%> a <%=mov.getDivisaCuentaDestino()%></th>
                         <th><%=mov.getTimeStamp().toString()%></th>
                     </tr>
                     <% } else {
                         if (mov.getTipo().equals("sacarDinero")) { %>
                         <tr>
                             <th>Retirada de dinero</th>
-                            <th><u>Cantidad:</u> -<%=(mov.getImporteOrigen()-mov.getImporteDestino())%></th>
+                            <th><u>Cantidad:</u> -<%=(mov.getImporteOrigen()-mov.getImporteDestino())%> <%=mov.getDivisaCuentaOrigen()%></th>
                             <th><%=mov.getTimeStamp().toString()%></th>
                         </tr>
                         <% }
