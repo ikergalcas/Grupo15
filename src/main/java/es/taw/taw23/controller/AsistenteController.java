@@ -73,7 +73,7 @@ public class AsistenteController {
     }
 
     @GetMapping("/chatAsistente/{id}")
-    public String doChat(@PathVariable("id") int idChat, Model model){
+    public String doChatAsistente(@PathVariable("id") int idChat, Model model){
         List<Mensaje> mensajes = mensajeService.listarMensajes(idChat);
         Chat chat = chatService.findById(idChat);
         model.addAttribute("mensajes",mensajes);
@@ -81,8 +81,8 @@ public class AsistenteController {
         return "chatAsistente";
     }
 
-    @PostMapping("/enviar/{idChat}")
-    public String doEnviar(@RequestParam("texto") String texto, @PathVariable("idChat") int idChat){
+    @PostMapping("/enviarMensajeAsistente/{idChat}")
+    public String doEnviarAsistente(@RequestParam("texto") String texto, @PathVariable("idChat") int idChat){
         Mensaje mensaje = new Mensaje();
         mensaje.setTexto(texto);
         mensaje.setFechaEnvio(new Timestamp(System.currentTimeMillis()));
@@ -93,7 +93,7 @@ public class AsistenteController {
         return url;
     }
 
-    @PostMapping("/abrirChat/{idAsistente}")
+    @PostMapping("/abrirChatConCliente/{idAsistente}")
     public String doAbrirChat(@RequestParam("cliente") int clienteId, @PathVariable("idAsistente") int asistenteId){
         Chat chat = new Chat();
         chat.setCerrado(byteValue(0));
@@ -101,6 +101,52 @@ public class AsistenteController {
         chat.setEmpleadoId(asistenteId);
         chatService.nuevoChat(chat);
         String url = "redirect:/asistente/"+asistenteId;
+        return url;
+    }
+
+    @GetMapping("/abrirChatConAsistente/{idCliente}")
+    public String doAbrirChat(@PathVariable("idCliente") int clienteId){
+        /* Código para cliente/empresa controller:
+        model.addAttribute("chat", chatService.buscarChatCliente(clienteId))
+         */
+
+
+        Chat chat = new Chat();
+        chat.setCerrado(byteValue(0));
+        chat.setClienteId(clienteId);
+        int asistenteId = asistenteService.buscarAsistenteMenosOcupadoId();
+        chat.setEmpleadoId(asistenteId);
+        chatService.nuevoChat(chat);
+        String url = "redirect:/asistente/chatCliente/"+chatService.buscarChatCliente(clienteId).getId();
+        return url;
+    }
+
+    @GetMapping("/chatCliente/{id}")
+    public String doChatCliente(@PathVariable("id") int idChat, Model model){
+        List<Mensaje> mensajes = mensajeService.listarMensajes(idChat);
+        Chat chat = chatService.findById(idChat);
+        model.addAttribute("mensajes",mensajes);
+        model.addAttribute("chat",chat);
+        model.addAttribute("asistente", asistenteService.buscarEmpleado(chat.getEmpleadoId()));
+        return "chatCliente";
+    }
+
+    @PostMapping("/enviarMensajeCliente/{idChat}")
+    public String doEnviarCliente(@RequestParam("texto") String texto, @PathVariable("idChat") int idChat){
+        Mensaje mensaje = new Mensaje();
+        mensaje.setTexto(texto);
+        mensaje.setFechaEnvio(new Timestamp(System.currentTimeMillis()));
+        mensaje.setRemitente("cliente");
+        mensaje.setChatId(idChat);
+        mensajeService.enviarMensaje(mensaje);
+        String url = "redirect:/asistente/chatCliente/"+idChat;
+        return url;
+    }
+
+    @GetMapping("/cerrarChatCliente/{id}")
+    public String doCerrarChatCliente(@PathVariable("id") int idChat, Model model){
+        chatService.cerrarChat(idChat);
+        String url = "redirect:/asistente/"+chatService.findById(idChat).getEmpleadoId(); //Cambiar por url cliente/empresa
         return url;
     }
 }

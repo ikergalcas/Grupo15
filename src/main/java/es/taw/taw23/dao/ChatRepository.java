@@ -28,4 +28,10 @@ public interface ChatRepository extends JpaRepository<ChatEntity,Integer> {
 
     @Query("select c from ChatEntity c where c.empleadoByEmpleadoId.id = :empleadoId and c.clienteByClienteId.nif = :nif")
     public List<ChatEntity> findByEmpleadoIdFiltrarByNif(@Param("empleadoId") int empleadoId, @Param("nif") String nif);
+
+    @Query("select c from ChatEntity c where c.empleadoByEmpleadoId.id = :asistenteId and c.cerrado = 0")
+    public List<ChatEntity> findChatsAbiertos(@Param("asistenteId") int asistenteId);
+
+    @Query("select c from ChatEntity c where c.clienteByClienteId.id = :clienteId and c.cerrado = 0")
+    public List<ChatEntity> findChatsAbiertosCliente(@Param("clienteId") int clienteId);
 }

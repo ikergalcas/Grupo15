@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.aspectj.runtime.internal.Conversions.byteValue;
+
 @Service
 public class ChatService {
     @Autowired
@@ -65,7 +67,9 @@ public class ChatService {
         entity.setCerrado(chat.getCerrado());
         entity.setClienteByClienteId(clienteRepository.findById(chat.getClienteId()).orElse(null));
         entity.setEmpleadoByEmpleadoId(empleadoRepository.findById(chat.getEmpleadoId()).orElse(null));
-        chatRepository.save(entity);
+        if (chatRepository.findChatsAbiertosCliente(chat.getClienteId()).size() == 0) {
+            chatRepository.save(entity);
+        }
     }
 
     public List<Chat> filtrarPorNifCerrado(int idAsistente, String nif) {
@@ -91,5 +95,20 @@ public class ChatService {
     public List<Chat> filtrarPorNif(int idAsistente, String nif) {
         List<ChatEntity> lista = chatRepository.findByEmpleadoIdFiltrarByNif(idAsistente,nif);
         return listaChatsADTO(lista);
+    }
+
+    public Chat buscarChatCliente(int idCliente) {
+        Chat chat = null;
+        if (chatRepository.findChatsAbiertosCliente(idCliente).size() > 0) {
+            ChatEntity entidadChat = chatRepository.findChatAbierto(idCliente);
+            chat = entidadChat.toDTO();
+        }
+        return chat;
+    }
+
+    public void cerrarChat(int idChat) {
+        ChatEntity chat = chatRepository.findById(idChat).orElse(null);
+        chat.setCerrado(byteValue(1));
+        chatRepository.save(chat);
     }
 }

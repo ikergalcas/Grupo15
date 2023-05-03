@@ -3,6 +3,7 @@
 <%@ page import="es.taw.taw23.dto.Chat" %>
 <%@ page import="es.taw.taw23.dto.Mensaje" %>
 <%@ page import="es.taw.taw23.service.MensajeService" %>
+<%@ page import="static org.aspectj.runtime.internal.Conversions.byteValue" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%
@@ -28,27 +29,34 @@
             <%
                 if (mensaje.getRemitente().equals("empleado")) {
             %>
-                Yo:
+            Yo:
+                <td>
+                    <textarea cols="70" rows="5" readonly="true" style="background: #e6e6e6; margin-left: 8px"><%=mensaje.getTexto()%></textarea>
+                </td>
             <%
                 } else {
             %>
-                Cliente:
+            Cliente:
+                <td>
+                    <textarea cols="70" rows="5" readonly="true" style="margin-left: 8px"><%=mensaje.getTexto()%></textarea>
+                </td>
             <%
                 }
             %>
         </th>
-        <td>
-            <textarea cols="70" rows="5"><%=mensaje.getTexto()%></textarea>
-        </td>
-        <td valign="top"><%=mensaje.getFechaEnvio().toGMTString()%></td>
+
+        <td valign="top"><%=mensaje.getFechaEnvio()%></td>
     </tr>
     <%
         }
     %>
 </table>
+<%
+    if (chat.getCerrado().equals(byteValue(0))) {
+%>
 <br>
 <hr>
-<form action="/asistente/enviar/<%=chat.getId()%>" method="post">
+<form action="/asistente/enviarMensajeAsistente/<%=chat.getId()%>" method="post">
     <table>
         <tr>
             <th>Nuevo mensaje:</th> <td><textarea name="texto" rows="5" cols="70"></textarea></td>
@@ -56,6 +64,10 @@
         </tr>
     </table>
 </form>
+<%
+    }
+%>
+<br>
 <a href="/asistente/<%=chat.getEmpleadoId()%>">Volver atras</a>
 </body>
 </html>
