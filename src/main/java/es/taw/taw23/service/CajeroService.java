@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class CajeroService {
@@ -35,8 +32,13 @@ public class CajeroService {
     protected CajeroRepository cajeroRepository;
     @Autowired
     private ClienteRepository clienteRepository;
-
-
+    @Autowired
+    private EstadoSolicitudRepository estadoSolicitudRepository;
+    @Autowired
+    private TipoSolicitudRepository tipoSolicitudRepository;
+    @Autowired
+    private SolicitudRepository solicitudRepository;
+    //Busqueda de cosas
     public Cliente buscarCliente(Integer id){
         ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
         return (cliente!=null) ? cliente.toDTO() : null;
@@ -60,6 +62,44 @@ public class CajeroService {
     public Cuenta buscarCuentaPorNumero(String numero){
         CuentaEntity cuenta = cajeroRepository.findByAccountNumber(numero);
         return (cuenta!=null) ? cuenta.toDTO() : null;
+    }
+
+    public List<Cuenta> obtenerTodasLasCuentasMenosOrigen(Integer id){
+        List<CuentaEntity> cuentas = this.cuentaRepository.findAll();
+        List<Cuenta> cuentasDTO = new ArrayList<>();
+        for (CuentaEntity x : cuentas){
+            if (!x.getId().equals(id)) //Esto debería hacerlo con SQL pero no se honestamente
+                cuentasDTO.add(x.toDTO());
+        }
+        return cuentasDTO;
+    }
+
+    public List<Divisa> obtenerTodasLasDivisas(){
+        List<DivisaEntity> divisas = this.divisaRepository.findAll();
+        List<Divisa> divisasDTO = new ArrayList<>();
+        for (DivisaEntity x : divisas){
+            divisasDTO.add(x.toDTO());
+        }
+        return divisasDTO;
+    }
+
+    public List<Cuenta> obtenerTodasLasCuentas(){
+        List<CuentaEntity> cuentas = this.cuentaRepository.findAll();
+        List<Cuenta> cuentasDTO = new ArrayList<>();
+        for (CuentaEntity x : cuentas){
+            cuentasDTO.add(x.toDTO());
+        }
+        return cuentasDTO;
+    }
+
+    public Solicitud buscarSolicitud(Integer idCliente){
+        return (this.cajeroRepository.buscarSolicitudPorIdCliente(idCliente) == null) ?
+                null : this.cajeroRepository.buscarSolicitudPorIdCliente(idCliente).toDTO();
+    }
+
+    //Establecer nuevas operaciones
+    private Double redondear(Double cantidad){
+        return Double.valueOf(Math.round((cantidad.doubleValue()*100d) / 100));
     }
 
     public void setNewCliente(Cliente cliente){
@@ -164,26 +204,162 @@ public class CajeroService {
         this.cuentaRepository.save(aux);
     }
 
-    public List<Cuenta> obtenerTodasLasCuentasMenosOrigen(Integer id){
-        List<CuentaEntity> cuentas = this.cuentaRepository.findAll();
-        List<Cuenta> cuentasDTO = new ArrayList<>();
-        for (CuentaEntity x : cuentas){
-            if (!x.getId().equals(id)) //Esto debería hacerlo con SQL pero no se honestamente
-                cuentasDTO.add(x.toDTO());
-        }
-        return cuentasDTO;
+    public void setNewDesbloqueo(Integer idCliente) {
+        ClienteEntity cliente = this.clienteRepository.findById(idCliente).orElse(null);
+        SolicitudEntity solicitud = new SolicitudEntity();
+
+        EstadoSolicitudEntity pendiente = this.estadoSolicitudRepository.buscarEstadoPendiente();
+        TipoSolicitudEntity tipoDesbloqueo = this.tipoSolicitudRepository.buscarTipoDesbloqueoIndividual();
+
+        solicitud.setEstadoSolicitudByEstadoSolicitudId(pendiente);
+        solicitud.setTipoSolicitudByTipoSolicitudId(tipoDesbloqueo);
+        solicitud.setClienteByClienteId(cliente);
+
+        this.solicitudRepository.save(solicitud);
     }
 
-    public List<Divisa> obtenerTodasLasDivisas(){
-        List<DivisaEntity> divisas = this.divisaRepository.findAll();
-        List<Divisa> divisasDTO = new ArrayList<>();
-        for (DivisaEntity x : divisas){
-            divisasDTO.add(x.toDTO());
+
+
+    //A partir de aqui son filtros
+    public List<Movimiento> filtrarPorDivisa(Cuenta cuenta, String divisa){
+        DivisaEntity moneda = this.cajeroRepository.findByMoneyName(divisa);
+        CuentaEntity cuentaAux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
+        List<MovimientoEntity> movs = this.cajeroRepository.findAllMovimientos(cuentaAux.getId());
+        List<MovimientoEntity> filtrado = new ArrayList<>();
+        boolean alreadyAdd;
+        for (MovimientoEntity mov : movs){
+            alreadyAdd=false;
+            if (mov.getDivisaByMonedaOrigenId().equals(moneda)){
+                filtrado.add(mov);
+                alreadyAdd=true;
+            }
+            if (mov.getDivisaByMonedaDestinoId().equals(moneda) && !alreadyAdd){
+                filtrado.add(mov);
+            }
         }
-        return divisasDTO;
+        List<Movimiento> movimientos = new ArrayList<>();
+        for (MovimientoEntity x : filtrado){
+            movimientos.add(x.toDTO());
+        }
+        return movimientos;
     }
 
-    private Double redondear(Double cantidad){
-        return Double.valueOf(Math.round((cantidad.doubleValue()*100d) / 100));
+    public List<Movimiento> filtrarPorNumeroDeCuenta(Cuenta cuenta, String numeroCuenta, List<Movimiento> movimientos){
+        if (movimientos==null){
+            movimientos=new ArrayList<>();
+            CuentaEntity cuentaAux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
+            List<MovimientoEntity> movimientosTotales = this.cajeroRepository.findAllMovimientos(cuentaAux.getId());
+            boolean alreadyAdd;
+            for (MovimientoEntity x : movimientosTotales){
+                alreadyAdd=false;
+                if (x.getCuentaByCuentaOrigenId().getNumeroCuenta().equals(numeroCuenta)){
+                    movimientos.add(x.toDTO());
+                    alreadyAdd=true;
+                }
+                else if (x.getCuentaByCuentaDestinoId().getNumeroCuenta().equals(numeroCuenta) && !alreadyAdd)
+                    movimientos.add(x.toDTO());
+            }
+        }
+        else{
+            List<Movimiento> filtrar = new ArrayList<>();
+            boolean alreadyAdd;
+            for (Movimiento x : movimientos){
+                alreadyAdd=false;
+                if (x.getCuentaOrigen().equals(numeroCuenta)){
+                    filtrar.add(x);
+                }else if (x.getCuentaDestino().equals(numeroCuenta) && !alreadyAdd)
+                    filtrar.add(x);
+            }
+            movimientos = filtrar;
+        }
+        return movimientos;
     }
+
+    public List<Movimiento> filtrarPorTipoMovimiento(Cuenta cuenta, String tipoMovimiento, List<Movimiento> movimientos){
+        if (movimientos==null){
+            movimientos = new ArrayList<>();
+            CuentaEntity cuentaAux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
+            List<MovimientoEntity> movimientosTotales = cuentaAux.getMovimientosById();
+            for (MovimientoEntity x : movimientosTotales){
+                if (x.getTipoMovimientoByTipoMovimientoId().getTipo().equals(tipoMovimiento))
+                    movimientos.add(x.toDTO());
+            }
+        }else{
+            List<Movimiento> filtrar = new ArrayList<>();
+            for (Movimiento x : movimientos){
+                if (x.getTipo().equals(tipoMovimiento))
+                    filtrar.add(x);
+            }
+            movimientos = filtrar;
+        }
+        return movimientos;
+    }
+
+
+
+    public List<Movimiento> ordenarPorCriterio(Cuenta cuenta, String orden, List<Movimiento> movimientos){
+        if (movimientos==null){
+            movimientos = new ArrayList<>();
+            List <MovimientoEntity> movimientosTotales = new ArrayList<>();
+            if (orden.equals("Fecha")){
+                movimientosTotales = this.cajeroRepository.findByFechaMovimientoAsc(cuenta.getId());
+            } else if (orden.equals("Importe")){
+                movimientosTotales = this.cajeroRepository.findAllMovimientos(cuenta.getId());
+                movimientosTotales.sort(new SortByAmount());
+            } else if (orden.equals("Tipo de movimiento")){
+                movimientosTotales = this.cajeroRepository.findByTipoDeMovimientoAsc(cuenta.getId()); //No ordena bien por nombre, pero los agrupa
+            }
+            for (MovimientoEntity x : movimientosTotales){
+                movimientos.add(x.toDTO());
+            }
+        }else{
+            List<MovimientoEntity> movimientosTotales = new ArrayList<>();
+            for (Movimiento x : movimientos){
+                movimientosTotales.add(this.movimientoRepository.findById(x.getId()).orElse(null));
+            }
+            if (orden.equals("Fecha")){
+                movimientosTotales.sort(new SortByDate());
+            } else if (orden.equals("Importe")){
+                movimientosTotales.sort(new SortByAmount());
+            } else if (orden.equals("Tipo de movimiento")){
+                movimientosTotales.sort(new SortByType());
+            }
+        }
+        return movimientos;
+    }
+
+    private class SortByAmount implements Comparator<MovimientoEntity> {
+        public int compare(MovimientoEntity a, MovimientoEntity b){
+            return (cambioDivisaAEuro(a).compareTo(cambioDivisaAEuro(b)));
+        }
+
+        private Double cambioDivisaAEuro(MovimientoEntity x){
+            Double importeOrigen = x.getImporteOrigen();
+            Double importeDestino = x.getImporteDestino();
+
+            CambioDivisaEntity cambioDivisaOrigen = cajeroRepository.cambiarDivisa(cajeroRepository.findByMoneyName(x.getDivisaByMonedaOrigenId().getMoneda()).getId(),
+                    cajeroRepository.findByMoneyName("euro").getId());
+            CambioDivisaEntity cambioDivisaDestino = cajeroRepository.cambiarDivisa(cajeroRepository.findByMoneyName(x.getDivisaByMonedaDestinoId().getMoneda()).getId(),
+                    cajeroRepository.findByMoneyName("euro").getId());
+            if (cambioDivisaOrigen!=null)
+                importeOrigen *= cambioDivisaOrigen.getCambio();
+            if (cambioDivisaDestino!=null)
+                importeDestino *= cambioDivisaDestino.getCambio();
+            return Math.max(importeOrigen,importeDestino);
+        }
+    }
+
+    private class SortByDate implements Comparator<MovimientoEntity> {
+        public int compare(MovimientoEntity a, MovimientoEntity b){
+            return a.getTimeStamp().compareTo(b.getTimeStamp());
+        }
+    }
+
+    private class SortByType implements Comparator<MovimientoEntity> {
+        public int compare(MovimientoEntity a, MovimientoEntity b){
+            return a.getTipoMovimientoByTipoMovimientoId().getTipo().compareTo(b.getTipoMovimientoByTipoMovimientoId().getTipo());
+        }
+    }
+
 }
+

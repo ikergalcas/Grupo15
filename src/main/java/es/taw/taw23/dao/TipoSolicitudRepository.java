@@ -6,12 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TipoSolicitudRepository extends JpaRepository<TipoSolicitudEntity, Integer> {
 
-    @Query("select t from TipoSolicitudEntity t where t.tipo = 'activacion'")
-    public TipoSolicitudEntity buscarTipoActivacion();
+    @Query("select t from TipoSolicitudEntity t where t.tipo = 'activa_individual'")
+    public TipoSolicitudEntity buscarTipoActivacionIndividual();
 
-    @Query("select t from TipoSolicitudEntity t where t.tipo = 'desbloqueo'")
-    public TipoSolicitudEntity buscarTipoDesbloqueo();
-
-    @Query("select t from TipoSolicitudEntity t where t.tipo = 'alta_empresa'")
-    TipoSolicitudEntity buscarTipoAltaEmpresa();
+    @Query("select t from TipoSolicitudEntity t where t.tipo = 'desbloqueo_individual'")
+    public TipoSolicitudEntity buscarTipoDesbloqueoIndividual();
+    @Query("select t from TipoSolicitudEntity t where t.tipo = 'alta_cliente'")
+    public TipoSolicitudEntity buscarTipoAltaIndividual();
 }

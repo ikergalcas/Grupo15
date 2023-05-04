@@ -7,10 +7,13 @@ public class FiltroCajero {
     String filtrarPorDivisa;
     String filtrarPorMovimiento;
 
+    String filtrarPorNumeroDeCuenta;
+
     public FiltroCajero(){
         ordenar="";
         filtrarPorDivisa="";
         filtrarPorMovimiento="";
+        filtrarPorNumeroDeCuenta="";
     }
     public String getOrdenar() {
         return ordenar;
@@ -34,6 +37,14 @@ public class FiltroCajero {
 
     public void setFiltrarPorMovimiento(String filtrarPorMovimiento) {
         this.filtrarPorMovimiento = filtrarPorMovimiento;
+    }
+
+    public String getFiltrarPorNumeroDeCuenta(){
+        return filtrarPorNumeroDeCuenta;
+    }
+
+    public void setFiltrarPorNumeroDeCuenta(String filtrarPorNumeroDeCuenta){
+        this.filtrarPorNumeroDeCuenta=filtrarPorNumeroDeCuenta;
     }
 
 

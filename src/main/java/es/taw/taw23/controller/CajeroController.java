@@ -1,10 +1,7 @@
 //Pablo Alarcón Carrión
 package es.taw.taw23.controller;
 
-import es.taw.taw23.dto.Cliente;
-import es.taw.taw23.dto.Cuenta;
-import es.taw.taw23.dto.Movimiento;
-import es.taw.taw23.dto.Divisa;
+import es.taw.taw23.dto.*;
 import es.taw.taw23.service.CajeroService;
 import es.taw.taw23.ui.FiltroCajero;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,23 +52,61 @@ public class CajeroController {
                     movimientos.add(x);
             }
         }
-        if (!filterEmpty(filtroCajero)){ //Ensure
-
+        else {
+            if (!filtroCajero.getFiltrarPorDivisa().equals(""))
+                if (movimientos.isEmpty()) //Should be empty when filtering
+                    movimientos = this.cajeroService.filtrarPorDivisa(cuenta,filtroCajero.getFiltrarPorDivisa());
+            if (!filtroCajero.getFiltrarPorNumeroDeCuenta().equals("")){
+                if (movimientos.isEmpty())
+                    movimientos = this.cajeroService.filtrarPorNumeroDeCuenta(cuenta, filtroCajero.getFiltrarPorNumeroDeCuenta(),null);
+                else
+                    movimientos = this.cajeroService.filtrarPorNumeroDeCuenta(cuenta, filtroCajero.getFiltrarPorNumeroDeCuenta(),movimientos);
+            }
+            if (!filtroCajero.getFiltrarPorMovimiento().equals("")){
+                if (movimientos.isEmpty())
+                    movimientos = this.cajeroService.filtrarPorTipoMovimiento(cuenta, filtroCajero.getFiltrarPorMovimiento(), null);
+                else{
+                    movimientos = this.cajeroService.filtrarPorTipoMovimiento(cuenta, filtroCajero.getFiltrarPorMovimiento(), movimientos);
+                }
+            }
+            if (!filtroCajero.getOrdenar().equals("")){
+                if (movimientos.isEmpty()){
+                    movimientos = this.cajeroService.ordenarPorCriterio(cuenta, filtroCajero.getOrdenar(), null);
+                }
+                else{
+                    movimientos = this.cajeroService.ordenarPorCriterio(cuenta, filtroCajero.getOrdenar(), movimientos);
+                }
+            }
         }
 
+        List<Divisa> monedas = this.cajeroService.obtenerTodasLasDivisas();
+        List<String> nombreMoneda = new ArrayList<>();
+        for (Divisa x : monedas){
+            nombreMoneda.add(x.getMoneda());
+        }
+        model.addAttribute("monedas",nombreMoneda);
 
+        List<Cuenta> listaCuentas = this.cajeroService.obtenerTodasLasCuentas();
+        List<String> nombreCuentas = new ArrayList<>();
+        for (Cuenta x : listaCuentas){
+            nombreCuentas.add(x.getNumeroCuenta());
+        }
+        model.addAttribute("todasLasCuentas", nombreCuentas);
 
         model.addAttribute("cuenta",cuenta);
         model.addAttribute("movimientos",movimientos);
         model.addAttribute("cliente",cliente);
         model.addAttribute("filtroCajero", filtroCajero);
+
+        Solicitud solicitud = this.cajeroService.buscarSolicitud(cliente.getId());
+        model.addAttribute("solicitud",solicitud);
         return "cajero";
     }
 
     private boolean filterEmpty(FiltroCajero filtroCajero){
         return (filtroCajero.getFiltrarPorDivisa().equals("") &&
                 filtroCajero.getFiltrarPorMovimiento().equals("")
-                && filtroCajero.getOrdenar().equals(""));
+                && filtroCajero.getOrdenar().equals("") && filtroCajero.getFiltrarPorNumeroDeCuenta().equals(""));
     }
 
 
@@ -171,5 +206,12 @@ public class CajeroController {
             this.cajeroService.setNewDivisa(cuenta.getMoneda(),aux);
         }
         return "redirect:/cajero/"+clienteId+"/cuenta/"+cuenta.getId();
+    }
+
+    @PostMapping("/solicitud")
+    public String procesarSolicitud(@RequestParam("idCliente") Integer idCliente, @RequestParam("idCuenta") Integer idCuenta,
+                                    @ModelAttribute("solicitud") Solicitud solicitud){
+        this.cajeroService.setNewDesbloqueo(idCliente);
+        return "redirect:/cajero/"+idCliente+"/cuenta/"+idCuenta;
     }
 }
