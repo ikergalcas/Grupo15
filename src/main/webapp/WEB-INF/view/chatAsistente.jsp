@@ -6,6 +6,10 @@
 <%@ page import="static org.aspectj.runtime.internal.Conversions.byteValue" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<%--
+    Autor: Iker Gálvez Castillo
+--%>
+
 <%
     List<Mensaje> lista = (List<Mensaje>) request.getAttribute("mensajes");
     Chat chat = (Chat) request.getAttribute("chat");

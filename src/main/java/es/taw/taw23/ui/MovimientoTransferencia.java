@@ -4,6 +4,9 @@ import es.taw.taw23.dto.Cuenta;
 
 import java.sql.Timestamp;
 
+/**
+ * Hecho por: Rocío Gómez Mancebo
+ */
 public class MovimientoTransferencia {
     private Double importe;
 

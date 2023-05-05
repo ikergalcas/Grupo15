@@ -2,6 +2,9 @@ package es.taw.taw23.ui;
 
 import java.sql.Timestamp;
 
+/**
+ * Hecho por: Rocío Gómez Mancebo
+ */
 public class MovimientoCambioDivisa {
     Integer idCliente;
     String divisa;

@@ -8,6 +8,9 @@ import es.taw.taw23.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Hecho por: Carla Serra Cant
+ */
 @Service
 public class CuentaService {
     @Autowired

@@ -6,6 +6,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * Hecho por:
+ * Álvaro Yuste Moreno: 50%
+ * Rocío Gómez Mancebo: 50%
+ */
 public class Cuenta implements Serializable {
     private Integer id;
     private String numeroCuenta;

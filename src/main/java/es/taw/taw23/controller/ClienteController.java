@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Hecho por: Rocío Gómez Mancebo
+ */
 @Controller
 @RequestMapping("/cliente")
 public class ClienteController {

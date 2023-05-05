@@ -6,6 +6,9 @@
 <%@ page import="es.taw.taw23.dto.Chat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+    Autor: Rocío Gómez Mancebo
+--%>
 
 <%
     Cliente cliente = (Cliente) request.getAttribute("cliente");

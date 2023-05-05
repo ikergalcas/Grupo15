@@ -5,6 +5,11 @@ import es.taw.taw23.entity.SolicitudEntity;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Hecho por:
+ * Iker Gálvez: 50%
+ * Carla Serra Cant: 50%
+ */
 public class Empleado implements Serializable{
     private Integer id;
     private String nombre;

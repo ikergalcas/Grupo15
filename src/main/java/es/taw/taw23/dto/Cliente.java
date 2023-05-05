@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 /**
- * Hecho por: Álvaro Yuste Moreno
+ * Hecho por:
+ * Álvaro Yuste Moreno: 50%
+ * Rocío Gómez Mancebo: 50%
  */
 public class Cliente implements Serializable {
     private Integer id;

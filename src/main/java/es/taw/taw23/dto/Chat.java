@@ -2,6 +2,9 @@ package es.taw.taw23.dto;
 
 import java.io.Serializable;
 
+/**
+ * Hecho por: Iker Gálvez Castillo
+ */
 public class Chat implements Serializable {
     private Integer id;
     private Byte cerrado;

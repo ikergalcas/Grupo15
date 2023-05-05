@@ -2,6 +2,9 @@ package es.taw.taw23.dto;
 
 import java.io.Serializable;
 
+/**
+ * Hecho por: Carla Serra Cant
+ */
 public class Tipo_solicitud implements Serializable {
     private Integer id;
     private String tipo;

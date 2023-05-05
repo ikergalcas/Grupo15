@@ -7,6 +7,11 @@
     Cliente cliente = (Cliente) request.getAttribute("cliente");
     Cuenta cuenta = (Cuenta) request.getAttribute("cuenta");
 %>
+
+<%--
+    Autor: Rocío Gómez Mancebo
+--%>
+
 <html>
 <head>
     <title>Transferencia</title>

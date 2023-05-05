@@ -12,6 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Hecho por:
+ * Álvaro Yuste Moreno: 20%
+ * Iker Gálvez Castillo: 20%
+ * Carla Serra Cant: 20%
+ * Pablo Alarcón Carrión: 20%
+ * Rocío Gómez: 20%
+ */
 @Service
 public class LoginService {
 

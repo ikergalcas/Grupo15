@@ -3,6 +3,9 @@ package es.taw.taw23.dto;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * Hecho por: Iker Gálvez
+ */
 public class Mensaje implements Serializable {
     private Integer id;
     private String texto;

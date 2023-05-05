@@ -13,7 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Hecho por: Álvaro Yuste Moreno
+ * Hecho por:
+ * Álvaro Yuste Moreno: 20%
+ * Iker Gálvez Castillo: 20%
+ * Carla Serra Cant: 20%
+ * Pablo Alarcón Carrión: 20%
+ * Rocío Gómez: 20%
  */
 @Controller
 public class LoginController {

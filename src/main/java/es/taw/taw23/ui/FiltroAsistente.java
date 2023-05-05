@@ -1,5 +1,8 @@
 package es.taw.taw23.ui;
 
+/**
+ * Hecho por: Iker Gálvez Castillo
+ */
 public class FiltroAsistente {
     private int id;
     private String nif;

@@ -1,5 +1,8 @@
 package es.taw.taw23.dto;
 
+/**
+ * Hecho por: Carla Serra Cant
+ */
 public class Estado_solicitud {
 
     private Integer id;

@@ -1,5 +1,8 @@
 package es.taw.taw23.ui;
 
+/**
+ * Hecho por: Rocío Gómez
+ */
 public class ClienteAux {
     private String primerNombre;
 

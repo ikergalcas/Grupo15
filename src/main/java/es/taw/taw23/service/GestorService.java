@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Hecho por: Carla Serra Cant
+ */
 @Service
 public class GestorService {
     @Autowired

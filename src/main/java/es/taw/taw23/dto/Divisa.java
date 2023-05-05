@@ -2,6 +2,9 @@ package es.taw.taw23.dto;
 
 import java.io.Serializable;
 
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public class Divisa implements Serializable {
 
     String moneda;

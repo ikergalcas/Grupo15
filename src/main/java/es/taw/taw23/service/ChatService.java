@@ -16,6 +16,9 @@ import java.util.List;
 
 import static org.aspectj.runtime.internal.Conversions.byteValue;
 
+/**
+ * Hecho por: Iker Gálvez
+ */
 @Service
 public class ChatService {
     @Autowired

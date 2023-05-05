@@ -3,6 +3,9 @@ package es.taw.taw23.dto;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * Hecho por: Álvaro Yuste
+ */
 public class Movimiento implements Serializable {
     Integer id;
     Timestamp timeStamp;

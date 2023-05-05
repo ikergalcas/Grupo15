@@ -2,6 +2,15 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--
+    Autor:
+    Rocío Gómez Mancebo: 20%
+    Pablo Alarcón Carrión: 20%
+    Iker Gálvez Castillo: 20%
+    Carla Serra Cant: 20%
+    Álvaro Yuste Moreno: 20%
+--%>
+
 <html>
 <head>
     <title>Inicio de sesion</title>

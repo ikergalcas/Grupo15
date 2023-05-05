@@ -1,4 +1,8 @@
 
+<%--
+    Autor: Rocío Gómez Mancebo
+--%>
+
 <%
     String error = (String) request.getAttribute("error");
     Integer idCliente = (Integer) request.getAttribute("idCliente");
