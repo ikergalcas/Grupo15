@@ -14,7 +14,7 @@
 <% Cuenta cuenta = (Cuenta) request.getAttribute("cuenta");
    List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
  Cliente cliente = (Cliente) request.getAttribute("cliente");
-    Solicitud solicitud = (Solicitud) request.getAttribute("solicitud");%>
+Solicitud solicitud = (Solicitud) request.getAttribute("solicitud");%>
 <table>
     <td>
         <th>
@@ -32,6 +32,8 @@
         </th>
     </td>
 </table>
+
+<%if (!cuenta.getEstadoCuenta().equals("inactiva")) { %>
 
 <form:form action="/cajero/filtrar" method="post" modelAttribute="filtroCajero">
     <input type="hidden" name="clienteId" value="<%=cliente.getId()%>"/>
@@ -68,7 +70,7 @@
     <form:button>Filtrar</form:button>
 </form:form>
 
-<table border="1" style="margin-left: 25%">
+<table border="1" style="margin-left: 30%">
     <tr>
         <th style="width:200px">MOVIMIENTOS</th>
         <th style="width:300px">IMPORTE</th>
@@ -109,8 +111,8 @@
             }%>
     </tr>
 </table>
-
-<table style="margin-left: 30%">
+<% if(cuenta.getEstadoCuenta().equals("activa")){ %>
+<table style="margin-left: 32.6%">
     <td>
         <th>
             <form action="/cajero/<%=cliente.getId()%>/cuenta/<%=cuenta.getId()%>/transferencia">
@@ -129,34 +131,45 @@
         </th>
     </td>
 </table>
-
+<%} else if (cuenta.getEstadoCuenta().equals("bloqueada")){%>
+<table style="margin-left: 34.3%">
+    <td>
+    <th><button type="button" disabled style="margin-bottom: 3%; height: 30px; width: 180px">Realizar una transferencia</button></th>
+    <th><button type="button" disabled style="margin-bottom: 3%; height: 30px; width: 180px">Retirar dinero</button></th>
+    <th><button type="button" disabled style="margin-bottom: 3%; height: 30px; width: 180px">Cambiar divisa</button></th>
+    </td>
+</table>
+    <%}%>
 <table style="margin-left: 40%">
     <th>Estado cuenta: </th>
-    <% if (cuenta.getEstadoCuenta().equals("activa")){ %>
+    <% if (cuenta.getEstadoCuenta().equals("activa") || (solicitud!=null && solicitud.getEstado_solicitud().getEstado().equals("aceptada"))){ %>
     <th><h4 style="background-color: chartreuse; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
+    <th><button type="button" disabled style="margin-bottom: 3%">Desbloquear cuenta</button> </th>
     <%} else {
-        if (solicitud.getEstado_solicitud().getEstado().equals("pendiente")){%>
-        <th><h4 style="background-color: yellow; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
-        <%}else { %>
-            <th><h4 style="background-color: red; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
-            <% }if (cuenta.getEstadoCuenta().equals("bloqueada") && solicitud==null){ %>
-            <th>
-                <form:form action="/cajero/solicitud" method="post" modelAttribute="">
-                    <input type="submit" value="Desbloquear cuenta" />
-                    <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
-                    <input type="hidden" name="idCuenta" value="<%=cuenta.getId()%>"/>
-                </form:form>
-            </th>
-        <%} else{ %>
-            <th><button type="button" disabled>Desbloquear cuenta</button></th>
-            <%}
-    }%>
-
+        if (solicitud!=null){ %>
+            <th><h4 style="background-color: yellow; margin-top: 20px">Pendiente</h4></th>
+            <th><button type="button" disabled style="margin-bottom: 3%">Desbloquear cuenta</button> </th>
+        <%} else {
+                if (cuenta.getEstadoCuenta().equals("bloqueada")){%>
+                <th><h4 style="background-color: red; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
+                <th>
+                    <form:form method="post" action="/cajero/solicitud">
+                        <form method="post" action="/cajero/solicitud">
+                            <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
+                            <input type="hidden" name="idCuenta" value="<%=cuenta.getId()%>">
+                            <button style="margin-top: 10%">Desbloquear cuenta</button>
+                        </form>
+                    </form:form>
+                </th>
+                <%}
+            }
+        }%>
 </table> <br>
 
-<table style="position: fixed; margin-left:40%">
+<table style="position: fixed; margin-left:41.3%">
     <td style="background-color:lightblue"><h1>SALDO: <%=cuenta.getDinero()%> <%=cuenta.getMoneda()%></h1></td>
 </table>
 
+<%}%>
 </body>
 </html>

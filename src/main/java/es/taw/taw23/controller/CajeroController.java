@@ -68,7 +68,7 @@ public class CajeroController {
         model.addAttribute("cliente",cliente);
         model.addAttribute("filtroCajero", filtroCajero);
 
-        Solicitud solicitud = this.cajeroService.buscarSolicitud(cliente.getId());
+        Solicitud solicitud = this.cajeroService.buscarSolicitud(clienteId);
         model.addAttribute("solicitud",solicitud);
         return "cajero";
     }
@@ -139,21 +139,23 @@ public class CajeroController {
         Cuenta cuenta = this.cajeroService.buscarCuenta(id);
         model.addAttribute("cliente",cliente);
         model.addAttribute("cuenta",cuenta);
+        model.addAttribute("dinero", new String(""));
         if (badAmount)
             return "cajeroRetirarAux";
         else
             return "cajeroRetirar";
     }
     @PostMapping("/sacar")
-    public String procesarRetirar(@ModelAttribute("cuenta") Cuenta cuenta,
-                                  @RequestParam("idCliente") Integer idCliente, Model model){
-        Cuenta aux = this.cajeroService.buscarCuenta(cuenta.getId());
-        if (cuenta.getDinero()>aux.getDinero() || cuenta.getDinero()<0){
-            return doRetirar(cuenta.getId(),idCliente,true,model);
+    public String procesarRetirar(@RequestParam("idCuenta") Integer idCuenta,
+                                  @RequestParam("idCliente") Integer idCliente, @RequestParam("dinero") String dinero,Model model){
+        Cuenta aux = this.cajeroService.buscarCuenta(idCuenta);
+        Double importe = Double.valueOf(dinero);
+        if (importe>aux.getDinero() || importe<0){
+            return doRetirar(idCuenta,idCliente,true,model);
         } else{
-            this.cajeroService.setNewSaldo(aux, cuenta.getDinero());
-            this.cajeroService.setNewMovimiento(aux,aux,cuenta.getDinero(), idCliente);
-            return "redirect:/cajero/"+idCliente+"/cuenta/"+cuenta.getId();
+            this.cajeroService.setNewSaldo(aux, importe);
+            this.cajeroService.setNewMovimiento(aux,aux,importe, idCliente);
+            return "redirect:/cajero/"+idCliente+"/cuenta/"+idCuenta;
             }
         }
 

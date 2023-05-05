@@ -93,9 +93,9 @@ public class CajeroService {
         return cuentasDTO;
     }
 
-    public Solicitud buscarSolicitud(Integer idCliente){
-        return (this.cajeroRepository.buscarSolicitudPorIdCliente(idCliente) == null) ?
-                null : this.cajeroRepository.buscarSolicitudPorIdCliente(idCliente).toDTO();
+    public Solicitud buscarSolicitud(Integer clienteId){
+        return (this.cajeroRepository.buscarSolicitudPorIdCliente(clienteId) == null) ? null :
+                this.cajeroRepository.buscarSolicitudPorIdCliente(clienteId).toDTO();
     }
 
     //Establecer nuevas operaciones
@@ -214,9 +214,25 @@ public class CajeroService {
 
         solicitud.setEstadoSolicitudByEstadoSolicitudId(pendiente);
         solicitud.setTipoSolicitudByTipoSolicitudId(tipoDesbloqueo);
+        solicitud.setEmpleadoByEmpleadoId(buscarGestorMenosOcupado());
         solicitud.setClienteByClienteId(cliente);
 
         this.solicitudRepository.save(solicitud);
+    }
+
+    protected EmpleadoEntity buscarGestorMenosOcupado() {
+        List<EmpleadoEntity> gestores = this.cajeroRepository.buscarGestores();
+
+        int min = Integer.MAX_VALUE;
+        EmpleadoEntity gestorElegido = null;
+        for(EmpleadoEntity gestor : gestores) {
+            List<SolicitudEntity> solicitudes = this.solicitudRepository.buscarSolicitudesPendientesDeUnGestor(gestor.getId());
+            if(solicitudes.size() < min) {
+                min = solicitudes.size();
+                gestorElegido = gestor;
+            }
+        }
+        return gestorElegido;
     }
 
 

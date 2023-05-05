@@ -22,15 +22,15 @@
 </table>
 
 <h1 style="margin-left: 43%"><u>Retirar fondos</u></h1>
-<table style="margin-left: 30%; margin-top: 10px">
+<table style="margin-left:35%; margin-top: 10px">
     <td>
         <th>Introduzca cantidad:</th>
         <th>
-            <form:form modelAttribute="cuenta" action="/cajero/sacar" method="post">
-                <form:hidden path="id"/>
-                <form:input path="dinero"/>
+            <form:form action="/cajero/sacar" method="post">
+                <input type="text" name="dinero" style="margin-top: 5%"/>
                 <form action="/cajero/sacar" method="post">
                     <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
+                    <input type="hidden" name="idCuenta" value="<%=cuenta.getId()%>">
                     <button>Sacar dinero</button>
                 </form>
             </form:form>
@@ -38,7 +38,7 @@
     </td>
 </table>
 
-<table style="margin-left:40%">
+<table style="margin-left:41%">
     <td style="background-color:lightblue"><h1>SALDO: <%=cuenta.getDinero()%> <%=cuenta.getMoneda()%></h1></td>
 </table>
 

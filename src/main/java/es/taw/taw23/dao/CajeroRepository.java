@@ -28,6 +28,9 @@ public interface CajeroRepository extends JpaRepository<CuentaEntity,Integer> {
     @Query("Select x from SolicitudEntity x where x.clienteByClienteId.id = :idCliente")
     SolicitudEntity buscarSolicitudPorIdCliente(@Param ("idCliente") Integer idCliente);
 
+    @Query("select e from EmpleadoEntity e where e.rolEmpleadoByRolEmpleadoId.tipo = 'gestor'")
+    public List<EmpleadoEntity> buscarGestores();
+
     //Aqui empieza las solicitudes de los filtros. Hay 63 solicitudes
 
     //Divisa, numero y movimiento -> Completa

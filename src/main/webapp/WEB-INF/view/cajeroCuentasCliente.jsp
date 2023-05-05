@@ -20,16 +20,17 @@
     <th><h1>¡Hola <%=cliente.getPrimerNombre()%>!</h1></th>
     </td>
 </table>
-<h1 style="position: fixed; left: 36.5%">Cuentas asociadas</h1><br>
-<table border="1" style="margin-top: 80px; position: fixed; left: 37%">
+<h1 style="position: fixed; left: 43%">Cuentas asociadas</h1><br>
+<table border="1" style="margin-top: 80px; position: fixed; left: 43%">
     <tr>
         <th>CUENTAS</th>
         <th>GESTIONAR</th>
     </tr>
-    <% if (cuentasAsociadas==null){ %>
+    <% if (cuentasAsociadas==null ||cuentasAsociadas.isEmpty()){ %>
     <tr>
         <th>Sin cuentas asociadas</th>
-        <th>-</th>
+        <th></th>
+
     </tr>
     <% } else {
             for (Cuenta x : cuentasAsociadas) { %>

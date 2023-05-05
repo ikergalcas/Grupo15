@@ -23,8 +23,8 @@
     <th><h1>¡Hola <%=cliente.getPrimerNombre()%>!</h1></th>
     </td>
 </table>
-    <h1 style="margin-left: 35%"><u>Realizar transferencia de dinero</u></h1>
-    <table style="margin-left: 30%; margin-top: 10px">
+    <h1 style="margin-left: 36.3%"><u>Realizar transferencia de dinero</u></h1>
+    <table style="margin-left: 32%; margin-top: 10px">
         <td>
         <th>
             <form:form modelAttribute="movimiento" action="/cajero/transferir" method="post">
@@ -40,8 +40,8 @@
         </th>
         </td>
     </table>
-    <table style="margin-left: 530px">
-        <td><h1 style="background: red">DATOS INCORRECTOS</h1></td>
+    <table style="margin-left: 40%">
+        <td><h2 style="background: red">Importe o cuenta inválidos</h2></td>
     </table>
 
 
