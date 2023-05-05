@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer> {
 
     /**
@@ -15,4 +17,6 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer>
     @Query("select e from EmpresaEntity e where e.nombre = :name and e.clientesById.size = 0")
     public EmpresaEntity buscarEmpresaPorNombreRegistro(@Param("name") String name);
 
+    @Query("select e from EmpresaEntity e where e.cif like concat(:cif, '%')")
+    List<EmpresaEntity> findByFiltroCif(@Param("cif") String cif); /* Carla Serracant Guevara */
 }

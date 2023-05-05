@@ -270,4 +270,14 @@ public class EmpresaService {
 
         return empresasDTO;
     }
+
+    public List<Empresa> buscarEmpresaPorCif(String cif) {
+        List<EmpresaEntity> empresaEntities = empresaRepository.findByFiltroCif(cif);
+        List<Empresa> empresas = new ArrayList<>();
+        for (EmpresaEntity e : empresaEntities) {
+            empresas.add(e.toDTO());
+        }
+
+        return empresas;
+    }
 }

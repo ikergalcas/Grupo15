@@ -7,6 +7,7 @@ import es.taw.taw23.entity.EmpleadoEntity;
 import es.taw.taw23.entity.SolicitudEntity;
 import es.taw.taw23.service.*;
 import es.taw.taw23.ui.FiltroClienteNif;
+import es.taw.taw23.ui.FiltroEmpresaCif;
 import es.taw.taw23.ui.FiltroMovimiento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -225,8 +226,25 @@ public class GestorController {
     @GetMapping("/listadoDeEmpresas/{idGestor}")
     public String doMostrarListadoDeEmpresas(@PathVariable("idGestor") Integer idGestor, Model model) {
         List<Empresa> empresas = empresaService.buscarEmpresas();
+        FiltroEmpresaCif filtro = new FiltroEmpresaCif();
+        model.addAttribute("filtro",filtro);
         model.addAttribute("empresas",empresas);
         model.addAttribute("idGestor",idGestor);
+        return "mostrarListadoEmpresas";
+    }
+
+    @PostMapping("/listaDeEmpresas/Ordenado")
+    public String doMostrarListadoDeEmpresasPorCif(@ModelAttribute("filtro") FiltroEmpresaCif filtro, Model model) {
+        List<Empresa> empresas;
+        if (filtro.getCif().isEmpty()) {
+            empresas = empresaService.buscarEmpresas();
+        } else {
+            empresas = empresaService.buscarEmpresaPorCif(filtro.getCif());
+        }
+
+        model.addAttribute("empresas",empresas);
+        model.addAttribute("idGestor",filtro.getIdGestor());
+        model.addAttribute("filtro",filtro);
         return "mostrarListadoEmpresas";
     }
 

@@ -7,6 +7,7 @@ public class Empresa implements Serializable {
     private Integer id;
     private String nombre;
     private List<Cliente> listaClientes;
+    private String cif;
 
     public Integer getId() {
         return id;
@@ -30,5 +31,13 @@ public class Empresa implements Serializable {
 
     public void setListaClientes(List<Cliente> listaClientes) {
         this.listaClientes = listaClientes;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
     }
 }

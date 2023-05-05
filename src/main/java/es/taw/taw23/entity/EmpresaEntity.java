@@ -17,6 +17,9 @@ public class EmpresaEntity {
     @Basic
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
+    @Basic
+    @Column(name = "cif", nullable = false, length = 45)
+    private String cif;
     @OneToMany(mappedBy = "empresaByEmpresaId")
     private List<ClienteEntity> clientesById;
 
@@ -69,6 +72,7 @@ public class EmpresaEntity {
         dto.setId(this.id);
         dto.setNombre(this.nombre);
         dto.setListaClientes(this.listaClientestoDTO(this.clientesById));
+        dto.setCif(this.cif);
         return dto;
     }
 
