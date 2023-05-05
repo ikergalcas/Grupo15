@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.dto.Empresa" %>
+<%@ page import="es.taw.taw23.dto.Chat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -16,6 +17,7 @@
     List<Empresa> empresas = (List<Empresa>) request.getAttribute("empresas");
     boolean solicitudDesbloqueo = (boolean) request.getAttribute("solicitudDesbloqueo");
     boolean solicitudActivacion = (boolean) request.getAttribute("solicitudActivacion");
+    Chat chat = (Chat) request.getAttribute("chat");
 %>
 <html>
 <head>
@@ -178,7 +180,19 @@
             <a href="/empresa/editarEmpresa?id=<%= cliente.getId()%>">Modificar datos de la empresa</a> <br/>
             <a href="/empresa/transferencia?id=<%= cliente.getId() %>">Realizar transferencia</a> <br/>
             <a href="/empresa/miEmpresa?id=<%= cliente.getId() %>">Ver listado de socios/autorizados de mi empresa</a>
-
+            <br/>
+            <br/>
+                <%
+                    if (chat == null) {
+                %>
+                        <a href="/asistente/abrirChatConAsistente/<%=cliente.getId()%>">Abrir nuevo chat con asistente</a>
+                            <%
+                    } else {
+                %>
+                        <a href="/asistente/chatCliente/<%=chat.getId()%>">Acceder a chat con asistente</a>
+                            <%
+                    }
+                %>
         </div>
     </div>
 </div>

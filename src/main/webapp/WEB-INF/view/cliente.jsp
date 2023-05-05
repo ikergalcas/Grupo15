@@ -3,6 +3,7 @@
 <%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.dto.Movimiento" %>
+<%@ page import="es.taw.taw23.dto.Chat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -12,7 +13,7 @@
     List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
     boolean solicitudDesbloqueo = (boolean) request.getAttribute("solicitudDesbloqueo");
     boolean solicitudActivacion = (boolean) request.getAttribute("solicitudActivacion");
-
+    Chat chat = (Chat) request.getAttribute("chat");
  %>
 <html>
 <head>
@@ -146,6 +147,20 @@
 
 <a href="/cliente/transferenciaCliente/<%= cliente.getId() %>">Realizar transferencia</a> <br/>
 <a href="/cliente/perfilCliente/<%=cliente.getId()%>" >Modificar mis datos</a> <br/>
+<br/>
+<br/>
+<%
+    if (chat == null) {
+%>
+<a href="/asistente/abrirChatConAsistente/<%=cliente.getId()%>">Abrir nuevo chat con asistente</a>
+<%
+} else {
+%>
+<a href="/asistente/chatCliente/<%=chat.getId()%>">Acceder a chat con asistente</a>
+<%
+    }
+%>
+
 <%
     if(!cliente.getTipo().equals("individual")) {
 %>

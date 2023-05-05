@@ -1,6 +1,7 @@
 package es.taw.taw23.controller;
 
 import es.taw.taw23.dto.*;
+import es.taw.taw23.service.ChatService;
 import es.taw.taw23.service.EmpresaService;
 import es.taw.taw23.dto.Empresa;
 import es.taw.taw23.ui.FiltroEmpresa;
@@ -22,6 +23,9 @@ public class EmpresaController {
 
     @Autowired
     EmpresaService empresaService;
+
+    @Autowired
+    ChatService chatService;
 
     /**
      * Vista de la pagina de inicio. Se muestran las cuentas del asociado y todos los asociados de todas las empresas
@@ -60,7 +64,7 @@ public class EmpresaController {
         model.addAttribute("cuentas", cuentas);
         model.addAttribute("filtro", filtro);
         model.addAttribute("cliente", cliente);
-
+        model.addAttribute("chat", chatService.buscarChatCliente(id));
         /**
          * No compruebo nada más porque sé que este objeto filtro solo tendrá relleno el atributo nombre empresa.
          * Porque en el formulario que rellena este objeto filtro el resto de los campos los pongo como hidden.

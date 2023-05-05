@@ -4,12 +4,14 @@
 <%@ page import="es.taw.taw23.dto.Mensaje" %>
 <%@ page import="es.taw.taw23.service.MensajeService" %>
 <%@ page import="es.taw.taw23.dto.Empleado" %>
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%
     List<Mensaje> lista = (List<Mensaje>) request.getAttribute("mensajes");
     Chat chat = (Chat) request.getAttribute("chat");
     Empleado asistente = (Empleado) request.getAttribute("asistente");
+    Cliente cliente = (Cliente) request.getAttribute("cliente");
     Mensaje nuevoMensaje = new Mensaje();
 %>
 
@@ -62,7 +64,17 @@
         </tr>
     </table>
 </form>
-<a href="/asistente/<%=chat.getEmpleadoId()%>">Volver atras</a> <%--Cambiar por url cliente/empresa--%>
+<%
+    if (cliente.getTipo().equals("individual")) {
+%>
+<a href="/cliente/<%=chat.getClienteId()%>">Volver atras</a>
+<%
+    } else {
+%>
+<a href="/empresa/?id=<%=chat.getClienteId()%>">Volver atras</a>
+<%
+    }
+%>
 <br>
 <br>
 <a href="/asistente/cerrarChatCliente/<%=chat.getId()%>">Cerrar chat definitivamente</a>

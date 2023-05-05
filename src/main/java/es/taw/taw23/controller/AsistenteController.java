@@ -6,6 +6,7 @@ import es.taw.taw23.dto.Empleado;
 import es.taw.taw23.dto.Mensaje;
 import es.taw.taw23.service.AsistenteService;
 import es.taw.taw23.service.ChatService;
+import es.taw.taw23.service.ClienteService;
 import es.taw.taw23.service.MensajeService;
 import es.taw.taw23.ui.FiltroAsistente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class AsistenteController {
 
     @Autowired
     protected AsistenteService asistenteService;
+
+    @Autowired
+    protected ClienteService clienteService;
 
     @GetMapping("/{id}")
     public String doListarChats(@PathVariable("id") int idAsistente, Model model){
@@ -106,11 +110,6 @@ public class AsistenteController {
 
     @GetMapping("/abrirChatConAsistente/{idCliente}")
     public String doAbrirChat(@PathVariable("idCliente") int clienteId){
-        /* Código para cliente/empresa controller:
-        model.addAttribute("chat", chatService.buscarChatCliente(clienteId))
-         */
-
-
         Chat chat = new Chat();
         chat.setCerrado(byteValue(0));
         chat.setClienteId(clienteId);
@@ -128,6 +127,7 @@ public class AsistenteController {
         model.addAttribute("mensajes",mensajes);
         model.addAttribute("chat",chat);
         model.addAttribute("asistente", asistenteService.buscarEmpleado(chat.getEmpleadoId()));
+        model.addAttribute("cliente", clienteService.buscarCliente(chat.getClienteId()));
         return "chatCliente";
     }
 
@@ -146,7 +146,14 @@ public class AsistenteController {
     @GetMapping("/cerrarChatCliente/{id}")
     public String doCerrarChatCliente(@PathVariable("id") int idChat, Model model){
         chatService.cerrarChat(idChat);
-        String url = "redirect:/asistente/"+chatService.findById(idChat).getEmpleadoId(); //Cambiar por url cliente/empresa
+        Chat chat = chatService.findById(idChat);
+        Cliente cliente = clienteService.buscarCliente(chat.getClienteId());
+        String url;
+        if (cliente.getTipo().equals("individual")) {
+            url = "redirect:/cliente/"+cliente.getId();
+        } else {
+            url = "redirect:/empresa/?id="+cliente.getId();
+        }
         return url;
     }
 }

@@ -4,6 +4,7 @@ import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Cuenta;
 import es.taw.taw23.dto.Divisa;
 import es.taw.taw23.dto.Movimiento;
+import es.taw.taw23.service.ChatService;
 import es.taw.taw23.service.ClienteService;
 import es.taw.taw23.service.MovimientosService;
 import es.taw.taw23.ui.FiltroMovimientosIndiv;
@@ -27,7 +28,8 @@ public class ClienteController {
    @Autowired
    protected MovimientosService movimientosService;
 
-
+   @Autowired
+   protected ChatService chatService;
 
     @GetMapping("/{id}")
     public String doListarMovimientos(@PathVariable(value = "id") int id, Model model){
@@ -71,9 +73,8 @@ public class ClienteController {
             model.addAttribute("movimientos",movimientos);
         }
 
-
-
         model.addAttribute("filtro", filtroMovimientos);
+        model.addAttribute("chat", chatService.buscarChatCliente(id));
 
         return "cliente";
     }
