@@ -5,8 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public interface CuentaRepository extends JpaRepository<CuentaEntity, Integer> {
 
     @Query("select c from CuentaEntity c where c.numeroCuenta = :numero")
     public CuentaEntity buscarCuentaPorNumeroCuenta(@Param("numero") String numeroCuenta);
+
+    @Query("select c from CuentaEntity c where c.estadoCuentaByEstadoCuentaId.estadoCuenta = 'activa'")
+    public List<CuentaEntity> buscarCuentasTransferencia();
 }

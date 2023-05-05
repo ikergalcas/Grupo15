@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public interface AsociadoRepository extends JpaRepository<ClienteEntity, Integer> {
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.nombre = :nombreEmpresa")
@@ -26,6 +28,9 @@ public interface AsociadoRepository extends JpaRepository<ClienteEntity, Integer
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif like CONCAT('%', :nif, '%') ")
     public ClienteEntity buscarPorNif(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif);
+
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif = :nif")
+    public ClienteEntity buscarPorNifRegistroAsociado(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif);
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.primerNombre like CONCAT('%', :primerNombre, '%') and c.primerApellido like CONCAT('%', :primerApellido, '%')")
     public List<ClienteEntity> buscarPorPrimerNombreyPrimerApellido(@Param("idempresa") Integer idEmpresa, @Param("primerNombre") String nombre, @Param("primerApellido") String apellido);

@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public interface CuentaClienteRepository extends JpaRepository<CuentaClienteEntity, Integer> {
 
     @Query("select c from CuentaClienteEntity c where c.clienteByClienteId.id = :idCliente")
@@ -17,4 +19,7 @@ public interface CuentaClienteRepository extends JpaRepository<CuentaClienteEnti
 
     @Query("select c from CuentaClienteEntity c where c.clienteByClienteId.id = :idCliente")
     List<CuentaClienteEntity> buscarCuentasCliente(@Param("idCliente") Integer id);
+
+    @Query("select c from CuentaClienteEntity c where c.clienteByClienteId.id = :idCliente and c.cuentaByCuentaId.id = :idCuenta")
+    CuentaClienteEntity buscarPorClienteYCuenta(@Param("idCliente") Integer id, @Param("idCuenta") Integer id1);
 }

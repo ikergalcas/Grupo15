@@ -5,17 +5,24 @@ import es.taw.taw23.dto.Empleado;
 import es.taw.taw23.dto.Empresa;
 import es.taw.taw23.dto.Solicitud;
 import es.taw.taw23.entity.*;
+import es.taw.taw23.service.ClienteService;
 import es.taw.taw23.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 @Controller
 public class LoginController {
 
     @Autowired
     LoginService loginService;
+
+    @Autowired
+    ClienteService clienteService;
 
     @GetMapping("/")
     public String doLogin() {
@@ -27,6 +34,7 @@ public class LoginController {
         String urlto = "login";
         Cliente cliente = this.loginService.buscarCliente(nif, contrasena);
         Empleado empleado = this.loginService.buscarEmpleado(nif, contrasena);
+        Empresa empresa = this.loginService.buscarEmpresa(nif, contrasena);
         Solicitud solicitud = null;
         if (cliente != null){
             solicitud = this.loginService.buscarSolicitudAltaPorIdCliente(cliente.getId());
@@ -47,6 +55,8 @@ public class LoginController {
             } else {
                 urlto = "redirect:/gestor/?id=" + empleado.getId();
             }
+        } else if (empresa != null) {
+            urlto = "redirect:/empresa/vistaEmpresa?idEmpresa=" + empresa.getIdEmpresa();
         }
         return urlto;
     }
@@ -67,6 +77,19 @@ public class LoginController {
     public String doRegisterEmpresa(@ModelAttribute("empresa")Empresa empresa, @ModelAttribute("socio") Cliente socio, Model model) {
         this.loginService.registrarEmpresa(empresa, socio);
 
+        return "login";
+    }
+
+    @GetMapping("/registroCliente")
+    public String doRegistroCliente(Model model) {
+        Cliente cliente = new Cliente();
+        model.addAttribute("cliente", cliente);
+
+        return "registroCliente";
+    }
+    @PostMapping("/registroCliente")
+    public String doRegistarCliente(@ModelAttribute("cliente") Cliente cliente) {
+        this.clienteService.registrarCliente(cliente);
         return "login";
     }
 }

@@ -1,5 +1,7 @@
 package es.taw.taw23.ui;
-
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public class FiltroEmpresa {
     private String nif;
     private String primerNombre;

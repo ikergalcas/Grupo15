@@ -58,6 +58,9 @@ public class LoginService {
 
         //Relleno los campos de la empresa
         empresaEntity.setNombre(empresa.getNombre());
+        empresaEntity.setCif(empresa.getCif());
+        empresaEntity.setContrasena(empresa.getContrasenaEmpresa());
+
         this.empresaRepository.save(empresaEntity);
         EmpresaEntity empresaBD = this.empresaRepository.buscarEmpresaPorNombreRegistro(empresa.getNombre());
 
@@ -77,6 +80,7 @@ public class LoginService {
         clienteEntity.setAcceso(1);
         clienteEntity.setEmpresaByEmpresaId(empresaBD);
         clienteEntity.setRolClienteByRolclienteId(this.rolClienteRepository.buscarRol("socio"));
+
         this.clienteRepository.save(clienteEntity);
         ClienteEntity clienteBD = this.clienteRepository.buscarPorNif(socio.getNif());
         List<ClienteEntity> asociados = new ArrayList<>();
@@ -113,5 +117,19 @@ public class LoginService {
         } else {
             return null;
         }
+    }
+
+    public Empresa buscarEmpresa(String cif, String contrasena) {
+        EmpresaEntity entity = this.empresaRepository.inicioSesion(cif, contrasena);
+        Empresa empresa = null;
+
+        if(entity != null) {
+            SolicitudEntity solicitud = this.solicitudRepository.buscarSolicitudEmpresaInicioSesion(entity.getClientesById());
+            if(solicitud == null) {
+                empresa = entity.toDTO();
+            }
+        }
+
+        return empresa;
     }
 }

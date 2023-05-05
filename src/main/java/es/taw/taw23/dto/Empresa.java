@@ -1,17 +1,22 @@
 package es.taw.taw23.dto;
 
 import java.io.Serializable;
-
+import java.util.List;
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public class Empresa implements Serializable {
-    private Integer id;
+    private Integer idEmpresa;
     private String nombre;
-
-    public Integer getId() {
-        return id;
+    private String cif;
+    private String contrasenaEmpresa;
+    private List<Integer> asociados;
+    public Integer getIdEmpresa() {
+        return idEmpresa;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdEmpresa(Integer id) {
+        this.idEmpresa = id;
     }
 
     public String getNombre() {
@@ -20,5 +25,29 @@ public class Empresa implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getContrasenaEmpresa() {
+        return contrasenaEmpresa;
+    }
+
+    public void setContrasenaEmpresa(String contrasena) {
+        this.contrasenaEmpresa = contrasena;
+    }
+
+    public List<Integer> getAsociados() {
+        return asociados;
+    }
+
+    public void setAsociados(List<Integer> asociados) {
+        this.asociados = asociados;
     }
 }

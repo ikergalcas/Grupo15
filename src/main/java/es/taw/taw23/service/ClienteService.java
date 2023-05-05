@@ -38,6 +38,18 @@ public class ClienteService {
     @Autowired
     protected IndividualRepository individualRepository;
 
+    @Autowired
+    protected EstadoSolicitudRepository estadoSolicitudRepository;
+
+    @Autowired
+    protected TipoSolicitudRepository tipoSolicitudRepository;
+
+    @Autowired
+    protected SolicitudRepository solicitudRepository;
+
+    @Autowired
+    protected GestorRepository gestorRepository;
+
     public Cliente buscarCliente(Integer id) {
         ClienteEntity individualEntity = this.individualRepository.findById(id).orElse(null);
         if(individualEntity != null) {
@@ -81,11 +93,16 @@ public class ClienteService {
         CuentaEntity cuentaOrigen = this.cuentaRepository.buscarCuentaPorNumeroCuenta(transferencia.getCuentaOrigen());
         CuentaEntity cuentaDestino = this.cuentaRepository.buscarCuentaPorNumeroCuenta(transferencia.getCuentaDestino());
 
-        if(cuentaDestino == null) {
+
+
+        //cuenta no existe o esta bloqueada o inactiva
+        if(cuentaDestino == null || transferencia.getImporte()<0) {
             error = "cuentaDestino";
         } else if(cuentaOrigen.getDinero() < transferencia.getImporte()) {
             error = "dineroInsuficiente";
-        } else {
+        }else if(cuentaDestino.getEstadoCuentaByEstadoCuentaId().getEstadoCuenta().equals("bloqueada") || cuentaDestino.getEstadoCuentaByEstadoCuentaId().getEstadoCuenta().equals("inactiva")){
+            error = "cuentaDestinoBloqueadaOInactiva";
+        }else {
             TipoMovimientoEntity tipoMov = this.tipoMovimientoRepository.buscarTipoTransferencia();
             movimiento.setTipoMovimientoByTipoMovimientoId(tipoMov);
 
@@ -125,6 +142,8 @@ public class ClienteService {
 
         return divisasADTO(divisaEntities);
     }
+
+
 
     private List<Divisa> divisasADTO(List<DivisaEntity> divisaEntities) {
         List<Divisa> divisas = new ArrayList<>();
@@ -186,4 +205,95 @@ public class ClienteService {
 
         this.individualRepository.save(cliente);
     }
+
+    //cambio estado cuenta
+    public void solicitarDesbloqueo(Integer idCliente) {
+        ClienteEntity cliente = this.individualRepository.findById(idCliente).orElse(null);
+        SolicitudEntity solicitud = new SolicitudEntity();
+
+        EstadoSolicitudEntity estadoPendiente = this.estadoSolicitudRepository.buscarEstadoPendiente();
+        TipoSolicitudEntity tipoDesbloqueo = this.tipoSolicitudRepository.buscarTipoDesbloqueoIndividual();
+            //desbloqueo_individual
+
+        solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoPendiente);
+        solicitud.setTipoSolicitudByTipoSolicitudId(tipoDesbloqueo);
+        solicitud.setEmpleadoByEmpleadoId(buscarGestorMenosOcupado());
+        solicitud.setClienteByClienteId(cliente);
+
+        this.solicitudRepository.save(solicitud);
+    }
+    public void solicitarActivacion(Integer idCliente) {
+        ClienteEntity cliente = this.individualRepository.findById(idCliente).orElse(null);
+        SolicitudEntity solicitud = new SolicitudEntity();
+
+        EstadoSolicitudEntity estadoPendiente = this.estadoSolicitudRepository.buscarEstadoPendiente();
+        TipoSolicitudEntity tipoActivacion = this.tipoSolicitudRepository.buscarTipoActivacionIndividual();
+            //activa_individual
+
+        solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoPendiente);
+        solicitud.setTipoSolicitudByTipoSolicitudId(tipoActivacion);
+        solicitud.setEmpleadoByEmpleadoId(buscarGestorMenosOcupado());
+        solicitud.setClienteByClienteId(cliente);
+
+        this.solicitudRepository.save(solicitud);
+    }
+    protected EmpleadoEntity buscarGestorMenosOcupado() {
+        List<EmpleadoEntity> gestores = this.gestorRepository.buscarGestores();
+
+        int min = Integer.MAX_VALUE;
+        EmpleadoEntity gestorElegido = null;
+        for(EmpleadoEntity gestor : gestores) {
+            List<SolicitudEntity> solicitudes = this.solicitudRepository.buscarSolicitudesPendientesDeUnGestor(gestor.getId());
+            if(solicitudes.size() < min) {
+                min = solicitudes.size();
+                gestorElegido = gestor;
+            }
+        }
+        return gestorElegido;
+    }
+
+    public boolean comprobarSolicitudDesbloqueoEnviada(Integer id) {
+        List<SolicitudEntity> solicitudesCliente = this.solicitudRepository.buscarSolicitudesPendientesPorClienteTipoDesbloqueoIndividual(id);
+        return solicitudesCliente.size() > 0;
+    }
+    public boolean comprobarSolicitudActivacionEnviada(Integer id) {
+        List<SolicitudEntity> solicitudesCliente = this.solicitudRepository.buscarSolicitudesPendientesPorClienteTipoActivacionIndividual(id);
+        return solicitudesCliente.size() > 0;
+    }
+
+    public void registrarCliente(Cliente editado) {
+        ClienteEntity cliente = new ClienteEntity();
+        RolClienteEntity rol = this.rolClienteRepository.buscarRol("individual");
+
+       // cliente.setId(editado.getId());
+        cliente.setNif(editado.getNif());
+        cliente.setPrimerNombre(editado.getPrimerNombre());
+        cliente.setSegundoNombre(editado.getSegundoNombre());
+        cliente.setPrimerApellido(editado.getPrimerApellido());
+        cliente.setSegundoApellido(editado.getSegundoApellido());
+        cliente.setFechaNacimiento(editado.getFechaNacimiento());
+        cliente.setNumero(editado.getNumero());
+        cliente.setPuerta(editado.getPuerta());
+        cliente.setCiudad(editado.getCiudad());
+        cliente.setCalle(editado.getCalle());
+        cliente.setPais(editado.getPais());
+        cliente.setRegion(editado.getRegion());
+        cliente.setCp(editado.getCp());
+        cliente.setContrasena(editado.getContrasena());
+        cliente.setRolClienteByRolclienteId(rol);
+
+        this.individualRepository.save(cliente);
+
+        SolicitudEntity solicitud = new SolicitudEntity();
+        EstadoSolicitudEntity estadoPendiente = this.estadoSolicitudRepository.buscarEstadoPendiente();
+        TipoSolicitudEntity tipoAlta = this.tipoSolicitudRepository.buscarTipoAltaIndividual();
+        //activa_individual
+        solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoPendiente);
+        solicitud.setTipoSolicitudByTipoSolicitudId(tipoAlta);
+        solicitud.setEmpleadoByEmpleadoId(buscarGestorMenosOcupado());
+        solicitud.setClienteByClienteId(cliente);
+
+        this.solicitudRepository.save(solicitud);
+    }
+
 }

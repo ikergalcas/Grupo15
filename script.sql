@@ -109,7 +109,7 @@ CREATE TABLE `cliente` (
   KEY `fk_cliente_Empresa1_idx` (`empresa_id`),
   CONSTRAINT `fk_cliente_Empresa1` FOREIGN KEY (`empresa_id`) REFERENCES `empresa` (`id`),
   CONSTRAINT `fk_cliente_rolcliente1` FOREIGN KEY (`rolcliente_id`) REFERENCES `rol_cliente` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,7 +118,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,'2002-11-21',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1,1),(2,'987654321','Maria','','','','1995-08-17','','','','','','','','socio',3,1,1),(3,'112233445','Rociop','','','','2000-04-06','','','','','','','','individual',1,NULL,NULL),(4,'12121212','Pedro',NULL,NULL,NULL,'2003-06-06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'pedro',3,2,1);
+INSERT INTO `cliente` VALUES (1,'123456789','Alvaro',NULL,NULL,NULL,'2002-11-21',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'autorizado',2,1,1),(2,'987654321','Maria','','','','1995-08-17','','','','','','','','socio',3,1,1),(3,'112233445','Rociop','','','','2000-04-06','','','','','','','','individual',1,NULL,NULL),(4,'12121212','Pedro',NULL,NULL,NULL,'2003-06-06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'pedro',3,2,1),(5,'79396010X','Álvaro','',NULL,'','2002-11-21','','','','','','','','juanito',3,3,1),(8,'1123','socioNuevo','','','','1999-04-21','','','','','',NULL,'','juanito',3,1,1);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `cuenta` (
 
 LOCK TABLES `cuenta` WRITE;
 /*!40000 ALTER TABLE `cuenta` DISABLE KEYS */;
-INSERT INTO `cuenta` VALUES (1,'1111','2022-12-24 00:00:00',NULL,1,2,1,310),(2,'2222','2022-12-25 00:00:00',NULL,1,2,2,182),(3,'3333','2023-05-05 00:00:00',NULL,1,2,1,240.25),(4,'4444','2023-02-14 00:00:00',NULL,1,1,1,900);
+INSERT INTO `cuenta` VALUES (1,'1111','2022-12-24 00:00:00',NULL,1,2,2,272.1),(2,'2222','2022-12-25 00:00:00',NULL,2,2,2,362),(3,'3333','2023-05-05 00:00:00',NULL,1,2,1,360.25),(4,'4444','2023-02-14 00:00:00',NULL,1,1,2,537.622);
 /*!40000 ALTER TABLE `cuenta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +176,7 @@ CREATE TABLE `cuenta_cliente` (
   KEY `fk_cuenta_cliente_cuenta1_idx` (`cuenta_id`),
   CONSTRAINT `fk_cuenta_cliente_cliente1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
   CONSTRAINT `fk_cuenta_cliente_cuenta1` FOREIGN KEY (`cuenta_id`) REFERENCES `cuenta` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +185,7 @@ CREATE TABLE `cuenta_cliente` (
 
 LOCK TABLES `cuenta_cliente` WRITE;
 /*!40000 ALTER TABLE `cuenta_cliente` DISABLE KEYS */;
-INSERT INTO `cuenta_cliente` VALUES (1,1,1),(2,2,2),(3,3,3),(4,1,4),(5,2,4);
+INSERT INTO `cuenta_cliente` VALUES (1,1,1),(2,2,2),(3,3,3),(4,1,4),(5,2,4),(7,8,4);
 /*!40000 ALTER TABLE `cuenta_cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,7 +282,7 @@ CREATE TABLE `empresa` (
   `contrasena` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idEmpresa_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +291,7 @@ CREATE TABLE `empresa` (
 
 LOCK TABLES `empresa` WRITE;
 /*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-INSERT INTO `empresa` VALUES (1,'Apple','1234','apple'),(2,'Microsoft','4321','microsoft');
+INSERT INTO `empresa` VALUES (1,'Apple','1234','apple'),(2,'Microsoft','4321','microsoft'),(3,'MediaMarkt','1122','samsung');
 /*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -408,7 +408,7 @@ CREATE TABLE `movimiento` (
   CONSTRAINT `fk_movimientos_cuenta1` FOREIGN KEY (`cuenta_origen_id`) REFERENCES `cuenta` (`id`),
   CONSTRAINT `fk_movimientos_cuenta2` FOREIGN KEY (`cuenta_destino_id`) REFERENCES `cuenta` (`id`),
   CONSTRAINT `fk_movimientos_tipoMovimiento1` FOREIGN KEY (`tipo_movimiento_id`) REFERENCES `tipo_movimiento` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,7 +417,7 @@ CREATE TABLE `movimiento` (
 
 LOCK TABLES `movimiento` WRITE;
 /*!40000 ALTER TABLE `movimiento` DISABLE KEYS */;
-INSERT INTO `movimiento` VALUES (2,'2023-04-28 00:53:08',100,91,2,2,2,1,2,NULL),(3,'2023-04-28 00:58:43',100,91,4,2,2,1,2,NULL),(4,'2023-04-28 00:58:43',100,91,4,1,2,1,2,NULL),(5,'2023-04-28 01:02:04',250,227.5,3,2,3,1,2,NULL),(6,'2023-04-28 01:02:07',227.5,284.375,3,2,3,2,3,NULL),(7,'2023-04-28 01:02:09',284.375,250.25,3,2,3,3,1,NULL),(8,'2023-04-28 01:02:19',10,10,3,1,1,1,1,NULL);
+INSERT INTO `movimiento` VALUES (27,'2023-04-30 00:03:55',579.804,527.622,4,2,4,1,2,2),(28,'2023-04-30 00:31:42',10,10,1,1,4,2,2,1);
 /*!40000 ALTER TABLE `movimiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -518,7 +518,7 @@ CREATE TABLE `solicitud` (
   CONSTRAINT `fk_solicitud_empleado1` FOREIGN KEY (`empleado_id`) REFERENCES `empleado` (`id`),
   CONSTRAINT `fk_solicitud_estado_solicitud1` FOREIGN KEY (`estado_solicitud_id`) REFERENCES `estado_solicitud` (`id`),
   CONSTRAINT `fk_solicitud_tipo_solicitud1` FOREIGN KEY (`tipo_solicitud_id`) REFERENCES `tipo_solicitud` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -527,6 +527,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
+INSERT INTO `solicitud` VALUES (1,5,2,2,1),(4,2,2,5,1);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -613,4 +614,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-28  1:05:50
+-- Dump completed on 2023-04-30 14:22:41

@@ -1,7 +1,9 @@
-
+<%@ page import="es.taw.taw23.dto.Cliente" %>
 <%
     String error = (String) request.getAttribute("error");
     Integer idAsociado = (Integer) request.getAttribute("idAsociado");
+    Cliente cliente = (Cliente) request.getAttribute("cliente");
+
 %>
 
 <html>
@@ -14,7 +16,7 @@
 <%
     if(error.equals("cuentaDestino")) {
 %>
-    <h1>El numero de cuenta introducido no existe</h1>
+    <h1>La cuenta introducida no existe o esta bloqueada/desactivada</h1>
 <%
     } else if(error.equals("cuentaOrigen")){
 %>
@@ -36,6 +38,7 @@
     }
 %>
 <a href="/empresa/?id=<%= idAsociado %>">Volver al inicio de pagina</a><br/>
+<a href="/cliente/<%= cliente.getId() %>">Volver al inicio de pagina de cliente</a><br/>
 <a href="/empresa/miEmpresa?id=<%= idAsociado %>">Ver listado de asociados de mi empresa</a><br/>
 </body>
 </html>

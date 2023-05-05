@@ -4,7 +4,9 @@ import es.taw.taw23.entity.EmpresaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer> {
 
     /**
@@ -14,4 +16,7 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer>
      */
     @Query("select e from EmpresaEntity e where e.nombre = :name and e.clientesById.size = 0")
     public EmpresaEntity buscarEmpresaPorNombreRegistro(@Param("name") String name);
+
+    @Query("select e from EmpresaEntity e where e.cif = :cif and e.contrasena = :contrasena")
+    EmpresaEntity inicioSesion(@Param("cif") String cif, @Param("contrasena") String contrasena);
 }

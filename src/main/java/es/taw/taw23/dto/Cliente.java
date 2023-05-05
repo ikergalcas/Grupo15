@@ -5,7 +5,9 @@ import es.taw.taw23.entity.CuentaClienteEntity;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
-
+/**
+ * Hecho por: Álvaro Yuste Moreno
+ */
 public class Cliente implements Serializable {
     private Integer id;
     private String nif;
@@ -26,6 +28,7 @@ public class Cliente implements Serializable {
     private Integer empresa;
     private Integer acceso;
 
+    private List<Cuenta> cuentaList;
     public Integer getId() {
         return id;
     }
@@ -168,5 +171,13 @@ public class Cliente implements Serializable {
 
     public void setAcceso(Integer acceso) {
         this.acceso = acceso;
+    }
+
+    public List<Cuenta> getCuentaList() {
+        return cuentaList;
+    }
+
+    public void setCuentaList(List<Cuenta> cuentaList) {
+        this.cuentaList = cuentaList;
     }
 }

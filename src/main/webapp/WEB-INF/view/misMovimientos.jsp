@@ -4,8 +4,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    /**
+     * Hecho por: Álvaro Yuste Moreno
+     */
+
     List<Movimiento> movimientoList = (List<Movimiento>) request.getAttribute("movimientos");
-    Integer idAsociado = (Integer) request.getAttribute("idAsociado");
+    Integer id = (Integer) request.getAttribute("id");
     Cuenta cuenta = (Cuenta) request.getAttribute("cuenta");
 %>
 
@@ -20,31 +24,27 @@
 
 <table border="1">
     <tr>
+        <th>Cuenta origen</th>
         <th>Cuenta destino</th>
-        <th>Importe</th>
+        <th>Importe origen</th>
+        <th>Importe destino</th>
         <th>Tipo de movimiento</th>
         <th>Fecha y hora</th>
+        <th>Divisa origen</th>
+        <th>Divisa destino</th>
     </tr>
     <%  if(movimientoList.size() > 0) {
             for(Movimiento mov : movimientoList) {
     %>
     <tr>
-        <td>
-            <%
-                if(!mov.getCuentaDestino().equals(mov.getCuentaOrigen())) {
-            %>
-                <p><%= mov.getCuentaDestino() %></p>
-            <%
-                } else {
-            %>
-                <p>----</p>
-            <%
-                }
-            %>
-        </td>
+        <td><%= mov.getCuentaOrigen() %></td>
+        <td><%= mov.getCuentaDestino() %></td>
         <td><%= mov.getImporteOrigen() %></td>
+        <td><%= mov.getImporteDestino() %></td>
         <td><%= mov.getTipo() %></td>
         <td><%= mov.getTimeStamp() %></td>
+        <td><%= mov.getDivisaCuentaOrigen() %></td>
+        <td><%= mov.getDivisaCuentaDestino() %></td>
     </tr>
     <%
             }
@@ -55,13 +55,17 @@
             <td>----</td>
             <td>----</td>
             <td>----</td>
+            <td>----</td>
+            <td>----</td>
+            <td>----</td>
+            <td>----</td>
         </tr>
     <%
         }
     %>
 </table>
 
-<a href="/empresa/?id=<%= idAsociado %>">Volver</a>
+<a href="/empresa/vistaEmpresa?idEmpresa=<%= id %>">Volver</a>
 
 </body>
 </html>

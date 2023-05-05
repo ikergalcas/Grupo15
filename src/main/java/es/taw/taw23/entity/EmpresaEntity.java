@@ -3,6 +3,7 @@ package es.taw.taw23.entity;
 import es.taw.taw23.dto.Empresa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,13 @@ public class EmpresaEntity {
     @Basic
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
+    @Basic
+    @Column(name = "cif", nullable = false, length = 45)
+    private String cif;
+    @Basic
+    @Column(name = "contrasena", nullable = false, length = 45)
+    private String contrasena;
+
     @OneToMany(mappedBy = "empresaByEmpresaId")
     private List<ClienteEntity> clientesById;
 
@@ -62,11 +70,36 @@ public class EmpresaEntity {
         this.clientesById = clientesById;
     }
 
+
     public Empresa toDTO() {
         Empresa dto = new Empresa();
-        dto.setId(this.id);
+
+        dto.setIdEmpresa(this.id);
         dto.setNombre(this.nombre);
+        dto.setCif(this.cif);
+        dto.setContrasenaEmpresa(this.contrasena);
+        List<Integer> asociados = new ArrayList<>();
+        for(ClienteEntity c : this.clientesById) {
+            asociados.add(c.getId());
+        }
+        dto.setAsociados(asociados);
 
         return dto;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 }

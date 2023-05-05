@@ -11,9 +11,30 @@ public class Movimiento implements Serializable {
     String cuentaOrigen;
     String cuentaDestino;
     String tipo;
-
     String divisaCuentaOrigen;
+    String divisaCuentaDestino;
+    Integer asociado;
 
+    public Movimiento(Integer asociado) {
+        this.asociado = asociado;
+        importeDestino = null;
+        importeOrigen = null;
+        cuentaDestino = "";
+        cuentaOrigen = "";
+        tipo = "";
+        divisaCuentaDestino = "";
+        divisaCuentaOrigen = "";
+    }
+    public Movimiento() {
+        timeStamp = null;
+        importeDestino = null;
+        importeOrigen = null;
+        cuentaDestino = "";
+        cuentaOrigen = "";
+        tipo = "";
+        divisaCuentaDestino = "";
+        divisaCuentaOrigen = "";
+    }
     public String getDivisaCuentaOrigen() {
         return divisaCuentaOrigen;
     }
@@ -29,8 +50,6 @@ public class Movimiento implements Serializable {
     public void setDivisaCuentaDestino(String divisaCuentaDestino) {
         this.divisaCuentaDestino = divisaCuentaDestino;
     }
-
-    String divisaCuentaDestino;
 
     public Integer getId() {
         return id;
@@ -86,5 +105,13 @@ public class Movimiento implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Integer getAsociado() {
+        return asociado;
+    }
+
+    public void setAsociado(Integer asociado) {
+        this.asociado = asociado;
     }
 }
