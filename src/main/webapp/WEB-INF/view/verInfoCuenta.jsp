@@ -3,6 +3,9 @@
 <%@ page import="es.taw.taw23.dto.CuentaSospechosa" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--
+  Carla Serracant Guevara
+--%>
 <html>
 <head>
     <title>Información de cuenta</title>
@@ -27,7 +30,7 @@
         <td><%=cuenta.getFechaApertura().toLocaleString()%></td>
         <td>
             <% for (CuentaCliente cuentaCliente : cuenta.getCuentaClienteDTO()) {%>
-                <%=cuentaCliente.getClienteDTO().getPrimerNombre()%> <%=cuentaCliente.getClienteDTO().getPrimerApellido()%> (<%=cuentaCliente.getClienteDTO().getRol() %>) <br/>
+                <%=cuentaCliente.getClienteDTO().getPrimerNombre()%> <%=cuentaCliente.getClienteDTO().getPrimerApellido()%> (<%=cuentaCliente.getClienteDTO().getTipo() %>) <br/>
             <% } %>
         </td>
         <td><%=cuenta.getDinero()%></td>
@@ -50,8 +53,17 @@
     <input type="submit" value="MARCAR COMO CUENTA SOSPECHOSA" onclick="location.href='/gestor/anadirACuentasSospechosas/<%=cuenta.getId()%>'">
 
 <% } %>
-<input type="submit" value="BLOQUEAR CUENTA">
-<input type="submit" value="DESACTIVAR CUENTA">
+
+<% if (!cuenta.getEstadoCuenta().equals("inactiva") && !cuenta.getEstadoCuenta().equals("bloqueada")) {%>
+    <input type="submit" value="DESACTIVAR CUENTA" onclick="location.href='/gestor/desactivarCuenta/<%=cuenta.getId()%>'">
+    <input type="submit" value="BLOQUEAR CUENTA" onclick="location.href='/gestor/bloquearCuenta/<%=cuenta.getId()%>'">
+<% } else if (cuenta.getEstadoCuenta().equals("inactiva")) {%>
+    Cuenta inactiva. <br/>
+    <input type="submit" value="ACTIVAR CUENTA" onclick="location.href='/gestor/activarCuentaSinSolicitud/<%=cuenta.getId()%>'">
+<% } else if (cuenta.getEstadoCuenta().equals("bloqueada")) {%>
+    Cuenta bloqueada. <br/>
+    <input type="submit" value="DESBLOQUEAR CUENTA" onclick="location.href='/gestor/desbloquearCuentaSinSolicitud/<%=cuenta.getId()%>'">
+<% }%>
 <br/>
 
 </body>

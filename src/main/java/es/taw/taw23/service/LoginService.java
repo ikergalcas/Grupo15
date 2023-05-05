@@ -25,6 +25,7 @@ public class LoginService {
     protected EmpresaRepository empresaRepository;
 
     public Cliente buscarCliente(String nif, String contrasena) {
+        /* Carla Serracant Guevara */
         ClienteEntity entity = this.clienteRepository.inicioSesion(nif, contrasena);
         if(entity != null) {
             return entity.toDTO();

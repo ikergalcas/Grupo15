@@ -3,6 +3,7 @@ package es.taw.taw23.dto;
 import es.taw.taw23.entity.CuentaClienteEntity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -190,6 +191,10 @@ public class Cliente implements Serializable {
     }
 
     public List<CuentaCliente> getCuentaClientesDTO() {
+        this.cuentaClientesDTO = new ArrayList<>();
+        for (CuentaClienteEntity cc : this.getCuentas()) {
+            this.cuentaClientesDTO.add(cc.toDTO());
+        }
         return cuentaClientesDTO;
     }
 

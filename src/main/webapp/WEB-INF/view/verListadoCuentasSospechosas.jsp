@@ -2,6 +2,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.taw23.dto.CuentaCliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--
+  Carla Serracant Guevara
+--%>
 <html>
 <head>
     <title>Cuentas sospechosas</title>
@@ -11,6 +14,7 @@
 
 <%
     List<CuentaSospechosa> cuentasSospechosas = (List<CuentaSospechosa>) request.getAttribute("cuentasSospechosas");
+    Integer idGestor = (Integer) request.getAttribute("idGestor");
 %>
 
 <table border="1">
@@ -23,11 +27,12 @@
         <td><%=c.getCuentaDTO().getNumeroCuenta()%></td>
         <td>
             <% for (CuentaCliente cc : c.getCuentaDTO().getCuentaClienteDTO()) {%>
-            <a href="/gestor/verCliente/<%=cc.getClienteDTO().getId()%>"><%=cc.getClienteDTO().getPrimerNombre()%> <%=cc.getClienteDTO().getPrimerApellido()%></a> (<%=cc.getClienteDTO().getRol()%>) <br/>
+            <a href="/gestor/verCliente/<%=cc.getClienteDTO().getId()%>/<%=idGestor%>"/><%=cc.getClienteDTO().getPrimerNombre()%> <%=cc.getClienteDTO().getPrimerApellido()%></a> (<%=cc.getClienteDTO().getTipo()%>) <br/>
             <% } %>
         </td>
     </tr>
     <% } %>
 </table>
+<input type="submit" value="VOLVER ATRÁS" onclick="location.href='/gestor/<%=idGestor%>'">
 </body>
 </html>

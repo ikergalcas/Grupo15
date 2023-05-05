@@ -9,9 +9,15 @@ import java.util.List;
 
 public interface SolicitudRepository extends JpaRepository<SolicitudEntity, Integer> {
 
+    /* Carla Serracant Guevara */
     @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente' and s.empleadoByEmpleadoId.id = :idGestor")
     public List<SolicitudEntity> buscarSolicitudesPendientesDeUnGestor(@Param("idGestor") Integer id);
 
-    @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'resuelta' and s.empleadoByEmpleadoId.id = :idGestor")
+    /* Carla Serracant Guevara */
+    @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'aceptada' and s.empleadoByEmpleadoId.id = :idGestor")
     public List<SolicitudEntity> buscarSolicitudesResueltasDeUnGestor(@Param("idGestor") Integer id);
+
+    /* Carla Serracant Guevara */
+    @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'denegada' and s.empleadoByEmpleadoId.id = :idGestor")
+    public List<SolicitudEntity> buscarSolicitudesNegadasDeUnGestor(@Param("idGestor") Integer id);
 }

@@ -2,7 +2,13 @@
 <%@ page import="es.taw.taw23.entity.MovimientosEntity" %>
 <%@ page import="es.taw.taw23.dto.Movimiento" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.taw.taw23.dto.CuentaCliente" %>
+<%@ page import="es.taw.taw23.entity.CuentaClienteEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%--
+  Carla Serracant Guevara
+--%>
 <html>
 <head>
     <title>Ver cliente</title>
@@ -12,6 +18,7 @@
 <%
     Cliente cliente = (Cliente) request.getAttribute("cliente");
     List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
+    Integer idGestor = (Integer) request.getAttribute("idGestor");
 %>
 
 <h1>Cliente: <%=cliente.getNif()%></h1>
@@ -31,6 +38,24 @@
     <% if (cliente.getRegion() != null) {%> Region: <%=cliente.getRegion()%> </br> <% } %>
     <% if (cliente.getCp() != null) {%> Codigo postal: <%=cliente.getCp()%> </br> <% } %>
 
+    <strong>Cuentas del cliente: </strong> <br/>
+    <% for (CuentaCliente cc : cliente.getCuentaClientesDTO()) {%>
+        <ul>
+            <li type="circle"><a href="/gestor/verInfoCuenta/<%=cc.getCuentaDTO().getId()%>"><%=cc.getCuentaDTO().getNumeroCuenta()%></a> <br/></li>
+        </ul>
+    <% } %>
+
+<form:form method="post" action="/gestor/verCliente/Ordenado" modelAttribute="filtro">
+    Tipo de movimiento:
+    <form:select path="tipoMovimiento">
+        <form:option value="NONE" label=" "></form:option>
+        <form:options items="${tiposDeMovimientos}"></form:options>
+    </form:select>
+    Operaciones el último mes <form:checkbox path="fecha"></form:checkbox>
+    <form:hidden path="idGestor" value="<%=idGestor%>"></form:hidden>
+    <form:hidden path="idCliente" value="<%=cliente.getId()%>"></form:hidden>
+    <form:button>Filtrar</form:button>
+</form:form>
 <table border="1">
     <tr>
         <th>MOVIMIENTOS</th>
@@ -76,5 +101,7 @@
     <% } %>
 
 </table>
+
+<input type="submit" value="VOLVER A LA PAGINA PRINCIPAL" onclick="location.href='/gestor/<%=idGestor%>'">
 </body>
 </html>

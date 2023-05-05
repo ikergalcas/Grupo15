@@ -254,13 +254,14 @@ public class EmpresaService {
     }
 
     public Empresa buscarEmpresaAPartirDeCliente(Cliente cliente) {
-
+        /* Carla Serracant Guevara */
         EmpresaEntity empresa = empresaRepository.findById(cliente.getIdEmpresa()).orElse(null);
 
         return empresa.toDTO();
     }
 
     public List<Empresa> buscarEmpresas() {
+        /* Carla Serracant Guevara */
         List<EmpresaEntity> empresas = empresaRepository.findAll();
         List<Empresa> empresasDTO = new ArrayList<>();
         for (EmpresaEntity e : empresas) {

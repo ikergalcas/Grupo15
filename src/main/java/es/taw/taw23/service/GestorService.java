@@ -21,6 +21,7 @@ public class GestorService {
     protected SolicitudRepository solicitudRepository;
 
     public Empleado BuscarGestor(Integer id) {
+        /* Carla Serracant Guevara */
         EmpleadoEntity gestor = gestorRepository.findGestorById(id);
         if (gestor !=null) {
             return gestor.toDto();
@@ -30,6 +31,7 @@ public class GestorService {
     }
 
     public List<Solicitud> buscarSolicitudesDeGestor(Integer id) {
+        /* Carla Serracant Guevara */
         List<Solicitud> listaSolicitudesDto = new ArrayList<>();
         List<SolicitudEntity> listaSolicitudes = solicitudRepository.buscarSolicitudesPendientesDeUnGestor(id);
         if (!listaSolicitudes.isEmpty() || !(listaSolicitudes == null)) {
@@ -43,6 +45,7 @@ public class GestorService {
     }
 
     public List<Solicitud> buscarSolicitudesResueltasDeGestor(Integer id) {
+        /* Carla Serracant Guevara */
         List<Solicitud> listaSolicitudesDto = new ArrayList<>();
         List<SolicitudEntity> listaSolicitudes = solicitudRepository.buscarSolicitudesResueltasDeUnGestor(id);
         if (!listaSolicitudes.isEmpty() || listaSolicitudes != null) {
@@ -50,6 +53,20 @@ public class GestorService {
                 listaSolicitudesDto.add(s.toDTO());
             }
 
+            return listaSolicitudesDto;
+        } else {
+            return null;
+        }
+    }
+
+    public List<Solicitud> buscarSolicitudesRechazadasDeGestor(Integer id) {
+        /* Carla Serracant Guevara */
+        List<Solicitud> listaSolicitudesDto = new ArrayList<>();
+        List<SolicitudEntity> listaSolicitudes = solicitudRepository.buscarSolicitudesNegadasDeUnGestor(id);
+        if (!listaSolicitudes.isEmpty() || listaSolicitudes != null) {
+            for (SolicitudEntity s : listaSolicitudes) {
+                listaSolicitudesDto.add(s.toDTO());
+            }
             return listaSolicitudesDto;
         } else {
             return null;

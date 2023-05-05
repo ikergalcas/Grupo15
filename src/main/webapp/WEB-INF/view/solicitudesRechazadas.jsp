@@ -19,7 +19,7 @@
     List<Solicitud> solicitudes = (List<Solicitud>) request.getAttribute("solicitudes");
 %>
 
-<h2>Solicitudes resueltas del gestor <%=gestor.getNombre()%></h2>
+<h2>Solicitudes rechazadas del gestor <%=gestor.getNombre()%></h2>
 
 <table border="1">
     <tr>
@@ -38,7 +38,7 @@
 
         <td><input type="submit" value="Información del cliente" onclick="location.href='/gestor/verCliente/<%=s.getCliente().getId()%>/<%=gestor.getId()%>'"></td>
 
-        <td><input type="submit" value="Borrar solicitud" onclick="location.href='/gestor/borrarSolicitudAprobada/<%=gestor.getId()%>/<%=s.getId()%>'"></td>
+        <td><input type="submit" value="Borrar solicitud" onclick="location.href='/gestor/borrarSolicitudRechazada/<%=gestor.getId()%>/<%=s.getId()%>'"></td>
 
     </tr>
 

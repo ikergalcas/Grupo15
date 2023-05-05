@@ -22,6 +22,7 @@ public class CuentaSospechosaService {
     protected CuentaRepository cuentaRepository;
 
     public List<CuentaSospechosa> obtenerCuentasSospechosas() {
+        /* Carla Serracant Guevara */
         List<CuentaSospechosaEntity> cuentaSospechosaEntities = cuentaSospechosaRepository.findAll();
         List<CuentaSospechosa> cuentasSospechosasDTO = new ArrayList<>();
         for (CuentaSospechosaEntity c : cuentaSospechosaEntities) {
@@ -32,6 +33,7 @@ public class CuentaSospechosaService {
     }
 
     public void anadirCuentaACuentasSospechosas(Cuenta cuenta) {
+        /* Carla Serracant Guevara */
         CuentaEntity cuentaEntity = cuentaRepository.findById(cuenta.getId()).orElse(null);
         CuentaSospechosaEntity cuentaSospechosaEntity = new CuentaSospechosaEntity();
         cuentaSospechosaEntity.setCuentaByCuentaId(cuentaEntity);
@@ -39,6 +41,7 @@ public class CuentaSospechosaService {
     }
 
     public void quitarCuentaDeCuentasSospechosas(Cuenta cuenta) {
+        /* Carla Serracant Guevara */
         CuentaSospechosaEntity cuentaSospechosaEntity = cuentaSospechosaRepository.findCuentaSospechosaByIdCuenta(cuenta.getId());
         cuentaSospechosaRepository.delete(cuentaSospechosaEntity);
     }

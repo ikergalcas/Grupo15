@@ -1,10 +1,7 @@
 package es.taw.taw23.service;
 
 import ch.qos.logback.core.net.server.Client;
-import es.taw.taw23.dao.ClienteRepository;
-import es.taw.taw23.dao.CuentaClienteRepository;
-import es.taw.taw23.dao.CuentaRepository;
-import es.taw.taw23.dao.SolicitudRepository;
+import es.taw.taw23.dao.*;
 import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Cuenta;
 import es.taw.taw23.dto.Movimiento;
@@ -31,12 +28,17 @@ public class CuentaService {
     @Autowired
     protected SolicitudRepository solicitudRepository;
 
+    @Autowired
+    protected MovimientoRepository movimientoRepository;
+
     public Cuenta buscarCuentaPorId(Integer id) {
+        /* Carla Serracant Guevara */
         CuentaEntity cuentaEntity = cuentaRepository.findById(id).orElse(null);
         return cuentaEntity.toDTO();
     }
 
     public List<Cuenta> buscarCuentasPorCliente(Cliente cliente) {
+        /* Carla Serracant Guevara */
         ClienteEntity clienteEntity = clienteRepository.findById(cliente.getId()).orElse(null);
         List<CuentaClienteEntity> cuentaClienteEntities = clienteEntity.getCuentaClientesById();
         List<Cuenta> cuentasDTO = new ArrayList<>();
@@ -48,6 +50,7 @@ public class CuentaService {
     }
 
     public List<Cuenta> buscarCuentasDeEmpresaPorClientes(List<Cliente> clientes) {
+        /* Carla Serracant Guevara */
         List<Cuenta> cuentas = new ArrayList<>();
         List<CuentaEntity> cuentasEntities = new ArrayList<>();
         for (Cliente c : clientes) {
@@ -66,7 +69,7 @@ public class CuentaService {
     }
 
     public void crearNuevaCuentaEmpresa(Cuenta cuenta) {
-
+        /* Carla Serracant Guevara */
         CuentaEntity cuentaEntity = new CuentaEntity();
         cuentaEntity.setNumeroCuenta(cuenta.getNumeroCuenta());
         cuentaEntity.setFechaApertura(cuenta.getFechaApertura());
@@ -97,7 +100,7 @@ public class CuentaService {
     }
 
     public void crearNuevaCuentaIndividual(Cuenta cuenta) {
-
+        /* Carla Serracant Guevara */
         CuentaEntity cuentaEntity = new CuentaEntity();
         cuentaEntity.setNumeroCuenta(cuenta.getNumeroCuenta());
         cuentaEntity.setFechaApertura(cuenta.getFechaApertura());
@@ -128,12 +131,13 @@ public class CuentaService {
     }
 
     public Cuenta buscarCuentaClienteInactivaAPartirDeCliente(Cliente cliente) {
+        /* Carla Serracant Guevara */
         ClienteEntity clienteEntity = clienteRepository.findById(cliente.getId()).orElse(null);
         CuentaEntity cuentaInactiva = null;
         for (CuentaClienteEntity cuentacliente : clienteEntity.getCuentaClientesById()) {
             EstadoCuentaEntity estadoCuentaEntity = cuentacliente.getCuentaByCuentaId().getEstadoCuentaByEstadoCuentaId();
             TipoCuentaEntity tipoCuentaEntity = cuentacliente.getCuentaByCuentaId().getTipoCuentaByTipoCuentaId();
-            if (estadoCuentaEntity.getId()== 4 && tipoCuentaEntity.getId() == 2) {
+            if (estadoCuentaEntity.getId()== 3 && tipoCuentaEntity.getId() == 2) {
                 cuentaInactiva = cuentacliente.getCuentaByCuentaId();
             }
         }
@@ -142,12 +146,13 @@ public class CuentaService {
     }
 
     public Cuenta buscarCuentaEmpresaInactivaAPartirDeCliente(Cliente cliente) {
+        /* Carla Serracant Guevara */
         ClienteEntity clienteEntity = clienteRepository.findById(cliente.getId()).orElse(null);
         CuentaEntity cuentaInactiva = null;
         for (CuentaClienteEntity cuentacliente : clienteEntity.getCuentaClientesById()) {
             EstadoCuentaEntity estadoCuentaEntity = cuentacliente.getCuentaByCuentaId().getEstadoCuentaByEstadoCuentaId();
             TipoCuentaEntity tipoCuentaEntity = cuentacliente.getCuentaByCuentaId().getTipoCuentaByTipoCuentaId();
-            if (estadoCuentaEntity.getId()== 4 && tipoCuentaEntity.getId() == 1) {
+            if (estadoCuentaEntity.getId()== 3 && tipoCuentaEntity.getId() == 1) {
                 cuentaInactiva = cuentacliente.getCuentaByCuentaId();
             }
         }
@@ -156,6 +161,7 @@ public class CuentaService {
     }
 
     public Cuenta buscarCuentaClienteBloqueadaAPartirDeCliente(Cliente cliente) {
+        /* Carla Serracant Guevara */
         ClienteEntity clienteEntity = clienteRepository.findById(cliente.getId()).orElse(null);
         CuentaEntity cuentaBloqueada = null;
         for (CuentaClienteEntity cuentacliente : clienteEntity.getCuentaClientesById()) {
@@ -170,6 +176,7 @@ public class CuentaService {
     }
 
     public Cuenta buscarCuentaEmpresaBloqueadaAPartirDeCliente(Cliente cliente) {
+        /* Carla Serracant Guevara */
         ClienteEntity clienteEntity = clienteRepository.findById(cliente.getId()).orElse(null);
         CuentaEntity cuentaBloqueada = null;
         for (CuentaClienteEntity cuentacliente : clienteEntity.getCuentaClientesById()) {
@@ -185,8 +192,9 @@ public class CuentaService {
 
 
     public void activarCuentaInactiva(Cuenta cuenta) {
+        /* Carla Serracant Guevara */
         CuentaEntity cuentaEntity = cuentaRepository.findById(cuenta.getId()).orElse(null);
-        if (cuentaEntity.getEstadoCuentaByEstadoCuentaId().getId() == 4) {
+        if (cuentaEntity.getEstadoCuentaByEstadoCuentaId().getId() == 3) {
             EstadoCuentaEntity estadoCuentaEntity = new EstadoCuentaEntity();
             estadoCuentaEntity.setId(1);
             cuentaEntity.setEstadoCuentaByEstadoCuentaId(estadoCuentaEntity);
@@ -195,6 +203,7 @@ public class CuentaService {
     }
 
     public void desbloquearCuentaBloqueada(Cuenta cuenta) {
+        /* Carla Serracant Guevara */
         CuentaEntity cuentaEntity = cuentaRepository.findById(cuenta.getId()).orElse(null);
         if (cuentaEntity.getEstadoCuentaByEstadoCuentaId().getId() == 2) {
             EstadoCuentaEntity estadoCuentaEntity = new EstadoCuentaEntity();
@@ -204,37 +213,34 @@ public class CuentaService {
         }
     }
 
-    public List<Movimiento> recogerMovimientosOrigenDeCuentaDeUnCliente(List<Cuenta> cuentas) {
-        List<MovimientosEntity> movimientosEntities= new ArrayList<>();
-        List<Movimiento> movimientos = new ArrayList<>();
-
-        for (Cuenta c : cuentas) {
-            CuentaEntity cuentaEntity = cuentaRepository.findById(c.getId()).orElse(null);
-            movimientosEntities = cuentaEntity.getMovimientosById();
-        }
-
-        for (MovimientosEntity m : movimientosEntities) {
-                movimientos.add(m.toDTO());
-        }
-
-        return movimientos;
+    public void bloquearCuenta(Integer idCuenta) {
+        /* Carla Serracant Guevara */
+        CuentaEntity cuenta = cuentaRepository.findById(idCuenta).orElse(null);
+        EstadoCuentaEntity estadoCuenta = new EstadoCuentaEntity();
+        estadoCuenta.setId(2);
+        cuenta.setEstadoCuentaByEstadoCuentaId(estadoCuenta);
+        cuentaRepository.save(cuenta);
     }
 
-    public List<Movimiento> recogerMovimientosDestinoDeCuentaDeUnCliente(List<Cuenta> cuentas) {
-        List<MovimientosEntity> movimientosEntities = new ArrayList<>();
-        List<Movimiento> movimientos = new ArrayList<>();
+    public void desactivarCuenta(Integer idCuenta) {
+        /* Carla Serracant Guevara */
+        CuentaEntity cuenta = cuentaRepository.findById(idCuenta).orElse(null);
+        EstadoCuentaEntity estadoCuenta = new EstadoCuentaEntity();
+        estadoCuenta.setId(3);
+        cuenta.setEstadoCuentaByEstadoCuentaId(estadoCuenta);
+        cuentaRepository.save(cuenta);
+    }
 
-        for (Cuenta c: cuentas) {
-            CuentaEntity cuentaEntity = cuentaRepository.findById(c.getId()).orElse(null);
-            movimientosEntities = cuentaEntity.getMovimientosById_0();
-        }
-
-        for (MovimientosEntity m : movimientosEntities) {
-            if (!(m.getCuentaByCuentaOrigenId().equals(m.getCuentaByCuentaDestinoId()))) {
-                movimientos.add(m.toDTO());
+    public List<Cuenta> encontrarCuentasSinActividad() {
+        /* Carla Serracant Guevara */
+        List<Cuenta> cuentas = new ArrayList<>();
+        List<CuentaEntity> cuentaEntities = cuentaRepository.findAll();
+        for (CuentaEntity c : cuentaEntities) {
+            List<MovimientosEntity> movimientosUltimoMes = movimientoRepository.findMasRecientesQueTreintaDias(c.getId());
+            if ((movimientosUltimoMes.isEmpty() || movimientosUltimoMes == null) && !cuentas.contains(c.toDTO())) {
+                cuentas.add(c.toDTO());
             }
         }
-
-        return movimientos;
+        return cuentas;
     }
 }

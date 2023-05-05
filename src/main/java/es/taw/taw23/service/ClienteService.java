@@ -15,6 +15,7 @@ public class ClienteService {
     protected ClienteRepository clienteRepository;
 
     public List<Cliente> buscarTodosLosClientes() {
+        /* Carla Serracant Guevara */
         List<Cliente> listaClienteDTO = new ArrayList<>();
         List<ClienteEntity> clientesEntity = clienteRepository.findAll();
         for (ClienteEntity c : clientesEntity) {
@@ -24,8 +25,20 @@ public class ClienteService {
     }
 
     public Cliente buscarClientePorId(Integer id) {
+        /* Carla Serracant Guevara */
         ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
         return cliente.toDTO();
+    }
+
+    public List<Cliente> buscarClientePorFiltroNif(String nif) {
+        /* Carla Serracant Guevara */
+        List<ClienteEntity> clienteEntities = clienteRepository.findByFiltroNif(nif);
+        List<Cliente> clientes = new ArrayList<>();
+        for (ClienteEntity c : clienteEntities) {
+            clientes.add(c.toDTO());
+        }
+
+        return clientes;
     }
 
 }
