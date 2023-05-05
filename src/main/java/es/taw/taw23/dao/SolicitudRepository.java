@@ -37,4 +37,13 @@ public interface SolicitudRepository extends JpaRepository<SolicitudEntity,Integ
 
     @Query("select s from SolicitudEntity s where s.clienteByClienteId in :asociados and s.estadoSolicitudByEstadoSolicitudId.estado <> 'aceptada' and s.tipoSolicitudByTipoSolicitudId.tipo = 'alta_empresa'")
     SolicitudEntity buscarSolicitudEmpresaInicioSesion(@Param("asociados")List<ClienteEntity> asociados);
+
+
+    /* Carla Serracant Guevara */
+    @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'aceptada' and s.empleadoByEmpleadoId.id = :idGestor")
+    public List<SolicitudEntity> buscarSolicitudesResueltasDeUnGestor(@Param("idGestor") Integer id);
+
+    /* Carla Serracant Guevara */
+    @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'denegada' and s.empleadoByEmpleadoId.id = :idGestor")
+    public List<SolicitudEntity> buscarSolicitudesNegadasDeUnGestor(@Param("idGestor") Integer id);
 }

@@ -27,7 +27,10 @@ public class Cliente implements Serializable {
     private String cp;
     private String contrasena;
     private String tipo;
-    private Integer empresa;
+    private Integer idEmpresa;
+
+    private List<CuentaClienteEntity> cuentas;
+    private List<CuentaCliente> cuentaClientesDTO;
     private Integer acceso;
 
     private List<Cuenta> cuentaList;
@@ -159,12 +162,12 @@ public class Cliente implements Serializable {
         this.tipo = tipo;
     }
 
-    public Integer getEmpresa() {
-        return empresa;
+    public Integer getIdEmpresa() {
+        return idEmpresa;
     }
 
-    public void setEmpresa(Integer empresa) {
-        this.empresa = empresa;
+    public void setIdEmpresa(Integer empresa) {
+        this.idEmpresa = empresa;
     }
 
     public Integer getAcceso() {
@@ -181,5 +184,21 @@ public class Cliente implements Serializable {
 
     public void setCuentaList(List<Cuenta> cuentaList) {
         this.cuentaList = cuentaList;
+    }
+
+    public List<CuentaClienteEntity> getCuentas() {
+        return cuentas;
+    }
+
+    public void setCuentas(List<CuentaClienteEntity> cuentas) {
+        this.cuentas = cuentas;
+    }
+
+    public List<CuentaCliente> getCuentaClientesDTO() {
+        return cuentaClientesDTO;
+    }
+
+    public void setCuentaClientesDTO(List<CuentaCliente> cuentaClientesDTO) {
+        this.cuentaClientesDTO = cuentaClientesDTO;
     }
 }

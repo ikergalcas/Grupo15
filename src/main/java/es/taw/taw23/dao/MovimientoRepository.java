@@ -150,4 +150,41 @@ public interface MovimientoRepository extends JpaRepository<MovimientoEntity, In
 
     @Query("select m from MovimientoEntity m where (m.cuentaByCuentaDestinoId.id = :idCuenta or m.cuentaByCuentaOrigenId.id = :idCuenta) and m.tipoMovimientoByTipoMovimientoId.tipo = :tipo and m.cuentaByCuentaDestinoId.numeroCuenta = :cuentaDestino and m.divisaByMonedaDestinoId.moneda = :divisaDestino and m.divisaByMonedaOrigenId.moneda = :divisaOrigen")
     List<MovimientoEntity> buscarMovimientosClientePorTipoCuentaDestinoDivisaDestinoDivisaOrigen( @Param("idCuenta") Integer idCuenta, @Param("tipo") String tipo, @Param("cuentaDestino") String cuentaDestino, @Param("divisaDestino") String divisaDestino, @Param("divisaOrigen") String divisaOrigen);
+
+
+    /* Carla Serracant Guevara */
+    @Query("select m from MovimientoEntity m where m.cuentaByCuentaOrigenId.id = :idCuenta and m.cuentaByCuentaDestinoId.id = :idCuenta")
+    List<MovimientoEntity> encontrarMovimientosASiMismo(@Param("idCuenta") Integer idCuenta);
+
+    /* Carla Serracant Guevara */
+    @Query("select m from MovimientoEntity m where m.cuentaByCuentaOrigenId.id = :idCuenta or m.cuentaByCuentaDestinoId.id = :idCuenta")
+    List<MovimientoEntity> findMovimientosByIdCuenta(@Param("idCuenta") Integer idCuenta);
+
+    /* Carla Serracant Guevara */
+    @Query("select m from MovimientoEntity m where m.tipoMovimientoByTipoMovimientoId.tipo = 'pago' and (m.cuentaByCuentaOrigenId.id = :idCuentaSospechosa or m.cuentaByCuentaDestinoId.id = :idCuentaSospechosa)")
+    List<MovimientoEntity> findMovimientosSospechosos(@Param("idCuentaSospechosa") Integer idCuentaSospechosa);
+
+    /* Carla Serracant Guevara */
+    @Query("select m from MovimientoEntity m where m.tipoMovimientoByTipoMovimientoId.tipo = :tipoMovimiento and (m.cuentaByCuentaOrigenId.id = :idCuenta or m.cuentaByCuentaDestinoId.id = :idCuenta)")
+    List<MovimientoEntity> findAllByTipoMovimiento(@Param("tipoMovimiento") String tipoMovimiento, @Param("idCuenta") Integer idCuenta);
+
+    /* Carla Serracant Guevara */
+    @Query ("select m from MovimientoEntity m where m.timeStamp > :fecha and (m.cuentaByCuentaOrigenId.id = :idCuenta or m.cuentaByCuentaDestinoId.id = :idCuenta)")
+    List<MovimientoEntity> findMovimientosMasRecientesQueFecha(@Param("fecha") Timestamp fecha, @Param("idCuenta") Integer idCuenta);
+
+    default List<MovimientoEntity> findMasRecientesQueTreintaDias(Integer idCuenta) {
+        long treintaDiasEnMillis = 30L * 24L * 60L * 60L * 1000L;
+        Timestamp fechaAnterior = new Timestamp(System.currentTimeMillis() - treintaDiasEnMillis);
+        return findMovimientosMasRecientesQueFecha(fechaAnterior,idCuenta);
+    }
+
+    /* Carla Serracant Guevara */
+    @Query("select m from MovimientoEntity m where m.timeStamp > :fecha and (m.cuentaByCuentaOrigenId.id = :idCuenta or m.cuentaByCuentaDestinoId.id = :idCuenta) and m.tipoMovimientoByTipoMovimientoId.tipo = :tipoMovimiento")
+    List<MovimientoEntity> findMovimientosMasRecientesYConTipo(@Param("fecha") Timestamp fecha, @Param("idCuenta") Integer idCuenta, @Param("tipoMovimiento") String tipoMovimiento);
+
+    default List<MovimientoEntity> findMasRecientesQueTreintaDiasConTipoFiltrado(Integer idCuenta, String tipo) {
+        long treintaDiasEnMillis = 30L * 24L * 60L * 60L * 1000L;
+        Timestamp fechaAnterior = new Timestamp(System.currentTimeMillis() - treintaDiasEnMillis);
+        return findMovimientosMasRecientesYConTipo(fechaAnterior,idCuenta,tipo);
+    }
 }

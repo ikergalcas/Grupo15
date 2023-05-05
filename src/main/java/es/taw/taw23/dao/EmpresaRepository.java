@@ -4,6 +4,9 @@ import es.taw.taw23.entity.EmpresaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
 /**
  * Hecho por: Álvaro Yuste Moreno
  */
@@ -19,4 +22,7 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, Integer>
 
     @Query("select e from EmpresaEntity e where e.cif = :cif and e.contrasena = :contrasena")
     EmpresaEntity inicioSesion(@Param("cif") String cif, @Param("contrasena") String contrasena);
+
+    @Query("select e from EmpresaEntity e where e.cif like concat(:cif, '%')")
+    List<EmpresaEntity> findByFiltroCif(@Param("cif") String cif); /* Carla Serracant Guevara */
 }

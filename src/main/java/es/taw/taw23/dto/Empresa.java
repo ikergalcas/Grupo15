@@ -11,6 +11,8 @@ public class Empresa implements Serializable {
     private String cif;
     private String contrasenaEmpresa;
     private List<Integer> asociados;
+
+    private List<Cliente> listaClientes;
     public Integer getIdEmpresa() {
         return idEmpresa;
     }
@@ -49,5 +51,13 @@ public class Empresa implements Serializable {
 
     public void setAsociados(List<Integer> asociados) {
         this.asociados = asociados;
+    }
+
+    public List<Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public void setListaClientes(List<Cliente> listaClientes) {
+        this.listaClientes = listaClientes;
     }
 }

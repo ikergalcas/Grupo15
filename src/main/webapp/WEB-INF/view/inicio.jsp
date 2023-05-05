@@ -193,8 +193,11 @@
                             <%
                     }
                 %>
+            <br/>
+            <a href="/cajero/<%= cliente.getId() %>">Acceder al cajero</a>
         </div>
     </div>
 </div>
+
 </body>
 </html>

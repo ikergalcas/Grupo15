@@ -205,5 +205,9 @@
         }
     }
 %>
+
+<br/>
+<a href="/cajero/<%= cliente.getId() %>">Acceder al cajero</a>
+
 </body>
 </html>

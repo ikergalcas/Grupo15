@@ -13,6 +13,9 @@ public class Movimiento implements Serializable {
     Double importeDestino;
     String cuentaOrigen;
     String cuentaDestino;
+
+    Integer idCuentaOrigen;
+    Integer idCuentaDestino;
     String tipo;
     String divisaCuentaOrigen;
     String divisaCuentaDestino;
@@ -116,5 +119,21 @@ public class Movimiento implements Serializable {
 
     public void setAsociado(Integer asociado) {
         this.asociado = asociado;
+    }
+
+    public Integer getIdCuentaOrigen() {
+        return idCuentaOrigen;
+    }
+
+    public void setIdCuentaOrigen(Integer idCuentaOrigen) {
+        this.idCuentaOrigen = idCuentaOrigen;
+    }
+
+    public Integer getIdCuentaDestino() {
+        return idCuentaDestino;
+    }
+
+    public void setIdCuentaDestino(Integer idCuentaDestino) {
+        this.idCuentaDestino = idCuentaDestino;
     }
 }

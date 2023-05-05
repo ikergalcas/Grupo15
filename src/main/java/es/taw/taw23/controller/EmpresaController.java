@@ -38,6 +38,11 @@ public class EmpresaController {
         return procesarFiltrado(filtro, model, id);
     }
 
+    @GetMapping("/{id}")
+    public String doRedirect(@PathVariable("id") Integer id) {
+        return "redirect:/empresa/?id=" + id;
+    }
+
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtro") FiltroEmpresa filtro, @RequestParam("id") Integer id, Model model) {
         return procesarFiltrado(filtro, model, id);

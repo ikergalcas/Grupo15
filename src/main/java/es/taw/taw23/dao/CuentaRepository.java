@@ -16,4 +16,5 @@ public interface CuentaRepository extends JpaRepository<CuentaEntity, Integer> {
 
     @Query("select c from CuentaEntity c where c.estadoCuentaByEstadoCuentaId.estadoCuenta = 'activa'")
     public List<CuentaEntity> buscarCuentasTransferencia();
+
 }

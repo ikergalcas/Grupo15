@@ -16,6 +16,7 @@ public class Solicitud implements Serializable {
     private Cliente cliente;
     private Tipo_solicitud tipo_solicitud;
     private Estado_solicitud estado_solicitud;
+    private String estado;
 
     public Integer getId() {
         return id;
@@ -79,5 +80,13 @@ public class Solicitud implements Serializable {
 
     public void setEstado_solicitud(Estado_solicitud estado_solicitud) {
         this.estado_solicitud = estado_solicitud;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

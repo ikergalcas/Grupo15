@@ -3,6 +3,9 @@ package es.taw.taw23.dao;
 import es.taw.taw23.entity.TipoMovimientoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
 /**
  * Hecho por: Álvaro Yuste Moreno
  */
@@ -12,4 +15,7 @@ public interface TipoMovimientoRepository extends JpaRepository<TipoMovimientoEn
 
     @Query("select t from TipoMovimientoEntity t where t.tipo = 'cambioDivisa'")
     public TipoMovimientoEntity buscarTipoCambioDivisa();
+
+    @Query("select t.tipo from TipoMovimientoEntity t")
+    List<String> findAllTiposMovimientos();
 }
