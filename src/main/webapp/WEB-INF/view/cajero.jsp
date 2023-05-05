@@ -61,12 +61,9 @@
     </li>
 
     <li>Ordenar por:
-        <form:select multiple="false" path="ordenar">
-            <form:option value="" label=""/>
-            <form:option value="Fecha" label="Fecha"/>
-            <form:option value="Importe" label="Importe"/>
-            <form:option value="Tipo de movimiento" label="Tipo de movimiento"/>
-        </form:select>
+            <form:checkbox path="ordenarFecha" label="Fecha de la operación"/>
+            <form:checkbox path="ordenarTipo" label="Tipo de transacción"/>
+            <form:checkbox path="ordenarImporte" label="Importe en uso"/>
     </li>
     <form:button>Filtrar</form:button>
 </form:form>
@@ -139,13 +136,13 @@
     <th><h4 style="background-color: chartreuse; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
     <%} else {
         if (solicitud.getEstado_solicitud().getEstado().equals("pendiente")){%>
-        <th><h4 style="background-color: chartreuse; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
+        <th><h4 style="background-color: yellow; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
         <%}else { %>
             <th><h4 style="background-color: red; margin-top: 20px"><%=cuenta.getEstadoCuenta()%></h4></th>
             <% }if (cuenta.getEstadoCuenta().equals("bloqueada") && solicitud==null){ %>
             <th>
                 <form:form action="/cajero/solicitud" method="post" modelAttribute="">
-                    <input style="width:205px; height: 20px; margin-top:15px" type="submit" value="Desbloquear cuenta" />
+                    <input type="submit" value="Desbloquear cuenta" />
                     <input type="hidden" name="idCliente" value="<%=cliente.getId()%>"/>
                     <input type="hidden" name="idCuenta" value="<%=cuenta.getId()%>"/>
                 </form:form>

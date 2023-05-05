@@ -42,42 +42,12 @@ public class CajeroController {
     protected String procesarFiltroCajero(Integer idCuenta, Integer clienteId, Model model, FiltroCajero filtroCajero){
         Cliente cliente = this.cajeroService.buscarCliente(clienteId);
         Cuenta cuenta = this.cajeroService.buscarCuenta(idCuenta);
-        List<Movimiento> movimientos = new ArrayList<>();
 
         if ((filtroCajero==null) || filterEmpty(filtroCajero)){
             filtroCajero = new FiltroCajero();
-            movimientos = cuenta.getMovimientosOrigen();
-            for (Movimiento x : cuenta.getMovimientosDestino()){
-                if (!x.getCuentaOrigen().equals(x.getCuentaDestino()))
-                    movimientos.add(x);
-            }
         }
-        else {
-            if (!filtroCajero.getFiltrarPorDivisa().equals(""))
-                if (movimientos.isEmpty()) //Should be empty when filtering
-                    movimientos = this.cajeroService.filtrarPorDivisa(cuenta,filtroCajero.getFiltrarPorDivisa());
-            if (!filtroCajero.getFiltrarPorNumeroDeCuenta().equals("")){
-                if (movimientos.isEmpty())
-                    movimientos = this.cajeroService.filtrarPorNumeroDeCuenta(cuenta, filtroCajero.getFiltrarPorNumeroDeCuenta(),null);
-                else
-                    movimientos = this.cajeroService.filtrarPorNumeroDeCuenta(cuenta, filtroCajero.getFiltrarPorNumeroDeCuenta(),movimientos);
-            }
-            if (!filtroCajero.getFiltrarPorMovimiento().equals("")){
-                if (movimientos.isEmpty())
-                    movimientos = this.cajeroService.filtrarPorTipoMovimiento(cuenta, filtroCajero.getFiltrarPorMovimiento(), null);
-                else{
-                    movimientos = this.cajeroService.filtrarPorTipoMovimiento(cuenta, filtroCajero.getFiltrarPorMovimiento(), movimientos);
-                }
-            }
-            if (!filtroCajero.getOrdenar().equals("")){
-                if (movimientos.isEmpty()){
-                    movimientos = this.cajeroService.ordenarPorCriterio(cuenta, filtroCajero.getOrdenar(), null);
-                }
-                else{
-                    movimientos = this.cajeroService.ordenarPorCriterio(cuenta, filtroCajero.getOrdenar(), movimientos);
-                }
-            }
-        }
+
+        List<Movimiento> movimientos = this.cajeroService.filtrarToDTO(idCuenta, filtroCajero);
 
         List<Divisa> monedas = this.cajeroService.obtenerTodasLasDivisas();
         List<String> nombreMoneda = new ArrayList<>();
@@ -104,9 +74,11 @@ public class CajeroController {
     }
 
     private boolean filterEmpty(FiltroCajero filtroCajero){
-        return (filtroCajero.getFiltrarPorDivisa().equals("") &&
-                filtroCajero.getFiltrarPorMovimiento().equals("")
-                && filtroCajero.getOrdenar().equals("") && filtroCajero.getFiltrarPorNumeroDeCuenta().equals(""));
+        return (filtroCajero == null || (filtroCajero.getFiltrarPorDivisa().equals("") &&
+                filtroCajero.getFiltrarPorMovimiento().equals("") &&
+                filtroCajero.getFiltrarPorNumeroDeCuenta().equals("") &&
+                !filtroCajero.isOrdenarTipo() && !filtroCajero.isOrdenarFecha()
+                && !filtroCajero.isOrdenarImporte()));
     }
 
 

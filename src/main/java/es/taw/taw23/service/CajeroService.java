@@ -4,6 +4,7 @@ package es.taw.taw23.service;
 import es.taw.taw23.dao.*;
 import es.taw.taw23.dto.*;
 import es.taw.taw23.entity.*;
+import es.taw.taw23.ui.FiltroCajero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -221,145 +222,187 @@ public class CajeroService {
 
 
     //A partir de aqui son filtros
-    public List<Movimiento> filtrarPorDivisa(Cuenta cuenta, String divisa){
-        DivisaEntity moneda = this.cajeroRepository.findByMoneyName(divisa);
-        CuentaEntity cuentaAux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
-        List<MovimientoEntity> movs = this.cajeroRepository.findAllMovimientos(cuentaAux.getId());
-        List<MovimientoEntity> filtrado = new ArrayList<>();
-        boolean alreadyAdd;
-        for (MovimientoEntity mov : movs){
-            alreadyAdd=false;
-            if (mov.getDivisaByMonedaOrigenId().equals(moneda)){
-                filtrado.add(mov);
-                alreadyAdd=true;
-            }
-            if (mov.getDivisaByMonedaDestinoId().equals(moneda) && !alreadyAdd){
-                filtrado.add(mov);
-            }
-        }
-        List<Movimiento> movimientos = new ArrayList<>();
-        for (MovimientoEntity x : filtrado){
-            movimientos.add(x.toDTO());
-        }
-        return movimientos;
-    }
 
-    public List<Movimiento> filtrarPorNumeroDeCuenta(Cuenta cuenta, String numeroCuenta, List<Movimiento> movimientos){
-        if (movimientos==null){
-            movimientos=new ArrayList<>();
-            CuentaEntity cuentaAux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
-            List<MovimientoEntity> movimientosTotales = this.cajeroRepository.findAllMovimientos(cuentaAux.getId());
-            boolean alreadyAdd;
-            for (MovimientoEntity x : movimientosTotales){
-                alreadyAdd=false;
-                if (x.getCuentaByCuentaOrigenId().getNumeroCuenta().equals(numeroCuenta)){
-                    movimientos.add(x.toDTO());
-                    alreadyAdd=true;
+    public List<Movimiento> filtrarToDTO(Integer idCuenta, FiltroCajero filtroCajero){
+        List<MovimientoEntity> movimientos = filtrarGeneral(idCuenta,filtroCajero);
+        List<Movimiento> movimientosDTO = new ArrayList<>();
+        for (MovimientoEntity x : movimientos){
+            movimientosDTO.add(x.toDTO());
+        }
+        return movimientosDTO;
+    }
+    public List<MovimientoEntity> filtrarGeneral(Integer idCuenta, FiltroCajero filtroCajero) {
+        List<MovimientoEntity> movimientos = new ArrayList<>();
+
+        String filtrarDivisa = filtroCajero.getFiltrarPorDivisa();
+        String filtrarNumero = filtroCajero.getFiltrarPorNumeroDeCuenta();
+        String filtrarMovimiento = filtroCajero.getFiltrarPorMovimiento();
+
+        boolean ordenarFecha = filtroCajero.isOrdenarFecha();
+        boolean ordenarTipo = filtroCajero.isOrdenarTipo();
+        boolean ordenarImporte = filtroCajero.isOrdenarImporte();
+
+
+        //El array de binario es XYZ, X para divisa, Y para numero, Z para movimiento
+        if (!filtrarDivisa.equals("")) { //DIVISA 1
+            if (!filtrarNumero.equals("")) { //CUENTA 1
+                if (!filtrarMovimiento.equals("")) { // MOVIMIENTO 1
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimiento(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarImporte(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarTipo(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarTipoImporte(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarFecha(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarFechaImporte(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarFechaTipo(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroMovimientoOrdenarAll(idCuenta,filtrarDivisa,filtrarNumero,filtrarMovimiento);
+                    }
+
+                } else if (filtrarMovimiento.equals("")) { //MOVIMIENTO 0
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumero(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarPorImporteOrigenAsc(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarPorTipoMovimientoAsc(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarTipoImporteOrigen(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarPorTimeStampAsc(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarTimeStampImporteOrigen(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarTimeStampTipo(idCuenta,filtrarDivisa,filtrarNumero);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaNumeroOrdenarAll(idCuenta,filtrarDivisa,filtrarNumero);
+                    }
                 }
-                else if (x.getCuentaByCuentaDestinoId().getNumeroCuenta().equals(numeroCuenta) && !alreadyAdd)
-                    movimientos.add(x.toDTO());
+            } else if (filtrarNumero.equals("")) { //CUENTA 0
+                if (!filtrarMovimiento.equals("")) { //MOVIMIENTO 1
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimiento(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarImporte(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarPorTipoMovimiento(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarTipoImporte(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarPorTimeStamp(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarTimeStampImporteOrigen(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarTimeStampTipoMovimiento(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaMovimientoOrdenarAll(idCuenta,filtrarDivisa,filtrarMovimiento);
+                    }
+                } else if (filtrarMovimiento.equals("")) { //MOVIMIENTO 0
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisa(idCuenta,filtrarDivisa);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaOrdenarPorImporteOrigen(idCuenta,filtrarDivisa);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaOrdenarPorTipoMovimiento(idCuenta,filtrarDivisa);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarDivisaOrdenarPorTipoMovimientoImporteOrigen(idCuenta,filtrarDivisa);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaOrdenarPorTimeStamp(idCuenta,filtrarDivisa);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaOrdenarPorTimeStampImporteOrigen(idCuenta,filtrarDivisa);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaOrdenarPorTimeStampTipoMovimiento(idCuenta,filtrarDivisa);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarDivisaOrdenarAll(idCuenta,filtrarDivisa);
+                    }
+                }
             }
-        }
-        else{
-            List<Movimiento> filtrar = new ArrayList<>();
-            boolean alreadyAdd;
-            for (Movimiento x : movimientos){
-                alreadyAdd=false;
-                if (x.getCuentaOrigen().equals(numeroCuenta)){
-                    filtrar.add(x);
-                }else if (x.getCuentaDestino().equals(numeroCuenta) && !alreadyAdd)
-                    filtrar.add(x);
+        } else if (filtrarDivisa.equals("")) { //DIVISA 0
+            if (!filtrarNumero.equals("")) { //CUENTA 1
+                if (!filtrarMovimiento.equals("")) { // MOVIMIENTO 1
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimiento(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarPorImporteOrigen(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarPorTipoMovimiento(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarPorTipoImporte(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarPorTimeStamp(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarPorFechaImporte(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarPorFechaTipo(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroMovimientoOrdenarAll(idCuenta,filtrarNumero,filtrarMovimiento);
+                    }
+                } else if (filtrarMovimiento.equals("")) { //MOVIMIENTO 0
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumero(idCuenta,filtrarNumero);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroOrdenarPorImporteOrigen(idCuenta,filtrarNumero);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroOrdenarPorTipoMovimiento(idCuenta,filtrarNumero);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarNumeroOrdenarPorTipoMovimientoEImporteOrigen(idCuenta,filtrarNumero);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroOrdenarPorTimeStamp(idCuenta,filtrarNumero);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroOrdenarPorFechaEImporteOrigen(idCuenta,filtrarNumero);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroOrdenarPorTimeStampYTipoMovimiento(idCuenta,filtrarNumero);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarNumeroOrdenarAll(idCuenta,filtrarNumero);
+                    }
+                }
+            } else if (filtrarNumero.equals("")) { //CUENTA 0
+                if (!filtrarMovimiento.equals("")) { //MOVIMIENTO 1
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimiento(idCuenta,filtrarMovimiento);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimientoOrdenarImporteOrigen(idCuenta,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimientoOrdenarTipoMovimiento(idCuenta,filtrarMovimiento);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.filtrarMovimientoOrdenarTipoImporteOrigen(idCuenta,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimientoOrdenarTimeStamp(idCuenta,filtrarMovimiento);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimientoOrdenarFechaImporteOrigen(idCuenta,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimientoOrdenarFechaTipo(idCuenta,filtrarMovimiento);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.filtrarMovimientoOrdenarAll(idCuenta,filtrarMovimiento);
+                    }
+                } else if (filtrarMovimiento.equals("")) { //MOVIMIENTO 0
+                    if (!ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.findAllMovimientos(idCuenta);
+                    }else if (!ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.OrdenarImporte(idCuenta);
+                    }else if (!ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.OrdenarTipo(idCuenta);
+                    }else if (!ordenarFecha && ordenarTipo && ordenarImporte) {
+                        return this.cajeroRepository.OrdenarTipoImporte(idCuenta);
+                    }else if (ordenarFecha && !ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.OrdenarFecha(idCuenta);
+                    }else if (ordenarFecha && !ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.OrdenarFechaImporte(idCuenta);
+                    }else if (ordenarFecha && ordenarTipo && !ordenarImporte){
+                        return this.cajeroRepository.OrdenarFechaTipo(idCuenta);
+                    }else if (ordenarFecha && ordenarTipo && ordenarImporte){
+                        return this.cajeroRepository.OrdenarAll(idCuenta);
+                    }
+                }
             }
-            movimientos = filtrar;
         }
         return movimientos;
     }
-
-    public List<Movimiento> filtrarPorTipoMovimiento(Cuenta cuenta, String tipoMovimiento, List<Movimiento> movimientos){
-        if (movimientos==null){
-            movimientos = new ArrayList<>();
-            CuentaEntity cuentaAux = this.cajeroRepository.findByAccountNumber(cuenta.getNumeroCuenta());
-            List<MovimientoEntity> movimientosTotales = cuentaAux.getMovimientosById();
-            for (MovimientoEntity x : movimientosTotales){
-                if (x.getTipoMovimientoByTipoMovimientoId().getTipo().equals(tipoMovimiento))
-                    movimientos.add(x.toDTO());
-            }
-        }else{
-            List<Movimiento> filtrar = new ArrayList<>();
-            for (Movimiento x : movimientos){
-                if (x.getTipo().equals(tipoMovimiento))
-                    filtrar.add(x);
-            }
-            movimientos = filtrar;
-        }
-        return movimientos;
-    }
-
-
-
-    public List<Movimiento> ordenarPorCriterio(Cuenta cuenta, String orden, List<Movimiento> movimientos){
-        if (movimientos==null){
-            movimientos = new ArrayList<>();
-            List <MovimientoEntity> movimientosTotales = new ArrayList<>();
-            if (orden.equals("Fecha")){
-                movimientosTotales = this.cajeroRepository.findByFechaMovimientoAsc(cuenta.getId());
-            } else if (orden.equals("Importe")){
-                movimientosTotales = this.cajeroRepository.findAllMovimientos(cuenta.getId());
-                movimientosTotales.sort(new SortByAmount());
-            } else if (orden.equals("Tipo de movimiento")){
-                movimientosTotales = this.cajeroRepository.findByTipoDeMovimientoAsc(cuenta.getId()); //No ordena bien por nombre, pero los agrupa
-            }
-            for (MovimientoEntity x : movimientosTotales){
-                movimientos.add(x.toDTO());
-            }
-        }else{
-            List<MovimientoEntity> movimientosTotales = new ArrayList<>();
-            for (Movimiento x : movimientos){
-                movimientosTotales.add(this.movimientoRepository.findById(x.getId()).orElse(null));
-            }
-            if (orden.equals("Fecha")){
-                movimientosTotales.sort(new SortByDate());
-            } else if (orden.equals("Importe")){
-                movimientosTotales.sort(new SortByAmount());
-            } else if (orden.equals("Tipo de movimiento")){
-                movimientosTotales.sort(new SortByType());
-            }
-        }
-        return movimientos;
-    }
-
-    private class SortByAmount implements Comparator<MovimientoEntity> {
-        public int compare(MovimientoEntity a, MovimientoEntity b){
-            return (cambioDivisaAEuro(a).compareTo(cambioDivisaAEuro(b)));
-        }
-
-        private Double cambioDivisaAEuro(MovimientoEntity x){
-            Double importeOrigen = x.getImporteOrigen();
-            Double importeDestino = x.getImporteDestino();
-
-            CambioDivisaEntity cambioDivisaOrigen = cajeroRepository.cambiarDivisa(cajeroRepository.findByMoneyName(x.getDivisaByMonedaOrigenId().getMoneda()).getId(),
-                    cajeroRepository.findByMoneyName("euro").getId());
-            CambioDivisaEntity cambioDivisaDestino = cajeroRepository.cambiarDivisa(cajeroRepository.findByMoneyName(x.getDivisaByMonedaDestinoId().getMoneda()).getId(),
-                    cajeroRepository.findByMoneyName("euro").getId());
-            if (cambioDivisaOrigen!=null)
-                importeOrigen *= cambioDivisaOrigen.getCambio();
-            if (cambioDivisaDestino!=null)
-                importeDestino *= cambioDivisaDestino.getCambio();
-            return Math.max(importeOrigen,importeDestino);
-        }
-    }
-
-    private class SortByDate implements Comparator<MovimientoEntity> {
-        public int compare(MovimientoEntity a, MovimientoEntity b){
-            return a.getTimeStamp().compareTo(b.getTimeStamp());
-        }
-    }
-
-    private class SortByType implements Comparator<MovimientoEntity> {
-        public int compare(MovimientoEntity a, MovimientoEntity b){
-            return a.getTipoMovimientoByTipoMovimientoId().getTipo().compareTo(b.getTipoMovimientoByTipoMovimientoId().getTipo());
-        }
-    }
-
 }
 

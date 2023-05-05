@@ -3,24 +3,47 @@ package es.taw.taw23.ui;
 public class FiltroCajero {
 
 
-    String ordenar;
+
+
+    boolean ordenarFecha;
+    boolean ordenarTipo;
+    boolean ordenarImporte;
     String filtrarPorDivisa;
     String filtrarPorMovimiento;
 
     String filtrarPorNumeroDeCuenta;
 
     public FiltroCajero(){
-        ordenar="";
+        ordenarFecha=false;
+        ordenarTipo=false;
+        ordenarImporte=false;
         filtrarPorDivisa="";
         filtrarPorMovimiento="";
         filtrarPorNumeroDeCuenta="";
     }
-    public String getOrdenar() {
-        return ordenar;
+
+    public boolean isOrdenarFecha() {
+        return ordenarFecha;
     }
 
-    public void setOrdenar(String ordenar) {
-        this.ordenar = ordenar;
+    public void setOrdenarFecha(boolean ordenarFecha) {
+        this.ordenarFecha = ordenarFecha;
+    }
+
+    public boolean isOrdenarTipo() {
+        return ordenarTipo;
+    }
+
+    public void setOrdenarTipo(boolean ordenarTipo) {
+        this.ordenarTipo = ordenarTipo;
+    }
+
+    public boolean isOrdenarImporte() {
+        return ordenarImporte;
+    }
+
+    public void setOrdenarImporte(boolean ordenarImporte) {
+        this.ordenarImporte = ordenarImporte;
     }
 
     public String getFiltrarPorDivisa() {
