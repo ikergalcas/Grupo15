@@ -308,9 +308,8 @@ public class ClienteEntity implements DTO<Cliente> {
         dto.setFechaNacimiento(this.fechaNacimiento);
         dto.setCalle(this.calle);
         dto.setNumero(this.numero);
-        dto.setCiudad(this.ciudad);
         dto.setPuerta(this.puerta);
-        dto.setCalle(this.ciudad);
+        dto.setCiudad(this.ciudad);
         dto.setPais(this.pais);
         dto.setRegion(this.region);
         dto.setCp(this.cp);
