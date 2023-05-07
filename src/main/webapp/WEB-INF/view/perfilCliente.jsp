@@ -17,6 +17,7 @@
 
 <body>
 
+
 <h1>Mis datos</h1>
 <form:form action="/cliente/guardarPerfilCliente" modelAttribute="clienteEditado" method="post">
     <form:hidden path="id"/>

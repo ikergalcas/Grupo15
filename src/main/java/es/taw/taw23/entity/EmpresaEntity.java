@@ -1,5 +1,6 @@
 package es.taw.taw23.entity;
 
+import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Empresa;
 
 import javax.persistence.*;
@@ -83,8 +84,17 @@ public class EmpresaEntity {
             asociados.add(c.getId());
         }
         dto.setAsociados(asociados);
-
+        dto.setListaClientes(this.listaClientestoDTO(this.clientesById));
+        dto.setCif(this.cif);
         return dto;
+    }
+
+    private List<Cliente> listaClientestoDTO(List<ClienteEntity> clientes) {
+        List<Cliente> clientesDTO = new ArrayList<>();
+        for (ClienteEntity c : clientes) {
+            clientesDTO.add(c.toDTO());
+        }
+        return clientesDTO;
     }
 
     public String getCif() {

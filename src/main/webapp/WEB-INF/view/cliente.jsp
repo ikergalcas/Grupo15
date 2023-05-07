@@ -24,6 +24,7 @@
 </head>
 
 <body>
+
 <h1>Cuenta de <%=cliente.getPrimerNombre()%></h1>
 <h2> Estado acutal de la cuenta : <%=cuenta.getEstadoCuenta()%></h2>
 

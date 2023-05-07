@@ -9,6 +9,8 @@
 </head>
 <% List<Cuenta> cuentasAsociadas = (List<Cuenta>) request.getAttribute("cuentasAsociadas");
     Cliente cliente = (Cliente) request.getAttribute("cliente");%>
+
+
 <body>
 <table>
     <td>

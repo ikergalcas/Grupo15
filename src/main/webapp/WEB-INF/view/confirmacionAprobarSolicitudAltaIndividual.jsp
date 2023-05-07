@@ -7,6 +7,7 @@
     <title>Title</title>
 </head>
 <body>
+
 <%
     Empleado gestor = (Empleado) request.getAttribute("gestor");
     Solicitud solicitud = (Solicitud) request.getAttribute("solicitud");

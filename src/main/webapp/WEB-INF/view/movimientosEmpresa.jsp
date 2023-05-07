@@ -20,9 +20,11 @@
 
 <body>
 
+<jsp:include page="cabecera.jsp" />
+
 <h1>Movimientos de la cuenta <%= cuenta.getNumeroCuenta() %></h1>
 
-<table border="1">
+<table class="table">
     <tr>
         <th>Cuenta origen</th>
         <th>Cuenta destino</th>
@@ -65,7 +67,10 @@
     %>
 </table>
 
-<a href="/empresa/vistaEmpresa?idEmpresa=<%= id %>">Volver</a>
+<form style="margin-left: 30px" action="/empresa/vistaEmpresa">
+    <input type="hidden" name="idEmpresa" value="<%= id %>">
+    <button class="btn btn-secondary">Volver</button>
+</form>
 
 </body>
 </html>

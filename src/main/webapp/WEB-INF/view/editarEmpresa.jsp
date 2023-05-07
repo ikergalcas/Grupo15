@@ -30,9 +30,9 @@
 
             <form:form action="/empresa/guardarEmpresa?idEmpresa=<%= empresa.getIdEmpresa() %>" modelAttribute="empresaEditada" method="post"><br/>
                 <form:hidden path="idEmpresa" value="<%= empresa.getIdEmpresa()%>"/>
-                Nombre de la empresa: <form:input path="nombre" required="true" /><br/>
-                CIF de la empresa: <form:input path="cif" required="true" /> <br/>
-                Contrasena: <form:input path="contrasenaEmpresa" required="true" /> <br/>
+                Nombre de la empresa: <form:input cssStyle="margin-bottom: 10px" path="nombre" required="true" /><br/>
+                CIF de la empresa: <form:input cssStyle="margin-bottom: 10px" path="cif" required="true" /> <br/>
+                Contrasena: <form:input cssStyle="margin-bottom: 10px" path="contrasenaEmpresa" required="true" /> <br/>
                 <form action="/empresa/guardarEmpresa?idEmpresa=<%= empresa.getIdEmpresa() %>" method="post">
                     <input type="hidden" name="idAsociado" value="<%= asociado.getId() %>">
                     <button class="btn btn-dark">Guardar</button>

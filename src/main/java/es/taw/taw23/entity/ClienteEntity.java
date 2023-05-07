@@ -2,6 +2,7 @@ package es.taw.taw23.entity;
 
 import es.taw.taw23.dto.Cliente;
 import es.taw.taw23.dto.Cuenta;
+import es.taw.taw23.dto.CuentaCliente;
 import es.taw.taw23.dto.DTO;
 
 import javax.persistence.*;
@@ -315,14 +316,26 @@ public class ClienteEntity implements DTO<Cliente> {
         dto.setContrasena(this.contrasena);
         dto.setTipo(this.getRolClienteByRolclienteId().getTipo());
         dto.setAcceso(this.acceso);
+
         if(this.empresaByEmpresaId != null){
-            dto.setEmpresa(this.empresaByEmpresaId.getId());
+            dto.setIdEmpresa(this.empresaByEmpresaId.getId());
         }
-        List<Cuenta> cuentas = new ArrayList<>();
-        for(CuentaClienteEntity c : this.cuentaClientesById) {
-            cuentas.add(c.getCuentaByCuentaId().toDTO());
+
+        if(this.cuentaClientesById != null) {
+            List<Cuenta> cuentas = new ArrayList<>();
+            List<CuentaCliente> cuentaClientes = new ArrayList<>();
+            for(CuentaClienteEntity c : this.cuentaClientesById) {
+                cuentas.add(c.getCuentaByCuentaId().toDTO());
+                cuentaClientes.add(c.toDTO());
+            }
+            dto.setCuentaList(cuentas);
+            dto.setCuentaClientesDTO(cuentaClientes);
         }
-        dto.setCuentaList(cuentas);
+
+        if(this.cuentaClientesById != null) {
+            dto.setCuentas(this.cuentaClientesById);
+        }
+
         return dto;
     }
 }

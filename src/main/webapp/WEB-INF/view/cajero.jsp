@@ -15,6 +15,8 @@
    List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
  Cliente cliente = (Cliente) request.getAttribute("cliente");
 Solicitud solicitud = (Solicitud) request.getAttribute("solicitud");%>
+
+
 <table>
     <td>
         <th>

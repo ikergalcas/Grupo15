@@ -158,6 +158,8 @@ public class MovimientoEntity {
         dto.setTipo(this.tipoMovimientoByTipoMovimientoId.getTipo());
         dto.setDivisaCuentaDestino(this.divisaByMonedaDestinoId.getMoneda());
         dto.setDivisaCuentaOrigen(this.divisaByMonedaOrigenId.getMoneda());
+        dto.setIdCuentaOrigen(this.cuentaByCuentaOrigenId.getId());
+        dto.setIdCuentaDestino(this.cuentaByCuentaDestinoId.getId());
 
         if(this.clienteByClienteId != null) {
             dto.setAsociado(this.clienteByClienteId.getId());

@@ -21,6 +21,7 @@
 </head>
 <body>
 
+
 <h1>Asistente (<%=asistente.getNumero_empleado()%>)</h1>
 <h2>Listado de chats</h2>
 
@@ -85,21 +86,7 @@
     </select>
     <button>Abir nuevo chat</button>
 </form>
-<%--Codigo para cliente / empresa jsp:
-    <%
-        if (chat == null) {
-    %>
-    <a href="/asistente/abrirChatConAsistente/<%=cliente.getId()%>">Abrir chat con asistente</a>
-    <%
-        } else {
-    %>
-    <a href="/asistente/chatCliente/<%=chat.getId()%>">Acceder a chat con asistente</a>
-    <%
-        }
-    %>
---%>
-<a href="/asistente/abrirChatConAsistente/1">Abrir chat con asistente</a>
+
 <br>
-<a href="/">Cerrar sesion</a>
 </body>
 </html>

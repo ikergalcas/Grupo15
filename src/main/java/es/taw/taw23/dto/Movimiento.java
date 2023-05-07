@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * Hecho por: Álvaro Yuste
+ * Hecho por: Álvaro Yuste 50%
+ * Carla Serracant 50%
  */
 public class Movimiento implements Serializable {
     Integer id;

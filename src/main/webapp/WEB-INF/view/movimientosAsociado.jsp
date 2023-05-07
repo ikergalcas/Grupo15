@@ -43,19 +43,19 @@
                 <form:hidden path="cuentaOrigen" />
                 <form:hidden path="asociado" value="<%= asociado.getId() %>" />
                 <form:hidden path="timeStamp" value="<%= new java.sql.Timestamp(System.currentTimeMillis()) %>" /> <br/>
-                Cuenta destino: <form:input path="cuentaDestino" /> <br/>
+                Cuenta destino: <form:input cssStyle="margin-bottom: 10px" path="cuentaDestino" /> <br/>
                 Moneda origen:
-                <form:select path="divisaCuentaOrigen">
+                <form:select cssStyle="margin-bottom: 10px" path="divisaCuentaOrigen">
                     <form:option label="" value="" />
                     <form:options items="${monedas}" itemLabel="moneda" itemValue="moneda" />
                 </form:select> <br/>
                 Moneda destino:
-                <form:select path="divisaCuentaDestino">
+                <form:select cssStyle="margin-bottom: 10px" path="divisaCuentaDestino">
                     <form:option label="" value="" />
                     <form:options items="${monedas}" itemValue="moneda" itemLabel="moneda" />
                 </form:select> <br/>
                 Tipo de movimiento:
-                <form:select path="tipo">
+                <form:select cssStyle="margin-bottom: 10px" path="tipo">
                     <form:option label="" value="" />
                     <form:option label="pago" value="pago"/>
                     <form:option label="cambio divisa" value="cambioDivisa" />
@@ -63,11 +63,11 @@
                 <br/>
                 <form method="post" action="/empresa/filtrarMovimiento">
                     Ordenar por: <br/>
-                    Importe origen <input type="checkbox" name="opciones[]" value="origen" /> <br/>
-                    Importe destino <input type="checkbox" name="opciones[]" value="destino" /> <br/>
-                    Fecha <input type="checkbox" name="opciones[]" value="fecha" /> <br/>
+                    Importe origen <input style="margin-bottom: 10px" type="checkbox" name="opciones[]" value="origen" /> <br/>
+                    Importe destino <input style="margin-bottom: 10px" type="checkbox" name="opciones[]" value="destino" /> <br/>
+                    Fecha <input style="margin-bottom: 10px" type="checkbox" name="opciones[]" value="fecha" /> <br/>
                     Orden:
-                    <select name="orden">
+                    <select style="margin-bottom: 10px" name="orden">
                         <option value="ascendente">Ascendente</option>
                         <option value="descendente">Descendente</option>
                     </select>
@@ -75,15 +75,15 @@
                 </form>
             </from:form>
 
-            <table class="table-bordered">
-                <td>Fecha</td>
-                <td>Importe Origen</td>
-                <td>Importe Destino</td>
-                <td>Cuenta Origen</td>
-                <td>Cuenta Destino</td>
-                <td>Tipo de movimiento</td>
-                <td>Moneda Origen</td>
-                <td>Moneda Destino</td>
+            <table class="table">
+                <th>Fecha</th>
+                <th>Importe Origen</th>
+                <th>Importe Destino</th>
+                <th>Cuenta Origen</th>
+                <th>Cuenta Destino</th>
+                <th>Tipo de movimiento</th>
+                <th>Moneda Origen</th>
+                <th>Moneda Destino</th>
 
                 <%
                     for(Movimiento movimiento : movimientoList) {
@@ -105,7 +105,10 @@
                 %>
             </table>
 
-            <a href="/empresa/miEmpresa?id=<%= asociado.getId() %>">Volver</a>
+            <form style="margin-top: 10px" action="/empresa/miEmpresa" method="get">
+                <input type="hidden" name="id" value="<%= asociado.getId() %>">
+                <button class="btn btn-primary">Volver</button>
+            </form>
         </div>
     </div>
 </div>

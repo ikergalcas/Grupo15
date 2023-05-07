@@ -32,38 +32,38 @@
     <h1>Ha iniciado sesion como la empresa: <%= empresa.getNombre() %></h1>
     <div class="row">
         <div class="col-5">
-            <table class="table-bordered">
+            <table class="table">
                 <tr>
-                    <td style="text-align: center"><strong>Dar de alta a socio/autorizado</strong></td>
+                    <th style="text-align: center">Dar de alta a socio/autorizado</th>
                 </tr>
                 <tr>
                     <td>
                         <form:form action="/empresa/darDeAlta" method="post" modelAttribute="asociado">
                             <form:hidden path="id"/>
-                            <form:hidden path="empresa" value="<%= empresa.getIdEmpresa() %>" />
-                            <form:hidden path="acceso" value="<%=1%>" />
-                            NIF*: <form:input path="nif" size="9" maxlength="9" required="true" /><br/>
-                            Primer nombre: <form:input path="primerNombre" size="30" maxlength="30" cssStyle="width: 150" /><br/>
-                            Segundo nombre: <form:input path="segundoNombre" size="30" maxlength="30" cssStyle="width: 150" /><br/>
-                            Primer apellido: <form:input path="primerApellido" size="30" maxlength="30" cssStyle="width: 150" /><br/>
-                            Segundo apellido: <form:input path="segundoApellido" size="30" maxlength="30" cssStyle="width: 150" /><br/>
-                            Fecha de Nacimiento*: <form:input type="date" path="fechaNacimiento" required="true" /><br/>
-                            Calle: <form:input path="calle" /><br/>
-                            Numero: <form:input path="numero" /><br/>
-                            Puerta: <form:input path="puerta" /><br/>
-                            Ciudad: <form:input path="ciudad" /><br/>
-                            Pais: <form:input path="pais" /><br/>
-                            Region: <form:input path="region" /><br/>
-                            Código postal: <form:input path="cp" /><br/>
-                            Contraseña*: <form:input path="contrasena" required="true" /><br/>
+                            <form:hidden path="idEmpresa" value="<%= empresa.getIdEmpresa() %>" />
+                            <form:hidden cssStyle="margin-bottom: 10px" path="acceso" value="<%=1%>" />
+                            NIF*: <form:input path="nif" size="9" maxlength="9" required="true" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Primer nombre: <form:input path="primerNombre" size="30" maxlength="30" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Segundo nombre: <form:input path="segundoNombre" size="30" maxlength="30" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Primer apellido: <form:input path="primerApellido" size="30" maxlength="30" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Segundo apellido: <form:input path="segundoApellido" size="30" maxlength="30" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Fecha de Nacimiento*: <form:input type="date" path="fechaNacimiento" required="true"  cssStyle="margin-bottom: 10px"/><br/>
+                            Calle: <form:input path="calle" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Numero: <form:input path="numero" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Puerta: <form:input path="puerta" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Ciudad: <form:input path="ciudad" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Pais: <form:input path="pais" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Region: <form:input path="region" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Código postal: <form:input path="cp" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
+                            Contraseña*: <form:input path="contrasena" required="true" cssStyle="width: 150px; margin-bottom: 10px" /><br/>
                             Tipo:
-                            <form:select path="tipo">
+                            <form:select cssStyle="margin-bottom: 10px" path="tipo">
                                 <form:option value="socio" label="socio" />
                                 <form:option value="autorizado" label="autorizado" />
                             </form:select> <br/>
                             <form action="/empresa/darDeAlta" method="post">
                                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
-                                <button>Dar de alta</button>
+                                <button class="btn btn-dark">Dar de alta</button>
                             </form>
                         </form:form>
                     </td>
@@ -94,7 +94,7 @@
         <div class="col">
             <p><strong>Asociados de la empresa:</strong></p>
 
-            <table class="table-bordered">
+            <table class="table">
                 <tr>
                     <th>NIF</th>
                     <th>Primer nombre</th>

@@ -12,6 +12,23 @@
 %>
 
 <html>
+
+<style>
+
+    /* Estilo base para el select */
+    select {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    .btn2:hover {
+        background-color: #00e0ac;
+    }
+
+</style>
+
 <head>
     <title>Transferencia Empresa</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.1.0/css/bootstrap.min.css" />
@@ -35,9 +52,9 @@
                 <form:hidden path="tipo" />
                 <form:hidden path="divisaCuentaOrigen" />
                 <form:hidden path="divisaCuentaDestino" />
-                Importe: <form:input path="importeOrigen" required="true" /> <br/>
+                Importe: <form:input cssStyle="margin-bottom: 10px" path="importeOrigen" type="int" required="true" /> <br/>
                 Numero de Cuenta Origen:
-                <form:select path="cuentaOrigen">
+                <form:select cssStyle="margin-bottom: 10px" path="cuentaOrigen">
                     <form:options items="${cuentas}" itemValue="numeroCuenta" itemLabel="numeroCuenta" />
                 </form:select> <br/>
                 Numero de Cuenta Destino:
@@ -50,7 +67,10 @@
                 </form>
             </form:form>
 
-            <a href="/empresa/?id=<%= asociado.getId() %>">Volver al listado de empresas</a>
+            <form action="/empresa/" method="get">
+                <input type="hidden" name="id" value="<%= asociado.getId() %>">
+                <button class="btn btn2" style="border: 2px solid #00e0ac; width: 400px" type="submit">Volver al listado de empresas</button>
+            </form>
         </div>
     </div>
 </div>

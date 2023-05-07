@@ -26,7 +26,7 @@ public interface AsociadoRepository extends JpaRepository<ClienteEntity, Integer
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.primerApellido like CONCAT('%', :primerApellido, '%')")
     public List<ClienteEntity> buscarPorPrimerApellido(@Param("idempresa") Integer idEmpresa, @Param("primerApellido") String apellido);
 
-    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif like CONCAT('%', :nif, '%') ")
+    @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif =:nif")
     public ClienteEntity buscarPorNif(@Param("idempresa") Integer idEmpresa, @Param("nif") String nif);
 
     @Query("select c from ClienteEntity c where c.empresaByEmpresaId.id = :idempresa and c.nif = :nif")

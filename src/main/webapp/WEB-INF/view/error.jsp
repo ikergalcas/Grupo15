@@ -26,12 +26,7 @@
 %>
     <h1>La cuenta origen no tiene suficiente dinero</h1>
 <%
-    } else if(error.equals("nifMal")) {
-%>
-    <h1>El nif introducido esta mal</h1>
-<%
-    }
-    if(error.equals("cuentaDestino") || error.equals("dineroInsuficiente")) {
+    } if(error.equals("cuentaDestino") || error.equals("dineroInsuficiente")) {
 %>
     <a href="/empresa/transferencia?id=<%= idAsociado %>">Volver a hacer transferencia</a><br/>
 <%

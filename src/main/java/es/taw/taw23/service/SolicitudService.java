@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Hecho por: Carla Serra Cant
+ * Hecho por: Carla Serracant Guevara
  */
 @Service
 public class SolicitudService {
@@ -35,39 +35,41 @@ public class SolicitudService {
     protected GestorRepository gestorRepository;
 
     public Cliente buscarClienteAPartirDeSolicitud(Integer idSolicitud) {
+        /* Carla Serracant Guevara */
         SolicitudEntity solicitud = solicitudRepository.findById(idSolicitud).orElse(null);
         ClienteEntity cliente = solicitud.getClienteByClienteId();
 
         return cliente.toDTO();
     }
     public Solicitud buscarSolicitud(Integer id) {
+        /* Carla Serracant Guevara */
         SolicitudEntity solicitud = solicitudRepository.findById(id).orElse(null);
         Solicitud solicitudDTO = solicitud.toDTO();
         return solicitudDTO;
     }
 
     public void aprobarSolicitud(Integer id) {
-
+        /* Carla Serracant Guevara */
         SolicitudEntity solicitud = solicitudRepository.findById(id).orElse(null);
         EstadoSolicitudEntity estadoSolicitud = new EstadoSolicitudEntity();
         estadoSolicitud.setId(3);
         solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoSolicitud);
         solicitudRepository.save(solicitud);
 
-        /*SolicitudEntity solicitudEntity = solicitudRepository.findById(id).orElse(null);
-        EstadoSolicitudEntity estadoSolicitudEntity = solicitudEntity.getEstadoSolicitudByEstadoSolicitudId();
-        ClienteEntity clienteEntity = solicitudEntity.getClienteByClienteId();
-        EmpleadoEntity gestorEntity = solicitudEntity.getEmpleadoByEmpleadoId();
-        List<SolicitudEntity> solicitudesGestor = gestorEntity.getSolicitudsById();
-        solicitudesGestor.remove(solicitudEntity);//borramos la solicitud para modificarla
-        estadoSolicitudEntity.setEstado("resuelta");
-        solicitudEntity.setEstado("resuelta");
-        solicitudEntity.setEstadoSolicitudByEstadoSolicitudId(estadoSolicitudEntity);
+    }
 
-        solicitudesGestor.add(solicitudEntity);
-        gestorEntity.setSolicitudsById(solicitudesGestor);
+    public void borrarSolicitud(Integer id) {
+        /* Carla Serracant Guevara */
+        SolicitudEntity solicitud = solicitudRepository.findById(id).orElse(null);
+        solicitudRepository.delete(solicitud);
+    }
 
-        estadoSolicitudRepository.save(estadoSolicitudEntity);
-        solicitudRepository.save(solicitudEntity);*/
+    public void rechazarSolicitud(Integer id) {
+        /* Carla Serracant Guevara */
+        SolicitudEntity solicitud = solicitudRepository.findById(id).orElse(null);
+        EstadoSolicitudEntity estadoSolicitudEntity = new EstadoSolicitudEntity();
+        estadoSolicitudEntity.setId(2);
+        solicitud.setEstadoSolicitudByEstadoSolicitudId(estadoSolicitudEntity);
+        solicitudRepository.save(solicitud);
     }
 }

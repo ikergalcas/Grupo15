@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 /**
- * Hecho por: Álvaro Yuste Moreno
+ * Hecho por:
+ * Álvaro Yuste Moreno (50%)
+ * Carla Serracant Guevara (50%)
  */
 public interface CuentaRepository extends JpaRepository<CuentaEntity, Integer> {
 

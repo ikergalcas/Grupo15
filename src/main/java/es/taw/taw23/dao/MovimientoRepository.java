@@ -8,12 +8,16 @@ import org.springframework.data.repository.query.Param;
 import java.sql.Timestamp;
 import java.util.List;
 /**
- * Hecho por: Álvaro Yuste Moreno
+ * Hecho por:
+ * Álvaro Yuste Moreno 40%
+ * Rocío Gómez Mancebo 30%
+ * Carla Serracant Guevara 30%
  */
 public interface MovimientoRepository extends JpaRepository<MovimientoEntity, Integer> {
     @Query("select m from MovimientoEntity m where m.cuentaByCuentaDestinoId.id = :idCuenta or m.cuentaByCuentaOrigenId.id = :idCuenta")
     public List<MovimientoEntity> buscarMovimientosPorIdCuenta(@Param("idCuenta") Integer idCuenta);
 
+    //Filtro movimientos parte de empresa
     @Query("select m from MovimientoEntity m where m.clienteByClienteId.id = :idAsociado and m.cuentaByCuentaOrigenId.id = :idCuenta")
     public List<MovimientoEntity> buscarMovimientosAsociado(@Param("idAsociado") Integer id, @Param("idCuenta") Integer idCuenta);
 

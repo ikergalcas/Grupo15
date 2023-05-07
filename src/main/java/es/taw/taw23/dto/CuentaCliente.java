@@ -4,7 +4,9 @@ import es.taw.taw23.entity.ClienteEntity;
 import es.taw.taw23.entity.CuentaEntity;
 
 import java.io.Serializable;
-
+/**
+ * Hecho por: Carla Serracant Guevara
+ */
 public class CuentaCliente implements Serializable {
     private Integer id;
     private ClienteEntity cliente;

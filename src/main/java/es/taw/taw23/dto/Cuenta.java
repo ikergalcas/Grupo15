@@ -8,8 +8,9 @@ import java.util.List;
 
 /**
  * Hecho por:
- * Álvaro Yuste Moreno: 50%
- * Rocío Gómez Mancebo: 50%
+ * Álvaro Yuste Moreno: 33%
+ * Rocío Gómez Mancebo: 33%
+ * Carla Serracant Guevara 33%
  */
 public class Cuenta implements Serializable {
     private Integer id;
@@ -20,7 +21,7 @@ public class Cuenta implements Serializable {
     private String tipoCuenta;
     private String moneda;
     private Double dinero;
-    private List<CuentaClienteEntity> cuentaCliente;
+    private List<CuentaCliente> cuentaCliente;
     private List<Movimiento> movimientosOrigen;     //Lista de movimientos en los que esta es la cuenta origen
     private List<Movimiento> movimientosDestino;    //Lista de movimientos en los que esta es la cuenta destino
     private Integer idSolicitud;
@@ -92,11 +93,11 @@ public class Cuenta implements Serializable {
         this.dinero = dinero;
     }
 
-    public List<CuentaClienteEntity> getCuentaCliente() {
+    public List<CuentaCliente> getCuentaCliente() {
         return cuentaCliente;
     }
 
-    public void setCuentaCliente(List<CuentaClienteEntity> cuentaCliente) {
+    public void setCuentaCliente(List<CuentaCliente> cuentaCliente) {
         this.cuentaCliente = cuentaCliente;
     }
 
@@ -147,4 +148,6 @@ public class Cuenta implements Serializable {
     public void setIdEmpresa(Integer idEmpresa) {
         this.idEmpresa = idEmpresa;
     }
+
+
 }

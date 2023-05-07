@@ -52,7 +52,7 @@
                     Código Postal: <form:input path="cp" /> <br/>
                     Contraseña*: <form:input path="contrasena" /> <br/>
                     <form:hidden path="tipo" />
-                    <form:hidden path="empresa" />
+                    <form:hidden path="idEmpresa" />
                     <form:hidden path="acceso" />
                     <button class="btn btn-dark">Guardar</button>
                 </form:form>

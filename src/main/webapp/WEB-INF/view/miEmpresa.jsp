@@ -16,6 +16,23 @@
     List<Cliente> listaAsociados = (List<Cliente>) request.getAttribute("asociados");
 %>
 <html>
+
+<style>
+
+    /* Estilo base para el select */
+    select {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    .btn2:hover {
+        background-color: #00e0ac;
+    }
+
+</style>
+
 <head>
     <title>Mi Empresa</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.1.0/css/bootstrap.min.css" />
@@ -30,7 +47,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="display-4">Listado de socios y autorizados de mi empresa</div>
+            <h1 style="text-align: center">Listado de socios y autorizados de mi empresa</h1>
             <%
                 if(cliente.getTipo().equals("socio")) {
             %>
@@ -48,10 +65,10 @@
                     <div class="col">
                         <form:form action="/empresa/filtrarMiEmpresa" modelAttribute="filtro" method="post">
                             Filtrar por: <br/>
-                            Primer Nombre: <form:input path="primerNombre" /><br/>
-                            Primer Apellido: <form:input path="primerApellido" /><br/>
+                            Primer Nombre: <form:input cssStyle="margin-bottom: 10px" path="primerNombre" /><br/>
+                            Primer Apellido: <form:input cssStyle="margin-bottom: 10px" path="primerApellido" /><br/>
                             Puesto:
-                            <form:select path="puesto">
+                            <form:select cssStyle="margin-bottom: 10px" path="puesto">
                                 <form:option value="" label="" />
                                 <form:option value="socio" label="socio" />
                                 <form:option value="autorizado" label="autorizado" />
@@ -67,13 +84,13 @@
                     </div>
                 </div>
             </div>
-            <table class="table-bordered">
+            <table class="table">
                 <tr>
-                    <th>NIF</th>
-                    <th>Primer Nombre</th>
-                    <th>Primer Apellido</th>
-                    <th>Puesto</th>
-                    <th>Acceso</th>
+                    <th style="text-align: center">NIF</th>
+                    <th style="text-align: center">Primer Nombre</th>
+                    <th style="text-align: center">Primer Apellido</th>
+                    <th style="text-align: center">Puesto</th>
+                    <th style="text-align: center">Acceso</th>
                     <th></th>
                 </tr>
                 <%
@@ -115,7 +132,7 @@
                         <form action="/empresa/bloquear" method="post">
                             <input type="hidden" value="<%= asociado.getId() %>" name="idBloqueado" />
                             <input type="hidden" value="<%= cliente.getId() %>" name="id" />
-                            <button class="btn btn-secondary">Bloquear</button>
+                            <button class="btn btn-danger">Bloquear</button>
                         </form>
                         <%
                             }
@@ -145,7 +162,7 @@
                     <td>
                         <form action="/empresa/movimientosAsociado" method="get">
                             <input type="hidden" value="<%= asociado.getId() %>" name="idAsociado" />
-                            <button class="btn btn-primary">Ver movimientos</button>
+                            <button class="btn btn-primary" style="margin-top: 20px">Ver movimientos</button>
                         </form>
                     </td>
                 </tr>
@@ -156,7 +173,10 @@
 
             </table>
 
-            <a href="/empresa/?id=<%= cliente.getId() %>">Volver al listado de empresas</a>
+            <form style="margin-left: 50px" action="/empresa/" method="get">
+                <input type="hidden" name="id" value="<%= cliente.getId() %>">
+                <button class="btn btn2" style="border: 2px solid #00e0ac; width: 300px" type="submit">Volver al listado de empresas</button>
+            </form>
         </div>
     </div>
 </div>

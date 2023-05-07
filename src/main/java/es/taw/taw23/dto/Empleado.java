@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Hecho por:
  * Iker Gálvez: 50%
- * Carla Serra Cant: 50%
+ * Carla Serracant: 50%
  */
 public class Empleado implements Serializable{
     private Integer id;

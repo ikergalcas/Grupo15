@@ -15,7 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Hecho por: Álvaro Yuste Moreno
+ * Hecho por: Álvaro Yuste Moreno 80%
+ * Carla Serracant Guevara 20%
  */
 @Service
 public class EmpresaService {
@@ -69,7 +70,11 @@ public class EmpresaService {
 
     public Cuenta buscarCuentaPorIBAN(String iban) {
         CuentaEntity cuentaEntity = this.cuentaRepository.buscarCuentaPorNumeroCuenta(iban);
-        return cuentaEntity.toDTO();
+        if(cuentaEntity == null) {
+            return null;
+        } else {
+            return cuentaEntity.toDTO();
+        }
     }
 
     public Cuenta buscarCuentaEmpresa(List<Cuenta> cuentaList) {
@@ -82,12 +87,6 @@ public class EmpresaService {
         return cuenta;
     }
 
-    public Empresa buscarEmpresaAPartirDeCliente(Cliente cliente) {
-
-        EmpresaEntity empresa = empresaRepository.findById(cliente.getEmpresa()).orElse(null);
-
-        return empresa.toDTO();
-    }
 
     /**
      * En este metodo miro si la cuenta individual del asociado esta activa y si esta bloqueado o no de la empresa
@@ -199,8 +198,11 @@ public class EmpresaService {
     public Cliente buscarAsociadoPorNif(Integer idEmpresa, String nif) {
         Cliente cliente = new Cliente();
         ClienteEntity entity = this.asociadoRepository.buscarPorNif(idEmpresa, nif);
-
-        return entity.toDTO();
+        if(entity != null) {
+            return entity.toDTO();
+        } else {
+            return null;
+        }
     }
 
     public List<Cliente> listarAsociadosDeMiEmpresa(Integer idEmpresa, String primerNombre, String primerApellido, String puesto) {
@@ -520,7 +522,7 @@ public class EmpresaService {
      */
     public void registrarAsociado(Cliente asociado, Integer idCuenta) {
         ClienteEntity entity = new ClienteEntity();
-        EmpresaEntity empresaEntity = this.empresaRepository.findById(asociado.getEmpresa()).orElse(null);
+        EmpresaEntity empresaEntity = this.empresaRepository.findById(asociado.getIdEmpresa()).orElse(null);
         RolClienteEntity rol = this.rolClienteRepository.buscarRol(asociado.getTipo());
         CuentaEntity cuenta = this.cuentaRepository.findById(idCuenta).orElse(null);    //cuenta es la cuenta de la empresa
         SolicitudEntity solicitud = new SolicitudEntity();
@@ -551,7 +553,7 @@ public class EmpresaService {
         this.asociadoRepository.save(entity);
 
         //Obtengo el cliente que acabo de subir a la base de datos
-        ClienteEntity clienteBD = this.asociadoRepository.buscarPorNifRegistroAsociado(asociado.getEmpresa(), asociado.getNif());
+        ClienteEntity clienteBD = this.asociadoRepository.buscarPorNifRegistroAsociado(asociado.getIdEmpresa(), asociado.getNif());
 
         //Creo el objeto cuentaClienteEmpresa que servirá para relacionar el asociado con la cuenta de la empresa
         CuentaClienteEntity cuentaClienteEmpresa = new CuentaClienteEntity();
@@ -689,4 +691,37 @@ public class EmpresaService {
         return dto;
     }
 
+    public Empresa buscarEmpresaAPartirDeCliente(Cliente cliente) {
+        /* Carla Serracant Guevara */
+        EmpresaEntity empresa = empresaRepository.findById(cliente.getIdEmpresa()).orElse(null);
+
+        return empresa.toDTO();
+    }
+
+    public List<Empresa> buscarEmpresas() {
+        /* Carla Serracant Guevara */
+        List<EmpresaEntity> empresas = empresaRepository.findAll();
+        List<Empresa> empresasDTO = new ArrayList<>();
+        for (EmpresaEntity e : empresas) {
+            empresasDTO.add(e.toDTO());
+        }
+
+        return empresasDTO;
+    }
+
+    public List<Empresa> buscarEmpresaPorCif(String cif) {
+        /* Carla Serracant Guevara */
+        List<EmpresaEntity> empresaEntities = empresaRepository.findByFiltroCif(cif);
+        List<Empresa> empresas = new ArrayList<>();
+        for (EmpresaEntity e : empresaEntities) {
+            empresas.add(e.toDTO());
+        }
+
+        return empresas;
+    }
+
+    public Empresa buscarEmpresaDevuelveDTO(Integer id) {
+        EmpresaEntity empresaEntity = this.empresaRepository.findById(id).orElse(null);
+        return empresaEntity.toDTO();
+    }
 }

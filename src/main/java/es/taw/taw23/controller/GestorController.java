@@ -38,10 +38,11 @@ public class GestorController {
     protected ClienteService clienteService;
 
     @Autowired
-    protected MovimientoService movimientoService;
+    protected MovimientosService movimientoService;
 
     @Autowired
     protected CuentaSospechosaService cuentaSospechosaService;
+
 
     @GetMapping("/{idGestor}")
     public String doPaginaPrincipalGestor(@PathVariable("idGestor") Integer id, Model model) {
@@ -139,7 +140,7 @@ public class GestorController {
     }
 
     @PostMapping("/crearCuentaBancariaClienteEmpresa")
-    public String doCrearCuentaBancariaEmpresa(@ModelAttribute("cuenta") Cuenta cuenta,
+    public String doCrearCuentaBancariaEmpresa(@ModelAttribute("cuenta") Cuenta cuenta, @RequestParam("numCuentaSocio") String num,
                                         Model model) {
 
         Solicitud solicitud = solicitudService.buscarSolicitud(cuenta.getIdSolicitud());
@@ -147,10 +148,14 @@ public class GestorController {
 
         cuentaService.crearNuevaCuentaEmpresa(cuenta);
 
+        cuenta.setNumeroCuenta(num);
+        cuentaService.crearNuevaCuentaIndividual(cuenta);
+
         solicitudService.aprobarSolicitud(solicitud.getId());
 
         return "redirect:/gestor/solicitudes/" + gestor.getId();
     }
+
 
     @GetMapping("/activarCuentaCliente/{idSolicitud}/{idGestor}")
     public String doActivarCuentaClienteInactiva(@PathVariable("idSolicitud") Integer idSolicitud,

@@ -4,6 +4,9 @@
 <%@ page import="es.taw.taw23.dto.Empleado" %>
 <%@ page import="es.taw.taw23.dto.Solicitud" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--
+  Carla Serracant Guevara
+--%>
 <html>
 <head>
     <title>Solicitudes</title>
@@ -34,18 +37,26 @@
         <td><%=s.getTipo_solicitud().getTipo()%></td>
         <td><%=s.getEstado_solicitud().getEstado()%></td>
 
-        <td><input type="submit" value="Información del cliente"></td>
+        <td><input type="submit" value="Información del cliente" onclick="location.href='/gestor/verCliente/<%=s.getCliente().getId()%>/<%=gestor.getId()%>'"></td>
 
         <% if (s.getTipo_solicitud().getTipo().equals("alta_cliente") && s.getEstado_solicitud().getId() == 1){%>
-            <td><input type="submit" value="Ver solicitud cliente" onclick="location.href='/gestor/verSolicitudAltaClienteIndividual/<%=s.getId()%>/<%=gestor.getId()%>';"/>  <input type="submit" value="Rechazar solicitud"></td>
+            <td><input type="submit" value="Ver solicitud cliente" onclick="location.href='/gestor/verSolicitudAltaClienteIndividual/<%=s.getId()%>/<%=gestor.getId()%>';"/>
+                <input type="submit" value="Rechazar solicitud" onclick="location.href='/gestor/rechazarSolicitud/<%=s.getId()%>/<%=gestor.getId()%>'"></td>
         <% }else if (s.getTipo_solicitud().getTipo().equals("alta_empresa") && s.getEstado_solicitud().getId() == 1){ %>
-            <td><input type="submit" value="Ver solicitud empresa" onclick="location.href='/gestor/verSolicitudAltaClienteEmpresa/<%=s.getId()%>/<%=gestor.getId()%>';"/>  <input type="submit" value="Rechazar solicitud"></td></td>
-        <% } else if (s.getEstado_solicitud().getId() == 3) { %>
-            <td><input type="submit" value="Revisar solicitud aprobada"></td>
-        <% } else if (s.getTipo_solicitud().getTipo().equals("activacion") && s.getEstado_solicitud().getId() == 1) { %>
-            <td><input type="submit" value="Activar cuenta"></td>
-        <% } else if (s.getTipo_solicitud().getTipo().equals("desbloqueo") && s.getEstado_solicitud().getId() == 1) {%>
-            <td><input type="submit" value="Desbloquear cuenta"></td>
+            <td><input type="submit" value="Ver solicitud empresa" onclick="location.href='/gestor/verSolicitudAltaClienteEmpresa/<%=s.getId()%>/<%=gestor.getId()%>';"/>
+                <input type="submit" value="Rechazar solicitud" onclick="location.href='/gestor/rechazarSolicitud/<%=s.getId()%>/<%=gestor.getId()%>'"></td>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("activa_individual") && s.getEstado_solicitud().getId() == 1) { %>
+            <td><input type="submit" value="Activar cuenta cliente" onclick="location.href='/gestor/activarCuentaCliente/<%=s.getId()%>/<%=gestor.getId()%>';">
+                <input type="submit" value="Rechazar solicitud" onclick="location.href='/gestor/rechazarSolicitud/<%=s.getId()%>/<%=gestor.getId()%>'"></td>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("activa_empresa") && s.getEstado_solicitud().getId() == 1) {%>
+            <td><input type="submit" value="Activar cuenta empresa" onclick="location.href='/gestor/activarCuentaEmpresa/<%=s.getId()%>/<%=gestor.getId()%>';">
+                <input type="submit" value="Rechazar solicitud" onclick="location.href='/gestor/rechazarSolicitud/<%=s.getId()%>/<%=gestor.getId()%>'"></td>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("desbloqueo_individual") && s.getEstado_solicitud().getId() == 1) {%>
+            <td><input type="submit" value="Desbloquear cuenta cliente" onclick="location.href='/gestor/desbloquearCuentaCliente/<%=s.getId()%>/<%=gestor.getId()%>';">
+                <input type="submit" value="Rechazar solicitud" onclick="location.href='/gestor/rechazarSolicitud/<%=s.getId()%>/<%=gestor.getId()%>'"></td>
+        <% } else if (s.getTipo_solicitud().getTipo().equals("desbloqueo_empresa") && s.getEstado_solicitud().getId() == 1) {%>
+            <td><input type="submit" value="Desbloquear cuenta empresa" onclick="location.href='/gestor/desbloquearCuentaEmpresa/<%=s.getId()%>/<%=gestor.getId()%>';">
+                <input type="submit" value="Rechazar solicitud" onclick="location.href='/gestor/rechazarSolicitud/<%=s.getId()%>/<%=gestor.getId()%>'"></td>
         <% } %>
     </tr>
 
@@ -53,5 +64,6 @@
         }
     %>
 </table>
+<input type="submit" value="VOLVER ATRÁS" onclick="location.href='/gestor/<%=gestor.getId()%>'">
 </body>
 </html>

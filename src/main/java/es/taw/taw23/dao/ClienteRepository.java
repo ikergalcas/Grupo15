@@ -7,6 +7,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Hecho por:
+ * Álvaro Yuste Moreno (66%)
+ * Carla Serracant (34%)
+ */
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 
     @Query("select c from ClienteEntity c where c.nif = :nif")

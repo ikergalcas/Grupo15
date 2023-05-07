@@ -16,7 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Hecho por: Rocío Gómez Mancebo
+ * Hecho por: Rocío Gómez Mancebo 75%
+ * Carla Serracant Guevara 25%
  */
 @Service
 public class ClienteService {
@@ -52,6 +53,9 @@ public class ClienteService {
 
     @Autowired
     protected GestorRepository gestorRepository;
+
+    @Autowired
+    protected ClienteRepository clienteRepository;
 
     public Cliente buscarCliente(Integer id) {
         ClienteEntity individualEntity = this.individualRepository.findById(id).orElse(null);
@@ -297,6 +301,33 @@ public class ClienteService {
         solicitud.setClienteByClienteId(cliente);
 
         this.solicitudRepository.save(solicitud);
+    }
+
+    public List<Cliente> buscarTodosLosClientes() {
+        /* Carla Serracant Guevara */
+        List<Cliente> listaClienteDTO = new ArrayList<>();
+        List<ClienteEntity> clientesEntity = clienteRepository.findAll();
+        for (ClienteEntity c : clientesEntity) {
+            listaClienteDTO.add(c.toDTO());
+        }
+        return listaClienteDTO;
+    }
+
+    public Cliente buscarClientePorId(Integer id) {
+        /* Carla Serracant Guevara */
+        ClienteEntity cliente = clienteRepository.findById(id).orElse(null);
+        return cliente.toDTO();
+    }
+
+    public List<Cliente> buscarClientePorFiltroNif(String nif) {
+        /* Carla Serracant Guevara */
+        List<ClienteEntity> clienteEntities = clienteRepository.findByFiltroNif(nif);
+        List<Cliente> clientes = new ArrayList<>();
+        for (ClienteEntity c : clienteEntities) {
+            clientes.add(c.toDTO());
+        }
+
+        return clientes;
     }
 
 }

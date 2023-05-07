@@ -82,7 +82,7 @@ public class EmpresaController {
 
         model.addAttribute("asociados", lista);
 
-        return "inicio";
+        return "inicioAsociado";
     }
 
     @PostMapping("/cambioDivisa")
@@ -106,14 +106,14 @@ public class EmpresaController {
         model.addAttribute("empresa", empresa);
         model.addAttribute("asociados", asociados);
 
-        return "empresa";
+        return "vistaEmpresa";
     }
 
     @PostMapping("/darDeAlta")
     public String doDarDeAlta(@ModelAttribute("asociado") Cliente asociado, @RequestParam("idCuenta") Integer idCuenta, Model model) {
         this.empresaService.registrarAsociado(asociado, idCuenta);
 
-        return "redirect:/empresa/vistaEmpresa?idEmpresa=" + asociado.getEmpresa();
+        return "redirect:/empresa/vistaEmpresa?idEmpresa=" + asociado.getIdEmpresa();
     }
 
     @GetMapping("/miEmpresa")
@@ -137,26 +137,21 @@ public class EmpresaController {
         List<Cliente> listaAsociado = new ArrayList<>();
         Cliente cliente = this.empresaService.buscarCliente(id);
         model.addAttribute("cliente", cliente);
-        System.out.println(filtro.getNif());
 
         //Filtro vacio, busco todos
         if(filtro.getPrimerNombre().isEmpty() && filtro.getPrimerApellido().isEmpty() && filtro.getNif().isEmpty() && filtro.getPuesto().isEmpty()) {
-            listaAsociado = this.empresaService.listarAsociadosDeMiEmpresa(cliente.getEmpresa());
+            listaAsociado = this.empresaService.listarAsociadosDeMiEmpresa(cliente.getIdEmpresa());
 
             //Busco solo por el nif ya que este es unico
         } else if(!filtro.getNif().isEmpty()) {
-            if(filtro.getNif().length() == 9) { //El nif esta bien introducido
-                Cliente cliente1 = this.empresaService.buscarAsociadoPorNif(cliente.getEmpresa(), filtro.getNif());
+            Cliente cliente1 = this.empresaService.buscarAsociadoPorNif(cliente.getIdEmpresa(), filtro.getNif());
+            if(cliente1 != null) {
                 listaAsociado.add(cliente1);
-            } else {    //No han introducido el nif entero, por lo que lo mando a la pagina de error
-                urlto = "error";
-                String error = "nifMal";
-                model.addAttribute("error", error);
-                model.addAttribute("idAsociado", id);
             }
+
             //Aplico el filtro, empresaService se encarga de ver que filtros estan rellenos
         } else {
-            listaAsociado = this.empresaService.listarAsociadosDeMiEmpresa(cliente.getEmpresa(), filtro.getPrimerNombre(), filtro.getPrimerApellido(), filtro.getPuesto());
+            listaAsociado = this.empresaService.listarAsociadosDeMiEmpresa(cliente.getIdEmpresa(), filtro.getPrimerNombre(), filtro.getPrimerApellido(), filtro.getPuesto());
         }
 
         model.addAttribute("asociados", listaAsociado);
@@ -164,11 +159,14 @@ public class EmpresaController {
     }
 
 
+    /**
+     * Muestro los datos del perfil del socio/autorizado
+     */
     @GetMapping("/miPerfil")
     public String doEditarPerfil(@RequestParam("id") Integer idCliente, Model model) {
         Cliente asociado = this.empresaService.buscarCliente(idCliente);
         model.addAttribute("asociadoEditado", asociado);
-        return "perfil";
+        return "perfilAsociado";
     }
 
     @PostMapping("/guardarPerfil")
@@ -181,7 +179,7 @@ public class EmpresaController {
     @GetMapping("/editarEmpresa")
     public String doEditarEmpresa(@RequestParam("id") Integer idAsociado, Model model) {
         Cliente asociado = this.empresaService.buscarCliente(idAsociado);
-        Empresa empresa = this.empresaService.buscarEmpresa(asociado.getEmpresa());
+        Empresa empresa = this.empresaService.buscarEmpresa(asociado.getIdEmpresa());
 
         model.addAttribute("asociado", asociado);
         model.addAttribute("empresaEditada", empresa);
@@ -234,7 +232,7 @@ public class EmpresaController {
         if(error.equals("")) {      //No hay errores en la transferencia
             urlto = "redirect:/empresa/?id=" + idAsociado;
         } else {   //Hay error en la transferencia (la causa del error esta en la cadena "error"
-            urlto = "errorTransferencia";
+            urlto = "errorTransferenciaEmpresa";
             model.addAttribute("error", error);
             model.addAttribute("idAsociado", idAsociado);
         }
@@ -252,7 +250,7 @@ public class EmpresaController {
         model.addAttribute("cuenta", cuenta);
         model.addAttribute("id", id);
         model.addAttribute("movimientos", movimientosCuenta);
-        return "misMovimientos";
+        return "movimientosEmpresa";
     }
 
     /**

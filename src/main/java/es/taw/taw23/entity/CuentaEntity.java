@@ -1,9 +1,6 @@
 package es.taw.taw23.entity;
 
-import es.taw.taw23.dto.Cliente;
-import es.taw.taw23.dto.Cuenta;
-import es.taw.taw23.dto.DTO;
-import es.taw.taw23.dto.Movimiento;
+import es.taw.taw23.dto.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -183,7 +180,11 @@ public class CuentaEntity implements DTO<Cuenta> {
         dto.setMoneda(this.divisaByDivisaId.getMoneda());
         dto.setDinero(this.dinero);
 
-        dto.setCuentaCliente(this.cuentaClientesById);
+        List<CuentaCliente> cuentaClientes = new ArrayList<>();
+        for(CuentaClienteEntity c : this.cuentaClientesById) {
+            cuentaClientes.add(c.toDTO());
+        }
+        dto.setCuentaCliente(cuentaClientes);
 
         List<Movimiento> movimientosOrigenDTO = new ArrayList<>();
         for (MovimientoEntity movimiento : this.movimientosById) {

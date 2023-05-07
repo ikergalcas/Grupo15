@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 /**
- * Hecho por: Álvaro Yuste Moreno
+ * Hecho por:
+ * Álvaro Yuste Moreno 40%
+ * Carla Serracant Guevara 20%
  */
 public interface SolicitudRepository extends JpaRepository<SolicitudEntity,Integer> {
     @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente' and s.empleadoByEmpleadoId.id = :idGestor")
@@ -17,7 +19,7 @@ public interface SolicitudRepository extends JpaRepository<SolicitudEntity,Integ
     @Query("select s from SolicitudEntity s where s.clienteByClienteId.id = :idCliente and s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente'")
     public List<SolicitudEntity> buscarSolicitudesPendientesPorCliente(@Param("idCliente") Integer idCliente);
 
-    @Query("select s from SolicitudEntity s where s.clienteByClienteId.id = :idCliente and s.estadoSolicitudByEstadoSolicitudId.estado <> 'resuelta' and s.tipoSolicitudByTipoSolicitudId.tipo = 'alta_empresa'")
+    @Query("select s from SolicitudEntity s where s.clienteByClienteId.id = :idCliente and s.estadoSolicitudByEstadoSolicitudId.estado <> 'aceptada' and s.tipoSolicitudByTipoSolicitudId.tipo = 'alta_empresa'")
     SolicitudEntity buscarSolicitudDeAltaEmpresaPendienteoDenegada(@Param("idCliente") Integer id);
 
     @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado <> 'resuelta' and s.tipoSolicitudByTipoSolicitudId.tipo = 'alta_empresa'")

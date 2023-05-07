@@ -15,6 +15,8 @@
     Cuenta cuenta = (Cuenta) request.getAttribute("cuenta");
     Cliente cliente = (Cliente) request.getAttribute("cliente");
 %>
+
+
 <table>
     <td>
     <th>

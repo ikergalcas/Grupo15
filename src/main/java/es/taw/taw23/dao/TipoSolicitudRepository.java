@@ -4,6 +4,7 @@ import es.taw.taw23.entity.TipoSolicitudEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+
 public interface TipoSolicitudRepository extends JpaRepository<TipoSolicitudEntity, Integer> {
 
     @Query("select t from TipoSolicitudEntity t where t.tipo = 'activa_individual'")

@@ -3,7 +3,9 @@ package es.taw.taw23.dto;
 import es.taw.taw23.entity.CuentaEntity;
 
 import java.io.Serializable;
-
+/**
+ * Hecho por: Carla Serracant Guevara
+ */
 public class CuentaSospechosa implements Serializable {
     private Integer id;
     private Integer cuenta_id; //numero de la cuenta sospechosa

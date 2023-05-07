@@ -7,8 +7,9 @@ import java.sql.Date;
 import java.util.List;
 /**
  * Hecho por:
- * Álvaro Yuste Moreno: 50%
- * Rocío Gómez Mancebo: 50%
+ * Álvaro Yuste Moreno: 33%
+ * Rocío Gómez Mancebo: 33%
+ * Carla Serracant Guevara 33%
  */
 public class Cliente implements Serializable {
     private Integer id;
