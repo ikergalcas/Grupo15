@@ -106,7 +106,8 @@ public class CajeroService {
     }
 
     public void setNewCliente(Cliente cliente){
-        this.clienteRepository.save(guardarAux(cliente));
+        ClienteEntity clienteAux = guardarAux(cliente);
+        this.clienteRepository.save(clienteAux);
     }
 
     private ClienteEntity guardarAux(Cliente cliente){
