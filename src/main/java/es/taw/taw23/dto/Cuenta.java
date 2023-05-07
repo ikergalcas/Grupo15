@@ -148,7 +148,7 @@ public class Cuenta implements Serializable {
         return cuentaClienteDTO;
     }
 
-    public void setCuentaClienteDTO(List<CuentaCliente> cuentaClienteDTO) {
+        public void setCuentaClienteDTO(List<CuentaCliente> cuentaClienteDTO) {
         this.cuentaClienteDTO = cuentaClienteDTO;
     }
 }

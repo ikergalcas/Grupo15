@@ -272,6 +272,7 @@ public class EmpresaService {
     }
 
     public List<Empresa> buscarEmpresaPorCif(String cif) {
+        /* Carla Serracant Guevara */
         List<EmpresaEntity> empresaEntities = empresaRepository.findByFiltroCif(cif);
         List<Empresa> empresas = new ArrayList<>();
         for (EmpresaEntity e : empresaEntities) {
