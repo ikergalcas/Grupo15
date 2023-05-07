@@ -21,66 +21,83 @@
 
 <html>
 <head>
-    <title>Chat</title>
+    <title>Chat con asistente</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.0/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Estas hablando con: <%=asistente.getNombre()%></h1>
+            <br>
+            <table>
+                <%
+                    for (Mensaje mensaje : lista) {
+                %>
+                <tr>
 
-<h1>Estas hablando con: <%=asistente.getNombre()%></h1>
+                    <%
+                        if (mensaje.getRemitente().equals("empleado")) {
+                    %>
+                    <th valign="top">
+                        Asistente:
+                    </th>
+                    <td>
+                        <textarea class="me-2 ms-2" cols="70" rows="5" readonly="true" ><%=mensaje.getTexto()%></textarea>
+                    </td>
+                    <%
+                    } else {
+                    %>
+                    <th valign="top">
+                        Yo:
+                    </th>
+                    <td>
+                        <textarea class="me-2 ms-2" cols="70" rows="5" readonly="true" style="background: #e6e6e6"><%=mensaje.getTexto()%></textarea>
+                    </td>
+                    <%
+                        }
+                    %>
 
-<table>
-    <%
-        for (Mensaje mensaje : lista) {
-    %>
-    <tr>
-        <th align="right" valign="top">
+                    <td valign="top"><%=mensaje.getFechaEnvio()%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </table>
+            <br>
+            <hr>
+            <form action="/asistente/enviarMensajeCliente/<%=chat.getId()%>" method="post">
+                <table>
+                    <tr>
+                        <th valign="top">Nuevo mensaje:</th>
+                        <td><textarea class="ms-2" name="texto" rows="5" cols="70"></textarea></td>
+                        <td><button class="btn btn-primary ms-2">Enviar mensaje</button></td>
+                    </tr>
+                </table>
+            </form>
+            <br>
             <%
-                if (mensaje.getRemitente().equals("empleado")) {
+                if (cliente.getTipo().equals("individual")) {
             %>
-                Asistente:
-                <td>
-                    <textarea cols="70" rows="5" readonly="true" style="margin-left: 8px"><%=mensaje.getTexto()%></textarea>
-                </td>
+            <form action="/cliente/<%=chat.getClienteId()%>" method="get">
+                <button class="btn btn-secondary">Volver atras</button>
+            </form>
             <%
-                } else {
+            } else {
             %>
-                Yo:
-                <td>
-                    <textarea cols="70" rows="5" readonly="true" style="background: #e6e6e6; margin-left: 8px"><%=mensaje.getTexto()%></textarea>
-                </td>
+            <form action="/empresa/<%=chat.getClienteId()%>" method="get">
+                <button class="btn btn-secondary">Volver atras</button>
+            </form>
             <%
                 }
             %>
-        </th>
-
-        <td valign="top"><%=mensaje.getFechaEnvio()%></td>
-    </tr>
-    <%
-        }
-    %>
-</table>
-<br>
-<hr>
-<form action="/asistente/enviarMensajeCliente/<%=chat.getId()%>" method="post">
-    <table>
-        <tr>
-            <th>Nuevo mensaje:</th> <td><textarea name="texto" rows="5" cols="70"></textarea></td>
-            <td><button>Enviar mensaje</button></td>
-        </tr>
-    </table>
-</form>
-<%
-    if (cliente.getTipo().equals("individual")) {
-%>
-<a href="/cliente/<%=chat.getClienteId()%>">Volver atras</a>
-<%
-    } else {
-%>
-<a href="/empresa/?id=<%=chat.getClienteId()%>">Volver atras</a>
-<%
-    }
-%>
-<br>
-<br>
-<a href="/asistente/cerrarChatCliente/<%=chat.getId()%>">Cerrar chat definitivamente</a>
+            <form action="/asistente/cerrarChatCliente/<%=chat.getId()%>" method="get">
+                <button class="btn btn-danger">Cerrar chat definitivamente</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
