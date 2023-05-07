@@ -78,9 +78,7 @@ public class ClienteService {
      */
 
      public Cuenta obtenerCuenta(Integer idCliente) {
-       //ClienteEntity clienteEntity = this.individualRepository.findById(idCliente).orElse(null);
-       //CuentaEntity cuenta = clienteEntity.getCuentaClientesById().get(0).getCuentaByCuentaId();
-
+         /* Rocío Gómez Mancebo */
          List<CuentaClienteEntity> cuentaClienteList = this.cuentaClienteRepository.buscarCuentaClientePorIdCliente(idCliente);
          CuentaEntity cuenta = new CuentaEntity();
 
@@ -93,6 +91,7 @@ public class ClienteService {
     }
 
     public String transferencia(MovimientoTransferencia transferencia) {
+        /* Rocío Gómez Mancebo */
         MovimientoEntity movimiento = new MovimientoEntity();
         String error = "";
 
@@ -145,6 +144,7 @@ public class ClienteService {
     }
 
     public List<Divisa> buscarDivisas() {
+        /* Rocío Gómez Mancebo */
         List<DivisaEntity> divisaEntities = this.divisaRepository.findAll();
 
         return divisasADTO(divisaEntities);
@@ -153,6 +153,7 @@ public class ClienteService {
 
 
     private List<Divisa> divisasADTO(List<DivisaEntity> divisaEntities) {
+        /* Rocío Gómez Mancebo */
         List<Divisa> divisas = new ArrayList<>();
 
         for(DivisaEntity entity : divisaEntities) {
@@ -163,6 +164,7 @@ public class ClienteService {
     }
 
     public void cambioDivisa(MovimientoCambioDivisa divisa) {
+        /* Rocío Gómez Mancebo */
         CuentaEntity cuenta = this.cuentaRepository.buscarCuentaPorNumeroCuenta(divisa.getCuenta());
         DivisaEntity divisaNueva = this.divisaRepository.buscarDivisaPorNombre(divisa.getDivisa());
         CambioDivisaEntity cambio = this.cambioDivisaRepository.buscarCambioDivisa(cuenta.getDivisaByDivisaId().getMoneda(), divisa.getDivisa());
@@ -193,6 +195,7 @@ public class ClienteService {
     }
 
     public void guardarCliente(Cliente editado) {
+        /* Rocío Gómez Mancebo */
         ClienteEntity cliente = this.individualRepository.findById(editado.getId()).orElse(null);
 
         cliente.setId(editado.getId());
@@ -215,6 +218,7 @@ public class ClienteService {
 
     //cambio estado cuenta
     public void solicitarDesbloqueo(Integer idCliente) {
+        /* Rocío Gómez Mancebo */
         ClienteEntity cliente = this.individualRepository.findById(idCliente).orElse(null);
         SolicitudEntity solicitud = new SolicitudEntity();
 
@@ -230,6 +234,7 @@ public class ClienteService {
         this.solicitudRepository.save(solicitud);
     }
     public void solicitarActivacion(Integer idCliente) {
+        /* Rocío Gómez Mancebo */
         ClienteEntity cliente = this.individualRepository.findById(idCliente).orElse(null);
         SolicitudEntity solicitud = new SolicitudEntity();
 
@@ -245,6 +250,7 @@ public class ClienteService {
         this.solicitudRepository.save(solicitud);
     }
     protected EmpleadoEntity buscarGestorMenosOcupado() {
+        /* Rocío Gómez Mancebo */
         List<EmpleadoEntity> gestores = this.gestorRepository.buscarGestores();
 
         int min = Integer.MAX_VALUE;
@@ -260,15 +266,18 @@ public class ClienteService {
     }
 
     public boolean comprobarSolicitudDesbloqueoEnviada(Integer id) {
+        /* Rocío Gómez Mancebo */
         List<SolicitudEntity> solicitudesCliente = this.solicitudRepository.buscarSolicitudesPendientesPorClienteTipoDesbloqueoIndividual(id);
         return solicitudesCliente.size() > 0;
     }
-    public boolean comprobarSolicitudActivacionEnviada(Integer id) {
+    public boolean comprobarSolicitudActivacionEnviada(Integer id) {/* Rocío Gómez Mancebo */
+        /* Rocío Gómez Mancebo */
         List<SolicitudEntity> solicitudesCliente = this.solicitudRepository.buscarSolicitudesPendientesPorClienteTipoActivacionIndividual(id);
         return solicitudesCliente.size() > 0;
     }
 
     public void registrarCliente(Cliente editado) {
+        /* Rocío Gómez Mancebo */
         ClienteEntity cliente = new ClienteEntity();
         RolClienteEntity rol = this.rolClienteRepository.buscarRol("individual");
 

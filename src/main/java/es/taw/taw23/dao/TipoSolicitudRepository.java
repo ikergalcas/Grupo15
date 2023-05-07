@@ -3,7 +3,11 @@ package es.taw.taw23.dao;
 import es.taw.taw23.entity.TipoSolicitudEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
+/**
+ * Hecho por:
+ * Rocío Gómez Mancebo: 80%
+ * Alvaro Yuste Moreno: 20%
+ */
 
 public interface TipoSolicitudRepository extends JpaRepository<TipoSolicitudEntity, Integer> {
 

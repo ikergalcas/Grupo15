@@ -33,7 +33,7 @@ public class MovimientosService {
     protected CuentaSospechosaRepository cuentaSospechosaRepository;
 
     public List<Movimiento> buscarMovimientosConClienteId(Integer idCuenta) {
-
+        /* Rocío Gómez Mancebo */
         List<MovimientoEntity> movimientosEntityList = this.movimientoRepository.buscarMovimientosPorIdCuenta(idCuenta);
         List<Movimiento> movimientosDTO = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class MovimientosService {
     }
 
     public List<Movimiento> buscarMovimientosConClienteIdyFiltro (Integer id,Integer idCuenta, FiltroMovimientosIndiv filtro, List<String> opciones, String orden){
-
+        /* Rocío Gómez Mancebo */
         List<MovimientoEntity> movimientosEntityList = new ArrayList<>();
         List<Movimiento> movimientosDTO = new ArrayList<>();
 
@@ -100,7 +100,7 @@ public class MovimientosService {
 
 
 
-        //Ahora que tengo la lista la ordeno según el criterio dado por el filtro
+        //Ahora ordenamos
         if(opciones != null && !opciones.isEmpty()) {
             if(opciones.size() == 2) {
                 if(orden.equals("ascendente")) {

@@ -5,7 +5,9 @@
     Cliente cliente = (Cliente) request.getAttribute("cliente");
 
 %>
-
+<%--
+    Autor: Alvaro Yuste Moreno y Rocío Gómez Mancebo
+--%>
 <html>
 <head>
     <title>error</title>

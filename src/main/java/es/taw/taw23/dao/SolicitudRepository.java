@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * Hecho por:
  * Álvaro Yuste Moreno 40%
- * Carla Serracant Guevara 20%
+ * Carla Serracant Guevara 30%
+ * Rocío Gómez Mancebo 30%
  */
 public interface SolicitudRepository extends JpaRepository<SolicitudEntity,Integer> {
     @Query("select s from SolicitudEntity s where s.estadoSolicitudByEstadoSolicitudId.estado = 'pendiente' and s.empleadoByEmpleadoId.id = :idGestor")
