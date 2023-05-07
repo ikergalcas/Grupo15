@@ -6,11 +6,11 @@
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
 
+<%
     Empresa empresa = (Empresa) request.getAttribute("empresa");
     List<Cliente> asociados = (List<Cliente>) request.getAttribute("asociados");
     Cuenta cuenta = (Cuenta) request.getAttribute("cuentaEmpresa");

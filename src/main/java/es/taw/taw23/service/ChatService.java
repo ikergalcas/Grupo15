@@ -17,7 +17,7 @@ import java.util.List;
 import static org.aspectj.runtime.internal.Conversions.byteValue;
 
 /**
- * Hecho por: Iker Gálvez
+ * Hecho por: Iker Gálvez Castillo
  */
 @Service
 public class ChatService {

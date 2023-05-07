@@ -1,9 +1,9 @@
 
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
 
+<%
     String error = (String) request.getAttribute("error");
     Integer idAsociado = (Integer) request.getAttribute("idAsociado");
 %>

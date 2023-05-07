@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Hecho por: Carla Serracant Guevara
+ */
 @Controller
 @RequestMapping("/gestor")
 public class GestorController {
-// Carla Serracant Guevara
-
     @Autowired
     protected SolicitudService solicitudService;
 

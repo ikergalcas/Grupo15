@@ -7,11 +7,11 @@
 <%@ page import="es.taw.taw23.entity.CuentaClienteEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
 
+<%
     Cliente cliente = (Cliente) request.getAttribute("cliente");
     List<Cliente> listaAsociados = (List<Cliente>) request.getAttribute("asociados");
 %>

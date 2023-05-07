@@ -1,4 +1,4 @@
-//Pablo Alarcón Carrión
+
 package es.taw.taw23.controller;
 
 import es.taw.taw23.dto.*;
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Hecho por: Pablo Alarcón Carrión
+ */
 @Controller
 @RequestMapping("/cajero")
 public class CajeroController {

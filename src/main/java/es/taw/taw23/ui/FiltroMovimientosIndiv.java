@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Hecho por: Rocío Gómez
+ * Hecho por: Rocío Gómez Mancebo
  */
 public class FiltroMovimientosIndiv {
 

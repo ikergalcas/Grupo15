@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * Hecho por: Iker Gálvez
+ * Hecho por: Iker Gálvez Castillo
  */
 public class Mensaje implements Serializable {
     private Integer id;

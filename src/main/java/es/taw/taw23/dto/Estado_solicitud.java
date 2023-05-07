@@ -1,7 +1,7 @@
 package es.taw.taw23.dto;
 
 /**
- * Hecho por: Carla Serracant
+ * Hecho por: Carla Serracant Guevara
  */
 public class Estado_solicitud {
 

@@ -5,7 +5,7 @@ import es.taw.taw23.entity.TipoSolicitudEntity;
 import java.io.Serializable;
 
 /**
- * Hecho por: Carla Serracant
+ * Hecho por: Carla Serracant Guevara
  */
 public class Solicitud implements Serializable {
     private Integer id;

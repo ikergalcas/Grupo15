@@ -15,8 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Hecho por: Álvaro Yuste Moreno 80%
- * Carla Serracant Guevara 20%
+ * Hecho por:
+ * Álvaro Yuste Moreno: 80%
+ * Carla Serracant Guevara: 20%
  */
 @Service
 public class EmpresaService {

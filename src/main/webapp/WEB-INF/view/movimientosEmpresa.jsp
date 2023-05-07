@@ -3,11 +3,12 @@
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
 
+
+<%
     List<Movimiento> movimientoList = (List<Movimiento>) request.getAttribute("movimientos");
     Integer id = (Integer) request.getAttribute("id");
     Cuenta cuenta = (Cuenta) request.getAttribute("cuenta");

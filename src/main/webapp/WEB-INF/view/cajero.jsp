@@ -1,11 +1,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!--Pablo Alarcón Carrión-->
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.dto.Movimiento" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page import="es.taw.taw23.dto.Solicitud" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--
+    Autor: Pablo Alarcón Carrión
+--%>
+
 <html>
 <head>
     <title>Cajero</title>

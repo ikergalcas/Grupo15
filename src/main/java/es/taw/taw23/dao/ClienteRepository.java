@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * Hecho por:
- * Álvaro Yuste Moreno (66%)
- * Carla Serracant (34%)
+ * Álvaro Yuste Moreno: 66%
+ * Carla Serracant Guevara: 34%
  */
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 

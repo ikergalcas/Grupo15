@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 /**
- * Hecho por: Álvaro Yuste Moreno 30%
- * Carla Serracant Guevara 70%
+ * Hecho por:
+ * Álvaro Yuste Moreno: 30%
+ * Carla Serracant Guevara: 70%
  */
 public interface TipoMovimientoRepository extends JpaRepository<TipoMovimientoEntity, Integer> {
     @Query("select t from TipoMovimientoEntity t where t.tipo = 'pago'")

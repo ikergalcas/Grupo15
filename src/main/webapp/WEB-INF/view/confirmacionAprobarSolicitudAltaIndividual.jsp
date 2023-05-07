@@ -2,6 +2,11 @@
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.dto.Empleado" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--
+    Autora: Carla Serracant Guevara
+--%>
+
 <html>
 <head>
     <title>Title</title>

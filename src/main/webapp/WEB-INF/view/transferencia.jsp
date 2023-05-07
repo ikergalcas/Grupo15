@@ -3,11 +3,11 @@
 <%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
 
+<%
     Cliente asociado = (Cliente) request.getAttribute("asociado");
 %>
 

@@ -6,7 +6,9 @@
 
 %>
 <%--
-    Autor: Alvaro Yuste Moreno y Rocío Gómez Mancebo
+    Autores:
+    Alvaro Yuste Moreno: 50%
+    Rocío Gómez Mancebo: 50%
 --%>
 <html>
 <head>

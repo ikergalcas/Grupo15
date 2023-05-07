@@ -1,11 +1,11 @@
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
-%>
+
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
+
 <html>
 <head>
     <link rel="stylesheet" href="/webjars/bootstrap/5.1.0/css/bootstrap.min.css" />

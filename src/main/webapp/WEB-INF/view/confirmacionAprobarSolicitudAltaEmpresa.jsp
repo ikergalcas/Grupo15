@@ -3,12 +3,16 @@
 <%@ page import="es.taw.taw23.dto.Empleado" %>
 <%@ page import="es.taw.taw23.dto.Empresa" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--
+    Autora: Carla Serracant Guevara
+--%>
+
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-
 
 <%
     Empleado gestor = (Empleado) request.getAttribute("gestor");

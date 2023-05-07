@@ -1,4 +1,3 @@
-<!--Pablo Alarcón Carrión-->
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="button" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.taw.taw23.dto.Divisa" %>
@@ -6,6 +5,11 @@
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--
+    Autor: Pablo Alarcón Carrión
+--%>
+
 <html>
 <head>
     <title>Cambiar de divisa</title>

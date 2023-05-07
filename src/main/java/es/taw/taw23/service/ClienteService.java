@@ -16,8 +16,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Hecho por: Rocío Gómez Mancebo 75%
- * Carla Serracant Guevara 25%
+ * Hecho por:
+ * Rocío Gómez Mancebo; 75%
+ * Carla Serracant Guevara; 25%
  */
 @Service
 public class ClienteService {

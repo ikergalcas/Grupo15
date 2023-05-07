@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * Hecho por: Iker Gálvez Castillo
+ */
 public interface AsistenteRepository extends JpaRepository<EmpleadoEntity, Integer> {
     @Query("select e from EmpleadoEntity e where e.rolEmpleadoByRolEmpleadoId.tipo = 'asistente' ")
     public List<EmpleadoEntity> findAsistentes();

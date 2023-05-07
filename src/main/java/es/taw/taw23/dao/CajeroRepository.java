@@ -1,4 +1,4 @@
-//Pablo Alarcón Carrión
+
 package es.taw.taw23.dao;
 
 import es.taw.taw23.entity.*;
@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * Hecho por: Pablo Alarcón Carrión
+ */
 public interface CajeroRepository extends JpaRepository<CuentaEntity,Integer> {
     @Query("Select x FROM CuentaEntity x WHERE x.numeroCuenta = :numeroCuenta")
     CuentaEntity findByAccountNumber(@Param("numeroCuenta") String numeroCuenta);

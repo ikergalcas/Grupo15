@@ -8,8 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 /**
  * Hecho por:
- * Álvaro Yuste Moreno
- * Carla Serracant Guevara (25%)
+ * Álvaro Yuste Moreno: 75%
+ * Carla Serracant Guevara: 25%
  */
 public interface CuentaClienteRepository extends JpaRepository<CuentaClienteEntity, Integer> {
 

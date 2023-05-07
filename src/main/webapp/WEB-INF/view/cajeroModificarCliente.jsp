@@ -1,6 +1,10 @@
-<!--Pablo Alarcón Carrión-->
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.taw.taw23.dto.Cliente" %>
+
+<%--
+    Autor: Pablo Alarcón Carrión
+--%>
+
 <html>
 <head>
     <title>Datos del cliente</title>

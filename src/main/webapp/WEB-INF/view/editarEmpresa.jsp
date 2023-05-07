@@ -2,11 +2,12 @@
 <%@ page import="es.taw.taw23.entity.EmpresaEntity" %>
 <%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page import="es.taw.taw23.dto.Empresa" %>
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
 
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
+
+<%
     Cliente asociado = (Cliente) request.getAttribute("asociado");
     Empresa empresa = (Empresa) request.getAttribute("empresaEditada");
 %>

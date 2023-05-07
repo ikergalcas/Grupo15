@@ -1,6 +1,6 @@
 
 <%--
-    Autor: Rocío Gómez Mancebo
+    Autora: Rocío Gómez Mancebo
 --%>
 
 <%

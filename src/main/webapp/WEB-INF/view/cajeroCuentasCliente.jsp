@@ -1,15 +1,18 @@
-<!--Pablo Alarcón Carrión-->
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.taw.taw23.dto.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--
+    Autor: Pablo Alarcón Carrión
+--%>
+
 <html>
 <head>
     <title>Cuentas asociadas</title>
 </head>
 <% List<Cuenta> cuentasAsociadas = (List<Cuenta>) request.getAttribute("cuentasAsociadas");
     Cliente cliente = (Cliente) request.getAttribute("cliente");%>
-
 
 <body>
 <table>

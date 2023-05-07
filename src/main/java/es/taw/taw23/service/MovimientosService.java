@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Hecho por: Rocío Gómez Mancebo y Carla Serracant Guevara
+ * Hecho por:
+ * Rocío Gómez Mancebo: 50%
+ * Carla Serracant Guevara: 50%
  */
 @Service
 public class MovimientosService {

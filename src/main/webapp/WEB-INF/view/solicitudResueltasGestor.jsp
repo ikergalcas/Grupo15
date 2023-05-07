@@ -3,9 +3,11 @@
 <%@ page import="es.taw.taw23.dto.Empleado" %>
 <%@ page import="es.taw.taw23.dto.Solicitud" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%--
-  Carla Serracant Guevara
+    Autora: Carla Serracant Guevara
 --%>
+
 <html>
 <head>
     <title>Solicitudes resueltas</title>

@@ -1,10 +1,9 @@
 package es.taw.taw23.ui;
 
+/**
+ * Hecho por: Pablo Alarcón Carrión
+ */
 public class FiltroCajero {
-
-
-
-
     boolean ordenarFecha;
     boolean ordenarTipo;
     boolean ordenarImporte;

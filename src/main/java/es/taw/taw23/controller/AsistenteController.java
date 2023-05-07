@@ -23,7 +23,7 @@ import java.util.List;
 import static org.aspectj.runtime.internal.Conversions.byteValue;
 
 /**
- * Hecho por: Iker
+ * Hecho por: Iker Gálvez Castillo
  */
 @Controller
 @RequestMapping("/asistente")

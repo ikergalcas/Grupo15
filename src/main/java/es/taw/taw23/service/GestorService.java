@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Hecho por: Carla Serracant
+ * Hecho por: Carla Serracant Guevara
  */
 @Service
 public class GestorService {

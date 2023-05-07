@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--
-    Autor: Rocío Gómez Mancebo
+    Autora: Rocío Gómez Mancebo
 --%>
 
 <html>

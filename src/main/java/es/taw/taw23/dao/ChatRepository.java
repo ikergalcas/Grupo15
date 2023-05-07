@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * Hecho por: Iker Gálvez Castillo
+ */
 public interface ChatRepository extends JpaRepository<ChatEntity,Integer> {
     @Query("select c from ChatEntity c where c.empleadoByEmpleadoId.id = :empleadoId")
     public List<ChatEntity> findByEmpleadoId(@Param("empleadoId") int empleadoId);

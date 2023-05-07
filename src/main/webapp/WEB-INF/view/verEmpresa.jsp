@@ -4,9 +4,11 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%--
-  Carla Serracant Guevara
+    Autora: Carla Serracant Guevara
 --%>
+
 <html>
 <head>
     <title>Ver empresa</title>

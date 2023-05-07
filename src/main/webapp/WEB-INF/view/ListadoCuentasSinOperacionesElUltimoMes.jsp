@@ -1,9 +1,11 @@
 <%@ page import="es.taw.taw23.dto.Cuenta" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%--
-  Carla Serracant Guevara
+    Autora: Carla Serracant Guevara
 --%>
+
 <html>
 <head>
     <title>Cuentas sin operaciones</title>

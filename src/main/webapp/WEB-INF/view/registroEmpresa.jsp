@@ -2,11 +2,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
-    /**
-     * Hecho por: Álvaro Yuste Moreno
-     */
-%>
+<%--
+    Autor: Álvaro Yuste Moreno
+--%>
 
 <html>
 <head>

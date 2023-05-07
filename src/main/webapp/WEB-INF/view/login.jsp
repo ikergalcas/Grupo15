@@ -3,11 +3,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--
-    Autor:
+    Autores:
     Rocío Gómez Mancebo: 20%
     Pablo Alarcón Carrión: 20%
     Iker Gálvez Castillo: 20%
-    Carla Serra Cant: 20%
+    Carla Serracant Guevara: 20%
     Álvaro Yuste Moreno: 20%
 --%>
 
